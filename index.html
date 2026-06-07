@@ -490,11 +490,8 @@ textarea:focus { outline: none; border-color: #aaa; background: var(--white); bo
   </div>
 
   <div class="save-bar visible" id="save-bar">
-    <button class="save-btn primary-a" id="save-btn" onclick="saveAnswers()">
-      <i class="ti ti-download" aria-hidden="true"></i> .txt
-    </button>
-    <button class="save-btn" id="pdf-btn" onclick="savePDF()">
-      <i class="ti ti-file-type-pdf" aria-hidden="true"></i> PDF
+    <button class="save-btn primary-a" id="save-btn" onclick="savePDF()">
+      <i class="ti ti-download" aria-hidden="true"></i> Зберегти відповіді
     </button>
     <button class="save-btn" id="copy-btn" onclick="copyAnswers()">
       <i class="ti ti-copy" aria-hidden="true"></i> Копіювати
@@ -512,7 +509,7 @@ textarea:focus { outline: none; border-color: #aaa; background: var(--white); bo
   <div class="finish-title">Молодець!</div>
   <p class="finish-sub">Ти зробила важливий крок — познайомилася з собою трохи ближче. Це вже багато.</p>
   <div class="finish-btns">
-    <button class="finish-btn primary" onclick="saveAnswers()">
+    <button class="finish-btn primary" onclick="savePDF()">
       <i class="ti ti-download"></i> Зберегти відповіді
     </button>
     <button class="finish-btn secondary" onclick="restartApp()">
@@ -834,7 +831,7 @@ function buildApp() {
   document.getElementById('topbar-sub').textContent = data.sub;
   document.getElementById('tp-fill').className = 'tp-fill ' + v;
   document.getElementById('save-btn').className = 'save-btn primary-' + v;
-  document.getElementById('pdf-btn').className = 'save-btn';
+  
   document.getElementById('copy-btn').className = 'save-btn';
 
   const headerWrap = document.getElementById('version-header-wrap');
@@ -1083,7 +1080,7 @@ function savePDF() {
   const wrap = document.getElementById('sections-wrap');
   const accentHex = { a: [127,119,221], b: [29,158,117], c: [216,90,48] };
   const accent = accentHex[v];
-  const btn = document.getElementById('pdf-btn');
+  const btn = document.getElementById('save-btn');
   btn.innerHTML = '<i class="ti ti-loader"></i> Генерую...';
   btn.disabled = true;
 
@@ -1180,13 +1177,13 @@ function savePDF() {
     const filename = 'анкета-самопізнання-' + new Date().toLocaleDateString('uk-UA').replace(/\./g,'-') + '.pdf';
     doc.save(filename);
 
-    btn.innerHTML = '<i class="ti ti-file-type-pdf"></i> PDF';
+    btn.innerHTML = '<i class="ti ti-download"></i> Зберегти відповіді';
     btn.disabled = false;
     const status = document.getElementById('save-status');
     if (status) { status.textContent = 'PDF збережено!'; setTimeout(() => status.textContent = '', 3000); }
   };
   script.onerror = () => {
-    btn.innerHTML = '<i class="ti ti-file-type-pdf"></i> PDF';
+    btn.innerHTML = '<i class="ti ti-download"></i> Зберегти відповіді';
     btn.disabled = false;
     alert('Не вдалося завантажити бібліотеку. Перевір інтернет-з\'єднання.');
   };
