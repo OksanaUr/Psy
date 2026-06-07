@@ -1018,16 +1018,6 @@ function goBack() {
   }
 }
 
-function saveAnswers() {
-  const text = buildAnswersText();
-  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'анкета-самопізнання-' + new Date().toLocaleDateString('uk-UA').replace(/\./g,'-') + '.txt';
-  a.click();
-  const status = document.getElementById('save-status');
-  if (status) { status.textContent = 'Збережено!'; setTimeout(() => status.textContent = '', 3000); }
-}
 
 function buildAnswersText() {
   const v = currentVersion;
