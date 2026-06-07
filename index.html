@@ -1081,55 +1081,116 @@ function savePDF() {
   const v = currentVersion;
   const data = versions[v];
   const wrap = document.getElementById('sections-wrap');
-  const colors = { a: '#7F77DD', b: '#1D9E75', c: '#D85A30' };
-  const accent = colors[v];
+  const accentHex = { a: [127,119,221], b: [29,158,117], c: [216,90,48] };
+  const accent = accentHex[v];
+  const btn = document.getElementById('pdf-btn');
+  btn.innerHTML = '<i class="ti ti-loader"></i> Генерую...';
+  btn.disabled = true;
 
-  let html = `<!DOCTYPE html><html><head><meta charset="UTF-8">
-  <style>
-    body { font-family: Arial, sans-serif; color: #2C2C2C; padding: 40px; max-width: 700px; margin: 0 auto; }
-    h1 { color: ${accent}; font-size: 22px; margin-bottom: 4px; }
-    .meta { color: #888; font-size: 13px; margin-bottom: 32px; }
-    .section { margin-bottom: 28px; border-top: 2px solid ${accent}; padding-top: 14px; }
-    .section-title { font-size: 15px; font-weight: bold; color: ${accent}; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .field { margin-bottom: 14px; }
-    .field-label { font-size: 12px; color: #888; margin-bottom: 4px; }
-    .field-value { font-size: 14px; line-height: 1.6; white-space: pre-wrap; }
-    .footer { margin-top: 48px; font-size: 11px; color: #bbb; text-align: center; border-top: 1px solid #eee; padding-top: 12px; }
-  </style></head><body>`;
+  const script = document.createElement('script');
+  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+  script.onload = () => {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    const pageW = 210, pageH = 297;
+    const margin = 18, contentW = pageW - margin * 2;
+    let y = margin;
 
-  html += `<h1>Терапевтична анкета самопізнання</h1>`;
-  html += `<div class="meta">${data.title} &nbsp;·&nbsp; ${new Date().toLocaleDateString('uk-UA')}</div>`;
-
-  wrap.querySelectorAll('.section-card').forEach(card => {
-    const title = card.querySelector('.section-title');
-    let hasContent = false;
-    let sectionHtml = '';
-    card.querySelectorAll('textarea').forEach(ta => {
-      if (!ta.value.trim()) return;
-      const fg = ta.closest('.field-group');
-      const lbl = fg ? fg.querySelector('.field-label') : null;
-      const hl = ta.previousElementSibling;
-      const label = lbl ? lbl.textContent.trim() : (hl && hl.classList.contains('hl-label') ? hl.textContent.trim() : '');
-      sectionHtml += `<div class="field">`;
-      if (label) sectionHtml += `<div class="field-label">${label}</div>`;
-      sectionHtml += `<div class="field-value">${ta.value.trim()}</div></div>`;
-      hasContent = true;
-    });
-    if (hasContent) {
-      html += `<div class="section"><div class="section-title">${title ? title.textContent : ''}</div>${sectionHtml}</div>`;
+    function checkPage(needed = 10) {
+      if (y + needed > pageH - margin) { doc.addPage(); y = margin; }
     }
-  });
 
-  html += `<div class="footer">© Оксана Урожай · Терапевтична анкета самопізнання</div>`;
-  html += `</body></html>`;
+    function drawAccentLine() {
+      doc.setDrawColor(...accent);
+      doc.setLineWidth(0.5);
+      doc.line(margin, y, pageW - margin, y);
+      y += 4;
+    }
 
-  const win = window.open('', '_blank');
-  win.document.write(html);
-  win.document.close();
-  setTimeout(() => win.print(), 500);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(18);
+    doc.setTextColor(...accent);
+    doc.text('Терапевтична анкета самопізнання', margin, y);
+    y += 8;
 
-  const status = document.getElementById('save-status');
-  if (status) { status.textContent = 'PDF відкрито для друку'; setTimeout(() => status.textContent = '', 4000); }
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(140, 140, 140);
+    doc.text(data.title + '   ·   ' + new Date().toLocaleDateString('uk-UA'), margin, y);
+    y += 10;
+
+    drawAccentLine();
+
+    wrap.querySelectorAll('.section-card').forEach(card => {
+      const titleEl = card.querySelector('.section-title');
+      const fields = [];
+      card.querySelectorAll('textarea').forEach(ta => {
+        if (!ta.value.trim()) return;
+        const fg = ta.closest('.field-group');
+        const lbl = fg ? fg.querySelector('.field-label') : null;
+        const hl = ta.previousElementSibling;
+        const label = lbl ? lbl.textContent.trim() : (hl && hl.classList.contains('hl-label') ? hl.textContent.trim() : '');
+        fields.push({ label, value: ta.value.trim() });
+      });
+      if (!fields.length) return;
+
+      checkPage(14);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.setTextColor(...accent);
+      doc.text((titleEl ? titleEl.textContent : '').toUpperCase(), margin, y);
+      y += 6;
+
+      fields.forEach(({ label, value }) => {
+        if (label) {
+          checkPage(8);
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(9);
+          doc.setTextColor(150, 150, 150);
+          const lblLines = doc.splitTextToSize(label, contentW);
+          doc.text(lblLines, margin, y);
+          y += lblLines.length * 4.5;
+        }
+        checkPage(8);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(11);
+        doc.setTextColor(44, 44, 44);
+        const valLines = doc.splitTextToSize(value, contentW);
+        valLines.forEach(line => {
+          checkPage(6);
+          doc.text(line, margin, y);
+          y += 5.5;
+        });
+        y += 3;
+      });
+
+      checkPage(6);
+      doc.setDrawColor(220, 220, 220);
+      doc.setLineWidth(0.2);
+      doc.line(margin, y, pageW - margin, y);
+      y += 6;
+    });
+
+    checkPage(12);
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(9);
+    doc.setTextColor(180, 180, 180);
+    doc.text('© Оксана Урожай · Терапевтична анкета самопізнання', pageW / 2, pageH - 10, { align: 'center' });
+
+    const filename = 'анкета-самопізнання-' + new Date().toLocaleDateString('uk-UA').replace(/\./g,'-') + '.pdf';
+    doc.save(filename);
+
+    btn.innerHTML = '<i class="ti ti-file-type-pdf"></i> PDF';
+    btn.disabled = false;
+    const status = document.getElementById('save-status');
+    if (status) { status.textContent = 'PDF збережено!'; setTimeout(() => status.textContent = '', 3000); }
+  };
+  script.onerror = () => {
+    btn.innerHTML = '<i class="ti ti-file-type-pdf"></i> PDF';
+    btn.disabled = false;
+    alert('Не вдалося завантажити бібліотеку. Перевір інтернет-з\'єднання.');
+  };
+  document.head.appendChild(script);
 }
 
 function finishSession() {
