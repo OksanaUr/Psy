@@ -76,6 +76,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .land-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 48px;border-radius:50px;border:none;font-size:17px;font-weight:700;cursor:pointer;background:var(--purple);color:white;transition:all .2s;box-shadow:0 4px 24px rgba(127,119,221,.35);animation:fadeUp .6s ease .4s both}
 .land-btn:hover{background:var(--purple-d);transform:translateY(-2px);box-shadow:0 8px 32px rgba(127,119,221,.4)}
 .land-note{font-size:11px;color:var(--muted);margin-top:1rem;animation:fadeUp .6s ease .5s both}
+.land-quote-big{position:relative;margin:0 auto 2.5rem;max-width:460px;padding:.5rem 1.5rem 1.5rem 1rem;animation:fadeUp .6s ease .3s both;text-align:left}
+.land-quote-big::before{content:'"';position:absolute;top:-10px;left:-5px;font-size:7rem;line-height:1;color:var(--purple);opacity:.18;font-family:Georgia,serif}
+.land-quote-big::after{content:'"';position:absolute;bottom:-40px;right:0;font-size:7rem;line-height:1;color:var(--purple);opacity:.18;font-family:Georgia,serif;transform:rotate(180deg)}
+.q-line1{display:block;font-size:clamp(.95rem,2.5vw,1.05rem);color:var(--muted);font-style:italic;line-height:1.7;margin-bottom:.3rem}
+.q-line2{display:block;font-size:clamp(1.2rem,3vw,1.5rem);color:var(--purple-d);font-weight:800;font-style:italic;line-height:1.4;margin-bottom:.3rem}
+.q-line3{display:block;font-size:clamp(.95rem,2.5vw,1.05rem);color:var(--muted);font-style:italic;line-height:1.7}
+.q-accent{color:var(--teal-d);font-style:normal}
 
 /* ========== SCREEN 2: HUB ========== */
 #hub{background:var(--bg)}
