@@ -26,11 +26,38 @@
 }
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 
-.screen{display:none;min-height:100vh}
-.screen.active{display:block}
+.screen{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  overflow-y:auto;overflow-x:hidden;
+  transform:translateX(100%);
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  visibility:hidden;
+  background:var(--bg);
+  z-index:1;
+}
+.screen.active{
+  transform:translateX(0);
+  visibility:visible;
+  z-index:2;
+}
+.screen.slide-out{
+  transform:translateX(-30%);
+  visibility:visible;
+  z-index:1;
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+#landing{
+  background:linear-gradient(160deg,#EEEDFE 0%,#E1F5EE 50%,#EBF0F8 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+#ptsd-cover{
+  background:linear-gradient(160deg,#3D5A7A 0%,#4A6E8A 40%,#5A7E90 70%,#5A8C7E 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
 
 /* ========== SCREEN 1: LANDING ========== */
-#landing{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem 1.5rem;background:linear-gradient(160deg,#EEEDFE 0%,#E1F5EE 50%,#EBF0F8 100%);position:relative;overflow:hidden}
+
+#landing{text-align:center;padding:2rem 1.5rem;overflow:hidden}
 .land-shape{position:absolute;border-radius:50%;opacity:.09;animation:float 7s ease-in-out infinite}
 .ls1{width:350px;height:350px;background:var(--purple);top:-100px;left:-80px}
 .ls2{width:220px;height:220px;background:var(--teal);bottom:-60px;right:-50px;animation-delay:2s}
@@ -78,7 +105,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 /* ========== SCREEN 3: TOOL HOME ========== */
 #toolhome{background:var(--bg)}
-.topbar{position:sticky;top:0;z-index:100;background:rgba(245,247,250,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:10px 1rem;display:flex;align-items:center;gap:8px}
+.topbar{position:sticky;top:0;z-index:200;background:rgba(245,247,250,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:10px 1rem;display:flex;align-items:center;gap:8px;min-height:52px}
 .back-btn{background:none;border:none;cursor:pointer;color:var(--muted);font-size:20px;padding:4px;border-radius:8px;display:flex;align-items:center;transition:all .15s;flex-shrink:0}
 .back-btn:hover{background:#eee;color:var(--text)}
 .tb-info{flex:1;min-width:0}
@@ -113,7 +140,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .safety-btn:hover{opacity:.9;transform:translateY(-1px)}
 
 /* ========== SCREEN 4: PTSD COVER ========== */
-#ptsdcover{min-height:100vh;background:linear-gradient(160deg,#3D5A7A 0%,#4A6E8A 40%,#5A7E90 70%,#5A8C7E 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.5rem;text-align:center;position:relative;overflow:hidden}
+
+#ptsd-cover{text-align:center;overflow:hidden}
 .ptsd-cover-topbar{position:absolute;top:0;left:0;right:0;padding:12px 1rem;display:flex;align-items:center;gap:8px;z-index:10}
 .cs{position:absolute;border-radius:50%;opacity:.07}
 .cs1{width:400px;height:400px;background:white;top:-150px;left:-100px}
@@ -226,7 +254,7 @@ textarea:focus{outline:none;background:var(--white)}
 <!-- ========== 2. HUB ========== -->
 <div class="screen" id="hub">
   <div class="hub-topbar">
-    <button class="home-btn" onclick="goLanding()" title="На головну"><i class="ti ti-home"></i></button>
+    <button onclick="goLanding()" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text);flex-shrink:0"><i class="ti ti-home"></i> Додому</button>
     <div>
       <div class="hub-topbar-title">Психологічний кабінет · Оксана Урожай</div>
       <div style="font-size:11px;color:var(--muted)">Оберіть інструмент</div>
@@ -296,12 +324,12 @@ textarea:focus{outline:none;background:var(--white)}
 <!-- ========== 3. TOOL HOME ========== -->
 <div class="screen" id="toolhome">
   <div class="topbar">
-    <button class="back-btn" onclick="goHub()" title="Назад до інструментів"><i class="ti ti-arrow-left"></i></button>
+    <button class="back-btn" onclick="goHub()" title="Назад до інструментів" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text)"><i class="ti ti-arrow-left"></i> Назад</button>
     <div class="tb-info">
       <div class="tb-title" id="tool-title">Інструмент</div>
       <div class="tb-sub" id="tool-sub"></div>
     </div>
-    <button class="back-btn" onclick="goLanding()" title="На головну"><i class="ti ti-home"></i></button>
+    <button class="back-btn" onclick="goLanding()" title="На головну" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text)"><i class="ti ti-home"></i> Додому</button>
   </div>
   <div id="tool-hero-wrap"></div>
   <div class="tool-inner" id="tool-blocks"></div>
@@ -335,22 +363,22 @@ textarea:focus{outline:none;background:var(--white)}
 <!-- ========== 5. MODULE ========== -->
 <div class="screen" id="module">
   <div class="topbar">
-    <button class="back-btn" onclick="moduleBack()" title="Назад до блоків"><i class="ti ti-arrow-left"></i></button>
+    <button onclick="moduleBack()" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text);flex-shrink:0"><i class="ti ti-arrow-left"></i> Назад</button>
     <div class="tb-info">
       <div class="tb-title" id="mod-title"></div>
       <div class="tb-sub" id="mod-sub"></div>
     </div>
-    <div style="display:flex;align-items:center;gap:6px">
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
       <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
       <span class="prog-pct" id="prog-pct">0%</span>
     </div>
-    <button class="back-btn" onclick="goLanding()" title="На головну"><i class="ti ti-home"></i></button>
+    <button onclick="goLanding()" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text);flex-shrink:0"><i class="ti ti-home"></i></button>
   </div>
   <div class="module-inner" id="module-inner"></div>
   <div class="save-bar">
-    <button class="s-btn" onclick="moduleBack()"><i class="ti ti-arrow-left"></i> Назад</button>
-    <button class="s-btn primary" id="save-btn" onclick="savePDF()"><i class="ti ti-download"></i> Зберегти PDF</button>
-    <button class="s-btn" onclick="copyAnswers()"><i class="ti ti-copy"></i> Копіювати</button>
+    <button class="s-btn" onclick="moduleBack()">← Назад</button>
+    <button class="s-btn primary" id="save-btn" onclick="savePDF()">⬇ Зберегти PDF</button>
+    <button class="s-btn" onclick="copyAnswers()">⧉ Копіювати</button>
     <span style="font-size:12px;color:var(--muted);margin-left:auto" id="s-status"></span>
   </div>
 </div>
@@ -365,10 +393,26 @@ let anketaVersion = 'a';
 const timers = {};
 
 // ===== NAVIGATION =====
-function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
-function goHub(){ showScreen('hub'); }
-function showTool(id){ currentTool=id; showScreen(id); if(id==='anketa'){setAnketaVersion('a')} if(id==='anxiety'){buildAnxietyBlocks()} if(id==='ptsd'){buildPtsdBlocks()} }
-function moduleBack(){ showScreen(currentTool); }
+let _prevScreen = null;
+function showScreen(id){
+  const prev = document.querySelector('.screen.active');
+  const next = document.getElementById(id);
+  if(!next || (prev && prev.id === id)) return;
+
+  if(prev){
+    prev.classList.add('slide-out');
+    prev.classList.remove('active');
+    setTimeout(()=>{ prev.classList.remove('slide-out'); }, 380);
+  }
+
+  // Reset scroll
+  next.scrollTop = 0;
+  next.classList.add('active');
+  _prevScreen = prev ? prev.id : null;
+}
+// goHub defined in NAVIGATION OVERRIDES
+// showTool defined in NAVIGATION OVERRIDES below
+// moduleBack defined in NAVIGATION OVERRIDES
 
 // ===== HELPERS =====
 function fld(label,ph='',tall=false){
@@ -570,9 +614,11 @@ function setAnketaVersion(v){
   anketaVersion=v;
   document.querySelectorAll('.vtab').forEach(t=>t.className='vtab');
   const idx={'a':0,'b':1,'c':2}[v];
-  document.querySelectorAll('.vtab')[idx].classList.add('v'+v);
-  document.getElementById('anketa-tb-sub').textContent={a:'🌸 Підлітки',b:'🌿 Дорослі',c:'🛡️ Ветерани'}[v];
-  const wrap=document.getElementById('anketa-blocks');wrap.innerHTML='';
+  const tabs=document.querySelectorAll('.vtab');
+  if(tabs[idx]) tabs[idx].classList.add('v'+v);
+  const toolSub=document.getElementById('tool-sub');
+  if(toolSub) toolSub.textContent={a:'🌸 Підлітки',b:'🌿 Дорослі',c:'🛡️ Ветерани'}[v];
+  const wrap=document.getElementById('tool-blocks');wrap.innerHTML='';
   const grouped={};
   anketaBlocks[v].forEach(b=>{if(!grouped[b.tag])grouped[b.tag]=[];grouped[b.tag].push(b)});
   Object.entries(grouped).forEach(([tag,items])=>{
@@ -595,7 +641,7 @@ const anxietyBlockDefs=[
 ];
 
 function buildAnxietyBlocks(){
-  const wrap=document.getElementById('anxiety-blocks');wrap.innerHTML='';
+  const wrap=document.getElementById('tool-blocks');wrap.innerHTML='';
   const grouped={};anxietyBlockDefs.forEach(b=>{if(!grouped[b.tag])grouped[b.tag]=[];grouped[b.tag].push(b)});
   Object.entries(grouped).forEach(([tag,items])=>{
     const lbl=document.createElement('div');lbl.className='section-label';lbl.textContent=tag;wrap.appendChild(lbl);
@@ -617,7 +663,7 @@ const ptsdBlockDefs=[
 ];
 
 function buildPtsdBlocks(){
-  const wrap=document.getElementById('ptsd-blocks');wrap.innerHTML='';
+  const wrap=document.getElementById('tool-blocks');wrap.innerHTML='';
   const grouped={};ptsdBlockDefs.forEach(b=>{if(!grouped[b.tag])grouped[b.tag]=[];grouped[b.tag].push(b)});
   Object.entries(grouped).forEach(([tag,items])=>{
     const lbl=document.createElement('div');lbl.className='section-label';lbl.textContent=tag;wrap.appendChild(lbl);
@@ -713,60 +759,94 @@ function copyAnswers(){
   navigator.clipboard.writeText(text).then(()=>{const btn=document.querySelector('[onclick="copyAnswers()"]');btn.innerHTML='<i class="ti ti-check"></i> Скопійовано!';setTimeout(()=>btn.innerHTML='<i class="ti ti-copy"></i> Копіювати',3000)});
 }
 
-// ===== NAVIGATION OVERRIDES =====
+// ===== NAVIGATION =====
 function goLanding(){ showScreen('landing'); }
 function goHub(){ showScreen('hub'); }
 
 function showTool(id){
   currentTool = id;
-  if(id === 'ptsd-cover'){ showScreen('ptsd-cover'); return; }
+
+  if(id === 'ptsd-cover'){
+    showScreen('ptsd-cover');
+    return;
+  }
+
+  // Build toolhome content BEFORE showing screen
+  const titleEl = document.getElementById('tool-title');
+  const subEl = document.getElementById('tool-sub');
+  const heroWrap = document.getElementById('tool-hero-wrap');
+  const blocksWrap = document.getElementById('tool-blocks');
+
+  if(!titleEl || !subEl || !heroWrap || !blocksWrap) return;
+
+  // Remove any previously injected safety wrap
+  const existSafe = document.getElementById('ptsd-safety-wrap');
+  if(existSafe) existSafe.remove();
+
+  blocksWrap.innerHTML = '';
+  heroWrap.innerHTML = '';
+
+  if(id === 'anketa'){
+    titleEl.textContent = 'Терапевтична анкета самопізнання';
+    subEl.textContent = 'Оберіть версію та блок';
+    buildToolHero('📓','Терапевтична анкета самопізнання','Обери версію і блок, який потрібен прямо зараз','linear-gradient(135deg,#EEEDFE,#E1F5EE)','var(--purple-d)','var(--muted)',true);
+    setAnketaVersion('a');
+  }
+
+  if(id === 'anxiety'){
+    titleEl.textContent = 'Тривожність — самодослідження';
+    subEl.textContent = 'Оберіть блок, який потрібен зараз';
+    buildToolHero('🌊','Тривожність — самодослідження','Обери блок, який потрібен прямо зараз','linear-gradient(135deg,#EBF2FC,#E3F5EF)','var(--navy-d)','var(--muted)');
+    buildAnxietyBlocks();
+  }
+
   if(id === 'ptsd'){
-    document.getElementById('tool-title').textContent = 'Мій шлях до безпеки';
-    document.getElementById('tool-sub').textContent = 'Оберіть блок, який потрібен зараз';
+    titleEl.textContent = 'Мій шлях до безпеки';
+    subEl.textContent = 'Оберіть блок, який потрібен зараз';
     buildToolHero('🌊','Мій шлях до безпеки','Оберіть блок, який потрібен прямо зараз','linear-gradient(135deg,#4A6E8A,#5A8C7E)','white','rgba(255,255,255,.7)');
+    // Safety button
     const safetyWrap = document.createElement('div');
+    safetyWrap.id = 'ptsd-safety-wrap';
     safetyWrap.style.cssText = 'max-width:680px;margin:0 auto;padding:0 1rem';
     const safetyBtnEl = document.createElement('button');
     safetyBtnEl.className = 'safety-btn';
-    safetyBtnEl.style.cssText = 'width:100%;margin:.75rem 0';
+    safetyBtnEl.style.width = '100%';
     safetyBtnEl.innerHTML = '<i class="ti ti-shield-heart" style="font-size:20px"></i><span><div style="font-size:14px;font-weight:700">🆘 Моя безпека</div><div style="font-size:11px;opacity:.8">Якщо стало важко — починай тут</div></span><span style="font-size:10px;background:rgba(255,255,255,.2);padding:2px 8px;border-radius:10px">Завжди доступно</span>';
     safetyBtnEl.onclick = () => openModule('ptsd','safety');
     safetyWrap.appendChild(safetyBtnEl);
-    const toolBlocks = document.getElementById('tool-blocks');
-    toolBlocks.innerHTML = '';
-    toolBlocks.parentNode.insertBefore(safetyWrap, toolBlocks);
+    blocksWrap.parentNode.insertBefore(safetyWrap, blocksWrap);
     buildPtsdBlocks();
-    showScreen('toolhome'); return;
   }
-  if(id === 'anketa'){
-    document.getElementById('tool-title').textContent = 'Терапевтична анкета самопізнання';
-    document.getElementById('tool-sub').textContent = 'Оберіть версію та блок';
-    buildToolHero('📓','Терапевтична анкета самопізнання','Обери версію і блок, який потрібен прямо зараз','linear-gradient(135deg,#EEEDFE,#E1F5EE)','var(--purple-d)','var(--muted)',true);
-    setAnketaVersion('a');
-    showScreen('toolhome'); return;
-  }
-  if(id === 'anxiety'){
-    document.getElementById('tool-title').textContent = 'Тривожність — самодослідження';
-    document.getElementById('tool-sub').textContent = 'Оберіть блок, який потрібен зараз';
-    buildToolHero('🌊','Тривожність — самодослідження','Обери блок, який потрібен прямо зараз','linear-gradient(135deg,#EBF2FC,#E3F5EF)','var(--navy-d)','var(--muted)');
-    buildAnxietyBlocks();
-    showScreen('toolhome'); return;
-  }
+
+  showScreen('toolhome');
 }
 
 function buildToolHero(icon,title,sub,bg,titleColor,subColor,hasTabs=false){
   const wrap = document.getElementById('tool-hero-wrap');
-  wrap.innerHTML = '';
+  if(!wrap) return;
   const hero = document.createElement('div');
   hero.className = 'tool-hero';
   hero.style.background = bg;
-  hero.innerHTML = `<span class="th-icon">${icon}</span><div class="th-title" style="color:${titleColor}">${title}</div><div class="th-sub" style="color:${subColor}">${sub}</div>`;
+  const iconEl = document.createElement('span');
+  iconEl.className = 'th-icon';
+  iconEl.textContent = icon;
+  const titleEl = document.createElement('div');
+  titleEl.className = 'th-title';
+  titleEl.style.color = titleColor;
+  titleEl.textContent = title;
+  const subEl = document.createElement('div');
+  subEl.className = 'th-sub';
+  subEl.style.color = subColor;
+  subEl.textContent = sub;
+  hero.appendChild(iconEl);
+  hero.appendChild(titleEl);
+  hero.appendChild(subEl);
   if(hasTabs){
     const tabs = document.createElement('div');
     tabs.className = 'vtabs';
     [{v:'a',label:'🌸 Підлітки'},{v:'b',label:'🌿 Дорослі'},{v:'c',label:'🛡️ Ветерани'}].forEach(t=>{
       const btn = document.createElement('button');
-      btn.className = 'vtab' + (t.v==='a'?' va':'');
+      btn.className = 'vtab' + (t.v==='a' ? ' va' : '');
       btn.textContent = t.label;
       btn.onclick = () => setAnketaVersion(t.v);
       tabs.appendChild(btn);
@@ -777,9 +857,6 @@ function buildToolHero(icon,title,sub,bg,titleColor,subColor,hasTabs=false){
 }
 
 function moduleBack(){
-  // Remove any injected safety wrap before going back
-  const old = document.querySelector('#toolhome > div.safety-wrap-injected');
-  if(old) old.remove();
   showScreen('toolhome');
 }
 </script>
