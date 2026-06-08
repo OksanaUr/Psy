@@ -7,1169 +7,638 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.x/tabler-icons.min.css">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
-  --purple: #7F77DD;
-  --purple-light: #EEEDFE;
-  --purple-dark: #3C3489;
-  --teal: #1D9E75;
-  --teal-light: #E1F5EE;
-  --teal-dark: #085041;
-  --coral: #D85A30;
-  --coral-light: #FAECE7;
-  --coral-dark: #712B13;
-  --gold-light: #FAEEDA;
-  --gold: #854F0B;
-  --gray-light: #F5F5F5;
-  --text: #2C2C2C;
-  --text-muted: #888;
-  --border: #E0E0E0;
-  --white: #fff;
-  --radius: 12px;
-  --radius-lg: 18px;
+  --purple: #7F77DD; --purple-light: #EEEDFE; --purple-dark: #3C3489;
+  --teal: #1D9E75; --teal-light: #E1F5EE; --teal-dark: #085041;
+  --coral: #D85A30; --coral-light: #FAECE7; --coral-dark: #712B13;
+  --gold: #C8892A; --gold-light: #FDF1DC;
+  --blue: #4A7FC1; --blue-light: #EBF2FC;
+  --pink: #C85A8A; --pink-light: #FAEBF2;
+  --green: #3A9E7E; --green-light: #E3F5EF;
+  --text: #2C2C2C; --muted: #888; --border: #E0E0E0;
+  --white: #fff; --bg: #F7F6FB;
+  --radius: 12px; --radius-lg: 18px;
 }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #F7F6FB;
-  color: var(--text);
-  min-height: 100vh;
-}
+.screen { display: none; min-height: 100vh; }
+.screen.active { display: block; }
 
-/* ===== INTRO SCREEN ===== */
-#intro {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem 1rem;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
+/* ===== HOME ===== */
+.home-hero { background: linear-gradient(135deg, #EEEDFE 0%, #E1F5EE 50%, #FAECE7 100%); padding: 3rem 1rem 2.5rem; text-align: center; position: relative; overflow: hidden; }
+.hs { position: absolute; border-radius: 50%; opacity: 0.1; animation: float 7s ease-in-out infinite; }
+.hs1 { width: 260px; height: 260px; background: var(--purple); top: -70px; left: -60px; }
+.hs2 { width: 160px; height: 160px; background: var(--teal); bottom: -40px; right: -30px; animation-delay: 2s; }
+.hs3 { width: 100px; height: 100px; background: var(--coral); top: 40%; right: 10%; animation-delay: 4s; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-16px)} }
 
-.intro-bg {
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, #EEEDFE 0%, #E1F5EE 50%, #FAECE7 100%);
-  z-index: 0;
-}
+.hero-badge { display: inline-flex; align-items: center; gap: 6px; background: white; padding: 5px 14px; border-radius: 20px; font-size: 12px; color: var(--purple-dark); font-weight: 500; margin-bottom: 1rem; box-shadow: 0 2px 10px rgba(127,119,221,0.15); position: relative; z-index: 1; }
+.hero-title { font-size: clamp(1.7rem, 4vw, 2.6rem); font-weight: 800; color: var(--purple-dark); line-height: 1.2; margin-bottom: 0.5rem; position: relative; z-index: 1; }
+.hero-title span { color: var(--teal-dark); }
+.hero-sub { font-size: 0.95rem; color: var(--muted); line-height: 1.6; position: relative; z-index: 1; margin-bottom: 1.5rem; }
 
-.floating-shape {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.15;
-  animation: float 6s ease-in-out infinite;
-}
-.fs1 { width: 300px; height: 300px; background: var(--purple); top: -80px; left: -80px; animation-delay: 0s; }
-.fs2 { width: 200px; height: 200px; background: var(--teal); bottom: -50px; right: -50px; animation-delay: 2s; }
-.fs3 { width: 150px; height: 150px; background: var(--coral); top: 40%; left: 10%; animation-delay: 4s; }
-.fs4 { width: 100px; height: 100px; background: var(--purple); bottom: 20%; right: 15%; animation-delay: 1s; }
+/* VERSION SWITCHER */
+.version-tabs { display: flex; gap: 8px; justify-content: center; position: relative; z-index: 1; }
+.vtab { padding: 8px 18px; border-radius: 50px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; color: var(--muted); }
+.vtab:hover { background: var(--bg); }
+.vtab.active-a { background: var(--purple-light); color: var(--purple-dark); border-color: var(--purple); }
+.vtab.active-b { background: var(--teal-light); color: var(--teal-dark); border-color: var(--teal); }
+.vtab.active-c { background: var(--coral-light); color: var(--coral-dark); border-color: var(--coral); }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-20px) rotate(5deg); }
-}
+.home-inner { max-width: 680px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+.section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 1.5rem 0 0.75rem; }
 
-.intro-content {
-  position: relative; z-index: 1;
-  max-width: 560px;
-}
+.block-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.block-card { background: var(--white); border-radius: var(--radius-lg); border: 1.5px solid var(--border); padding: 1.25rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; flex-direction: column; gap: 8px; position: relative; overflow: hidden; }
+.block-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+.block-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); border-color: transparent; }
 
-.intro-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: white; padding: 6px 16px;
-  border-radius: 20px; font-size: 13px;
-  color: var(--purple-dark); font-weight: 500;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 2px 12px rgba(127,119,221,0.15);
-  animation: fadeDown 0.6s ease both;
-}
+.bc-icon { font-size: 1.8rem; }
+.bc-title { font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.3; }
+.bc-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.bc-tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; display: inline-block; margin-top: 2px; }
 
-.intro-title {
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 800;
-  color: var(--purple-dark);
-  line-height: 1.15;
-  margin-bottom: 0.75rem;
-  animation: fadeDown 0.6s ease 0.1s both;
-}
-.intro-title span { color: var(--teal-dark); }
+/* ===== MODULE ===== */
+.topbar { position: sticky; top: 0; z-index: 100; background: rgba(247,246,251,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 10px 1rem; display: flex; align-items: center; gap: 12px; }
+.back-btn { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 20px; padding: 4px; border-radius: 8px; display: flex; align-items: center; transition: all 0.15s; }
+.back-btn:hover { background: #eee; color: var(--text); }
+.tb-info { flex: 1; }
+.tb-title { font-size: 14px; font-weight: 700; color: var(--text); }
+.tb-sub { font-size: 11px; color: var(--muted); }
+.prog-bar { width: 70px; height: 4px; border-radius: 2px; background: var(--border); overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 2px; transition: width 0.4s; }
+.prog-pct { font-size: 11px; font-weight: 600; color: var(--muted); min-width: 28px; }
 
-.intro-subtitle {
-  font-size: 1.05rem;
-  color: var(--text-muted);
-  line-height: 1.7;
-  margin-bottom: 2.5rem;
-  animation: fadeDown 0.6s ease 0.2s both;
-}
+.module-inner { max-width: 680px; margin: 0 auto; padding: 1.5rem 1rem 5rem; }
+.module-header { border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 14px; }
+.mh-icon { font-size: 2.2rem; }
+.mh-title { font-size: 1.1rem; font-weight: 800; }
+.mh-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
 
-.version-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-bottom: 1.5rem;
-  animation: fadeUp 0.6s ease 0.3s both;
-}
-
-.version-card {
-  background: white;
-  border-radius: var(--radius-lg);
-  padding: 1.25rem 1rem;
-  cursor: pointer;
-  border: 2px solid transparent;
-  transition: all 0.2s;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-  text-align: center;
-}
-.version-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
-.version-card.selected-a { border-color: var(--purple); background: var(--purple-light); }
-.version-card.selected-b { border-color: var(--teal); background: var(--teal-light); }
-.version-card.selected-c { border-color: var(--coral); background: var(--coral-light); }
-
-.vc-icon { font-size: 2rem; margin-bottom: 8px; display: block; }
-.vc-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
-.vc-sub { font-size: 11px; color: var(--text-muted); }
-
-.start-btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 14px 36px;
-  border-radius: 50px;
-  border: none;
-  font-size: 16px; font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-  animation: fadeUp 0.6s ease 0.4s both;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-}
-.start-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.2); }
-.start-btn.v-a { background: var(--purple); color: white; }
-.start-btn.v-b { background: var(--teal); color: white; }
-.start-btn.v-c { background: var(--coral); color: white; }
-.start-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-
-.intro-note {
-  font-size: 12px; color: var(--text-muted);
-  margin-top: 1rem;
-  animation: fadeUp 0.6s ease 0.5s both;
-}
-
-@keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-
-/* ===== APP SCREEN ===== */
-#app { display: none; }
-
-.app-topbar {
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(247,246,251,0.92);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-  padding: 10px 1rem;
-  display: flex; align-items: center; gap: 12px;
-}
-
-.back-btn {
-  background: none; border: none; cursor: pointer;
-  color: var(--text-muted); font-size: 20px;
-  padding: 4px; border-radius: 8px;
-  transition: all 0.15s;
-  display: flex; align-items: center;
-}
-.back-btn:hover { background: var(--gray-light); color: var(--text); }
-
-.topbar-info { flex: 1; }
-.topbar-title { font-size: 14px; font-weight: 700; color: var(--text); }
-.topbar-sub { font-size: 11px; color: var(--text-muted); }
-
-.topbar-progress { display: flex; align-items: center; gap: 8px; }
-.tp-bar { width: 80px; height: 4px; border-radius: 2px; background: var(--border); overflow: hidden; }
-.tp-fill { height: 100%; border-radius: 2px; transition: width 0.4s; }
-.tp-fill.a { background: var(--purple); }
-.tp-fill.b { background: var(--teal); }
-.tp-fill.c { background: var(--coral); }
-.tp-pct { font-size: 12px; font-weight: 600; color: var(--text-muted); min-width: 28px; }
-
-.app-inner { max-width: 680px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
-
-/* ===== VERSION HEADER ===== */
-.version-header {
-  border-radius: var(--radius-lg);
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  display: flex; align-items: center; gap: 14px;
-}
-.version-header.a { background: var(--purple-light); }
-.version-header.b { background: var(--teal-light); }
-.version-header.c { background: var(--coral-light); }
-.vh-icon { font-size: 2.5rem; }
-.vh-title { font-size: 1.2rem; font-weight: 800; }
-.vh-title.a { color: var(--purple-dark); }
-.vh-title.b { color: var(--teal-dark); }
-.vh-title.c { color: var(--coral-dark); }
-.vh-sub { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
-
-/* ===== SECTION CARDS ===== */
-.section-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  margin-bottom: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  transition: box-shadow 0.2s;
-}
-.section-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
-
-.section-header {
-  padding: 16px 20px;
-  display: flex; align-items: center; gap: 12px;
-  cursor: pointer; user-select: none;
-  transition: background 0.15s;
-}
-.section-header:hover { background: var(--gray-light); }
-.section-icon { font-size: 22px; flex-shrink: 0; }
-.section-text { flex: 1; }
-.section-title { font-size: 15px; font-weight: 700; color: var(--text); }
-.section-subtitle { font-size: 12px; color: var(--text-muted); margin-top: 2px; line-height: 1.4; }
-.section-status { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 10px; }
-.section-status.done-a { background: var(--purple-light); color: var(--purple-dark); }
-.section-status.done-b { background: var(--teal-light); color: var(--teal-dark); }
-.section-status.done-c { background: var(--coral-light); color: var(--coral-dark); }
-.chevron { font-size: 16px; color: var(--text-muted); transition: transform 0.2s; }
-.chevron.open { transform: rotate(180deg); }
-
-.section-body { padding: 0 20px 20px; border-top: 1px solid var(--border); }
-.section-body.hidden { display: none; }
-
+/* FIELDS */
 .field-group { margin-top: 16px; }
-.field-label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 7px; line-height: 1.5; font-weight: 500; }
-
-textarea {
-  width: 100%;
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 12px 14px;
-  font-size: 14px;
-  font-family: inherit;
-  color: var(--text);
-  background: #FAFAFA;
-  resize: vertical;
-  min-height: 72px;
-  line-height: 1.7;
-  transition: border-color 0.15s, background 0.15s;
-}
-textarea:focus { outline: none; border-color: #aaa; background: var(--white); box-shadow: 0 0 0 3px rgba(127,119,221,0.08); }
-
+.field-label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 7px; line-height: 1.5; font-weight: 500; }
+textarea { width: 100%; border: 1.5px solid var(--border); border-radius: var(--radius); padding: 12px 14px; font-size: 14px; font-family: inherit; color: var(--text); background: #FAFAFA; resize: vertical; min-height: 72px; line-height: 1.7; transition: border-color 0.15s; }
+textarea:focus { outline: none; background: var(--white); }
 .scale-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
-.scale-btn {
-  width: 40px; height: 40px;
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--white);
-  cursor: pointer;
-  font-size: 13px; font-weight: 600;
-  color: var(--text-muted);
-  transition: all 0.15s;
-}
-.scale-btn:hover { background: var(--gray-light); transform: scale(1.05); }
-.scale-btn.sel-a { background: var(--purple-light); color: var(--purple-dark); border-color: var(--purple); transform: scale(1.1); }
-.scale-btn.sel-b { background: var(--teal-light); color: var(--teal-dark); border-color: var(--teal); transform: scale(1.1); }
-.scale-btn.sel-c { background: var(--coral-light); color: var(--coral-dark); border-color: var(--coral); transform: scale(1.1); }
-.scale-hints { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-top: 5px; }
+.scale-btn { width: 40px; height: 40px; border: 1.5px solid var(--border); border-radius: var(--radius); background: var(--white); cursor: pointer; font-size: 13px; font-weight: 600; color: var(--muted); transition: all 0.15s; }
+.scale-btn:hover { background: var(--bg); transform: scale(1.05); }
+.scale-hints { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-top: 5px; }
+.pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.pill { padding: 7px 13px; border: 1.5px solid var(--border); border-radius: 20px; font-size: 13px; cursor: pointer; color: var(--muted); background: var(--white); transition: all 0.15s; user-select: none; font-weight: 500; }
+.pill:hover { background: var(--bg); }
+.note-block { border-radius: var(--radius); padding: 14px 16px; font-size: 13px; color: var(--muted); font-style: italic; margin-top: 14px; line-height: 1.6; border-left: 3px solid; background: var(--bg); }
+.hl-box { border-radius: var(--radius); padding: 16px; margin-top: 14px; }
+.hl-label { font-size: 13px; color: var(--muted); margin-bottom: 8px; font-style: italic; margin-top: 10px; }
+.inner-title { font-size: 13px; font-weight: 700; margin-top: 20px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.secret-box { border-left: 3px solid #EF9F27; background: #FAEEDA; border-radius: 0 var(--radius) var(--radius) 0; padding: 14px; margin-top: 12px; }
+.secret-label { font-size: 12px; font-weight: 700; color: #854F0B; margin-bottom: 10px; }
+.body-map { border: 2px dashed var(--border); border-radius: var(--radius); padding: 20px; margin-top: 12px; text-align: center; background: var(--bg); }
 
-.secret-box {
-  border-left: 3px solid #EF9F27;
-  background: var(--gold-light);
-  border-radius: 0 var(--radius) var(--radius) 0;
-  padding: 14px; margin-top: 12px;
-}
-.secret-label { font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 10px; }
-.secret-scale { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
-.secret-scale span { font-size: 12px; color: var(--gold); }
-.secret-scale .scale-btn { width: 30px; height: 30px; font-size: 12px; }
+/* SAVE BAR */
+.save-bar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(12px); border-top: 1px solid var(--border); padding: 12px 1rem; display: flex; align-items: center; gap: 8px; z-index: 50; flex-wrap: wrap; }
+.s-btn { padding: 10px 18px; border-radius: 50px; border: 1.5px solid var(--border); font-size: 13px; font-weight: 700; cursor: pointer; background: var(--white); color: var(--text); transition: all 0.15s; display: flex; align-items: center; gap: 6px; }
+.s-btn.primary { color: white; border-color: transparent; }
+.s-btn:hover { opacity: 0.85; }
+.s-status { font-size: 12px; color: var(--muted); margin-left: auto; }
 
-.highlight-box { border-radius: var(--radius); padding: 16px; margin-top: 14px; }
-.highlight-box.purple { background: var(--purple-light); border: 1px solid #CCC9F0; }
-.highlight-box.teal { background: var(--teal-light); border: 1px solid #9FE1CB; }
-.highlight-box.coral { background: var(--coral-light); border: 1px solid #F5C4B3; }
-.hl-label { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; font-style: italic; font-weight: 500; }
-
-.checkbox-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-.check-pill {
-  padding: 8px 14px;
-  border: 1.5px solid var(--border);
-  border-radius: 20px;
-  font-size: 13px; cursor: pointer;
-  color: var(--text-muted);
-  background: var(--white);
-  transition: all 0.15s;
-  user-select: none; font-weight: 500;
-}
-.check-pill:hover { background: var(--gray-light); transform: scale(1.02); }
-.check-pill.on-a { background: var(--purple-light); color: var(--purple-dark); border-color: var(--purple); }
-.check-pill.on-b { background: var(--teal-light); color: var(--teal-dark); border-color: var(--teal); }
-.check-pill.on-c { background: var(--coral-light); color: var(--coral-dark); border-color: var(--coral); }
-
-.body-map-area {
-  border: 2px dashed var(--border);
-  border-radius: var(--radius);
-  padding: 24px; margin-top: 12px;
-  text-align: center; background: var(--gray-light);
-}
-.body-map-icon { font-size: 56px; color: var(--text-muted); display: block; margin-bottom: 10px; }
-.body-map-hint { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
-.body-map-hint strong { display: block; margin-bottom: 4px; color: var(--text); font-size: 14px; }
-
-.section-inner-title {
-  font-size: 13px; font-weight: 700;
-  margin-top: 20px; padding-bottom: 6px;
-  border-bottom: 1px solid var(--border);
-}
-.section-inner-title.purple { color: var(--purple-dark); }
-.section-inner-title.teal { color: var(--teal-dark); }
-.section-inner-title.coral { color: var(--coral-dark); }
-
-.note-block {
-  background: var(--gray-light);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  font-size: 13px; color: var(--text-muted);
-  font-style: italic; margin-top: 14px; line-height: 1.6;
-  border-left: 3px solid var(--border);
-}
-
-/* ===== FINISH SCREEN ===== */
-#finish {
-  display: none;
-  min-height: 100vh;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  text-align: center;
-  padding: 2rem;
-  background: linear-gradient(135deg, #EEEDFE 0%, #E1F5EE 100%);
-}
-.finish-icon { font-size: 5rem; margin-bottom: 1rem; animation: bounce 1s ease; }
-@keyframes bounce { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
-.finish-title { font-size: 2rem; font-weight: 800; color: var(--purple-dark); margin-bottom: 0.5rem; }
-.finish-sub { font-size: 1rem; color: var(--text-muted); margin-bottom: 2rem; line-height: 1.6; max-width: 400px; }
-.finish-btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-.finish-btn {
-  padding: 12px 24px; border-radius: 50px;
-  font-size: 14px; font-weight: 700; cursor: pointer;
-  border: 2px solid var(--purple);
-  transition: all 0.2s;
-}
-.finish-btn.primary { background: var(--purple); color: white; }
-.finish-btn.secondary { background: white; color: var(--purple-dark); }
-.finish-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
-
-/* ===== CONFETTI ===== */
-.confetti-piece {
-  position: fixed;
-  width: 10px; height: 10px;
-  top: -10px;
-  border-radius: 2px;
-  animation: confettiFall linear forwards;
-  pointer-events: none; z-index: 9999;
-}
-@keyframes confettiFall {
-  to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-}
-
-/* ===== SAVE BAR ===== */
-.save-bar {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  background: rgba(255,255,255,0.95);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid var(--border);
-  padding: 12px 1rem;
-  display: none;
-  align-items: center;
-  gap: 10px;
-  z-index: 50;
-  flex-wrap: wrap;
-}
-.save-bar.visible { display: flex; }
-.save-btn {
-  padding: 10px 20px;
-  border-radius: 50px;
-  border: 1.5px solid var(--border);
-  font-size: 13px; font-weight: 700;
-  cursor: pointer;
-  background: var(--white);
-  color: var(--text);
-  transition: all 0.15s;
-  display: flex; align-items: center; gap: 6px;
-}
-.save-btn:hover { background: var(--gray-light); }
-.save-btn.primary-a { background: var(--purple); color: #fff; border-color: var(--purple); }
-.save-btn.primary-b { background: var(--teal); color: #fff; border-color: var(--teal); }
-.save-btn.primary-c { background: var(--coral); color: #fff; border-color: var(--coral); }
-.save-status { font-size: 12px; color: var(--text-muted); margin-left: auto; }
+.confetti-piece { position: fixed; width: 10px; height: 10px; top: -10px; border-radius: 2px; animation: cfall linear forwards; pointer-events: none; z-index: 9999; }
+@keyframes cfall { to { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
 
 @media (max-width: 480px) {
-  .version-cards { grid-template-columns: 1fr; }
-  .intro-title { font-size: 1.8rem; }
-  .app-inner { padding: 1rem 0.75rem 5rem; }
+  .block-grid { grid-template-columns: 1fr; }
+  .version-tabs { flex-wrap: wrap; }
 }
 </style>
 </head>
 <body>
 
-<!-- ===== INTRO ===== -->
-<div id="intro">
-  <div class="intro-bg"></div>
-  <div class="floating-shape fs1"></div>
-  <div class="floating-shape fs2"></div>
-  <div class="floating-shape fs3"></div>
-  <div class="floating-shape fs4"></div>
-
-  <div class="intro-content">
-    <div class="intro-badge">
-      <i class="ti ti-heart" aria-hidden="true"></i>
-      Авторська методика · Оксана Урожай
+<!-- HOME -->
+<div class="screen active" id="home">
+  <div class="home-hero">
+    <div class="hs hs1"></div>
+    <div class="hs hs2"></div>
+    <div class="hs hs3"></div>
+    <div class="hero-badge"><i class="ti ti-heart"></i> Авторська методика · Оксана Урожай</div>
+    <h1 class="hero-title">Терапевтична анкета<br><span>самопізнання</span></h1>
+    <p class="hero-sub">Обери версію і блок, який потрібен прямо зараз</p>
+    <div class="version-tabs">
+      <button class="vtab active-a" onclick="setVersion('a')">🌸 Підлітки</button>
+      <button class="vtab" onclick="setVersion('b')">🌿 Дорослі</button>
+      <button class="vtab" onclick="setVersion('c')">🛡️ Ветерани</button>
     </div>
-
-    <h1 class="intro-title">
-      Терапевтична анкета<br><span>самопізнання</span>
-    </h1>
-
-    <p class="intro-subtitle">
-      Тут немає правильних чи неправильних відповідей.<br>
-      Є лише ти — і твоя правда.
-    </p>
-
-    <div class="version-cards">
-      <div class="version-card" id="vc-a" onclick="selectVersion('a')">
-        <span class="vc-icon">🌸</span>
-        <div class="vc-title">Версія А</div>
-        <div class="vc-sub">Підлітки</div>
-      </div>
-      <div class="version-card" id="vc-b" onclick="selectVersion('b')">
-        <span class="vc-icon">🌿</span>
-        <div class="vc-title">Версія Б</div>
-        <div class="vc-sub">Дорослі</div>
-      </div>
-      <div class="version-card" id="vc-c" onclick="selectVersion('c')">
-        <span class="vc-icon">🛡️</span>
-        <div class="vc-title">Версія В</div>
-        <div class="vc-sub">Ветерани</div>
-      </div>
-    </div>
-
-    <button class="start-btn" id="start-btn" onclick="startApp()" disabled>
-      <i class="ti ti-arrow-right" aria-hidden="true"></i>
-      Обери версію, щоб почати
-    </button>
-
-    <p class="intro-note">Всі відповіді залишаються лише на твоєму пристрої</p>
   </div>
+  <div class="home-inner" id="home-inner"></div>
 </div>
 
-<!-- ===== APP ===== -->
-<div id="app">
-  <div class="app-topbar">
-    <button class="back-btn" onclick="goBack()" aria-label="Назад">
-      <i class="ti ti-arrow-left" aria-hidden="true"></i>
-    </button>
-    <div class="topbar-info">
-      <div class="topbar-title" id="topbar-title">Анкета</div>
-      <div class="topbar-sub" id="topbar-sub"></div>
+<!-- MODULE -->
+<div class="screen" id="module">
+  <div class="topbar">
+    <button class="back-btn" onclick="goHome()"><i class="ti ti-arrow-left"></i></button>
+    <div class="tb-info">
+      <div class="tb-title" id="tb-title"></div>
+      <div class="tb-sub" id="tb-sub"></div>
     </div>
-    <div class="topbar-progress">
-      <div class="tp-bar"><div class="tp-fill a" id="tp-fill"></div></div>
-      <span class="tp-pct" id="tp-pct">0%</span>
+    <div style="display:flex;align-items:center;gap:6px">
+      <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+      <span class="prog-pct" id="prog-pct">0%</span>
     </div>
   </div>
-
-  <div class="app-inner">
-    <div id="version-header-wrap"></div>
-    <div id="sections-wrap"></div>
-  </div>
-
-  <div class="save-bar visible" id="save-bar">
-    <button class="save-btn primary-a" id="save-btn" onclick="savePDF()">
-      <i class="ti ti-download" aria-hidden="true"></i> Зберегти відповіді
-    </button>
-    <button class="save-btn" id="copy-btn" onclick="copyAnswers()">
-      <i class="ti ti-copy" aria-hidden="true"></i> Копіювати
-    </button>
-    <button class="save-btn" onclick="finishSession()">
-      <i class="ti ti-check" aria-hidden="true"></i> Завершити
-    </button>
-    <span class="save-status" id="save-status"></span>
-  </div>
-</div>
-
-<!-- ===== FINISH ===== -->
-<div id="finish" style="display:none;flex-direction:column;">
-  <div class="finish-icon">🌟</div>
-  <div class="finish-title">Молодець!</div>
-  <p class="finish-sub">Ти зробила важливий крок — познайомилася з собою трохи ближче. Це вже багато.</p>
-  <div class="finish-btns">
-    <button class="finish-btn primary" onclick="savePDF()">
-      <i class="ti ti-download"></i> Зберегти відповіді
-    </button>
-    <button class="finish-btn secondary" onclick="restartApp()">
-      Повернутися на початок
-    </button>
+  <div class="module-inner" id="module-inner"></div>
+  <div class="save-bar">
+    <button class="s-btn primary" id="save-btn" onclick="savePDF()"><i class="ti ti-download"></i> Зберегти відповіді</button>
+    <button class="s-btn" onclick="copyAnswers()"><i class="ti ti-copy"></i> Копіювати</button>
+    <span class="s-status" id="s-status"></span>
   </div>
 </div>
 
 <script>
 let currentVersion = 'a';
+let currentModule = null;
 
-const versions = {
-  a: {
-    icon: '🌸', title: 'Версія А — Підлітки',
-    sub: 'Пізнай себе у своєму темпі',
-    color: 'purple', accentClass: 'a',
-    sections: [
-      {
-        id: 'a1', icon: 'ti-mood-smile', iconColor: 'var(--purple)',
-        title: 'Привіт! Це — я',
-        subtitle: 'Перший крок — познайомитись із собою і з терапевтом',
-        open: true,
-        fields: [
-          { type: 'textarea', label: 'Мене звуть (або я хочу, щоб мене називали):', placeholder: 'Напиши тут...' },
-          { type: 'textarea', label: 'Коли мені добре — я схожа/схожий на:', placeholder: 'Образ, метафора, персонаж...' },
-          { type: 'textarea', label: 'Коли мені важко — я схожа/схожий на:', placeholder: 'Образ, метафора, персонаж...' },
-          { type: 'scale', label: 'Мій рівень зарядки сьогодні:', hints: ['Порожньо', 'Повний заряд'] },
-          { type: 'textarea', label: 'Пісня, яка зараз крутиться в голові:', placeholder: 'Назва, рядок або просто настрій...' },
-          { type: 'textarea', label: 'Якщо моє життя — серіал, воно зараз у якому жанрі?', placeholder: 'Мелодрама, бойовик, комедія...' },
-          { type: 'highlight', color: 'purple', items: [
-            { label: 'Я прийшла/прийшов сюди, тому що...' },
-            { label: 'Я боюся, що тут...' },
-            { label: 'Я сподіваюся, що через місяць...' },
-          ]},
-        ]
-      },
-      {
-        id: 'a2', icon: 'ti-heart', iconColor: 'var(--purple)',
-        title: 'Мій внутрішній світ',
-        subtitle: 'Всередині нас живе ціла компанія',
-        open: false,
-        fields: [
-          { type: 'inner-title', text: 'Маленька Я — той, хто боїться і потребує любові', color: 'purple' },
-          { type: 'textarea', label: 'Чого я найбільше боюся?', placeholder: '' },
-          { type: 'textarea', label: 'Коли мені хочеться сховатися — що я роблю?', placeholder: '' },
-          { type: 'textarea', label: 'Які слова підтримки мені так важливо почути?', placeholder: '' },
-          { type: 'inner-title', text: 'Мій Захисник — той, хто мене рятує', color: 'purple' },
-          { type: 'pills', label: 'Як я рятуюся від стресу?', options: ['Завмираю','Замовкаю','Смішу всіх','Йду до кімнати','Дивлюся відео','Злюся','Плачу','Їм','Йду гуляти','Залітаю в роботу'] },
-          { type: 'textarea', label: 'Мої улюблені думки-лякалки («Я ніколи...», «Всі думають...»):', placeholder: '' },
-          { type: 'inner-title', text: 'Мій Мудрий Дорослий — той, хто знає відповіді', color: 'purple' },
-          { type: 'textarea', label: 'У чому моя сила?', placeholder: '' },
-          { type: 'textarea', label: 'На кого або що я можу спертися, коли важко?', placeholder: '' },
-        ]
-      },
-      {
-        id: 'a3', icon: 'ti-lock', iconColor: '#EF9F27',
-        title: 'Секретики',
-        subtitle: 'Те, про що поки страшно говорити вголос',
-        open: false,
-        fields: [
-          { type: 'note', text: 'Ти можеш написати тут що завгодно — або нічого. Можеш сказати терапевту «я щось написала, але не готова про це говорити». Цього достатньо.' },
-          { type: 'secrets', count: 3, labelPrefix: 'Секретик' },
-        ]
-      },
-      {
-        id: 'a4', icon: 'ti-body-scan', iconColor: 'var(--teal)',
-        title: 'Моє тіло',
-        subtitle: 'Тіло теж говорить. Просто іншою мовою.',
-        open: false,
-        fields: [
-          { type: 'bodymap', legend: 'Т — тривога · Н — напруга · П — порожнеча · С — спокій · Б — біль' },
-          { type: 'textarea', label: 'Де у тілі живе тривога або напруга?', placeholder: '' },
-          { type: 'textarea', label: 'Що моє тіло намагається мені сказати?', placeholder: '' },
-        ]
-      },
-      {
-        id: 'a5', icon: 'ti-users', iconColor: 'var(--purple)',
-        title: 'Мої стосунки',
-        subtitle: 'Ми — це також ті, хто поруч',
-        open: false,
-        fields: [
-          { type: 'textarea', label: 'Людина, яка мене розуміє:', placeholder: '' },
-          { type: 'textarea', label: 'Людина, з якою мені важко:', placeholder: '' },
-          { type: 'textarea', label: 'Якби близька людина заповнювала анкету про мене, що б вона написала в графі «Вона/він мене надихає тим...»?', placeholder: '' },
-          { type: 'textarea', label: 'А в графі «Мені важко, коли вона/він...»?', placeholder: '' },
-        ]
-      },
-      {
-        id: 'a6', icon: 'ti-leaf', iconColor: 'var(--teal)',
-        title: 'Мій антикризовий пакет',
-        subtitle: 'Те, що допомагає, коли важко',
-        open: false,
-        fields: [
-          { type: 'textarea', label: 'Коли мене накриває тривога, я можу:', placeholder: '' },
-          { type: 'textarea', label: 'Люди, яким я можу написати або зателефонувати:', placeholder: '' },
-          { type: 'textarea', label: 'Місця, де мені стає легше:', placeholder: '' },
-          { type: 'textarea', label: 'Три якірні речі (предмети, відчуття, спогади):', placeholder: '' },
-          { type: 'highlight', color: 'purple', items: [{ label: 'Моє послання собі в майбутньому:', tall: true }] },
-        ]
-      },
-    ]
-  },
-  b: {
-    icon: '🌿', title: 'Версія Б — Дорослі',
-    sub: 'Глибока рефлексія у власному темпі',
-    color: 'teal', accentClass: 'b',
-    sections: [
-      {
-        id: 'b1', icon: 'ti-circle-dot', iconColor: 'var(--teal)',
-        title: 'Точка входу',
-        subtitle: 'Де ви зараз і що привело вас сюди',
-        open: true,
-        fields: [
-          { type: 'textarea', label: 'Як вам комфортно, щоб до вас зверталися?', placeholder: 'Ім\'я або звертання...' },
-          { type: 'scale', label: 'Ваш ресурсний стан сьогодні (1 — виснаження, 10 — повний ресурс):', hints: ['Виснаження', 'Повний ресурс'] },
-          { type: 'textarea', label: 'Якщо описати свій стан одним образом або метафорою:', placeholder: '' },
-          { type: 'highlight', color: 'teal', items: [
-            { label: 'Я звернулась/звернувся, тому що...' },
-            { label: 'Моє очікування від терапії:' },
-            { label: 'Чого я побоююся в цьому процесі:' },
-            { label: 'Що буде ознакою позитивних змін через 3 місяці:' },
-          ]},
-        ]
-      },
-      {
-        id: 'b2', icon: 'ti-topology-star-ring-3', iconColor: 'var(--teal)',
-        title: 'Внутрішній ландшафт',
-        subtitle: 'Дослідження різних аспектів вашої особистості',
-        open: false,
-        fields: [
-          { type: 'inner-title', text: 'Вразлива частина — потреби та страхи', color: 'teal' },
-          { type: 'textarea', label: 'Чого я найбільше боюся в глибині душі?', placeholder: '' },
-          { type: 'textarea', label: 'Які мої базові потреби найчастіше залишаються незадоволеними?', placeholder: '' },
-          { type: 'textarea', label: 'Якого послання або визнання мені не вистачає?', placeholder: '' },
-          { type: 'inner-title', text: 'Захисна частина — стратегії виживання', color: 'teal' },
-          { type: 'textarea', label: 'Як я справляюся з болем або стресом?', placeholder: 'Мої звичні стратегії...' },
-          { type: 'textarea', label: 'Яке переконання лежить в основі? («Якщо я не буду... то...»)', placeholder: '' },
-          { type: 'inner-title', text: 'Ресурсна частина — мудрість та сила', color: 'teal' },
-          { type: 'textarea', label: 'У яких ситуаціях я відчуваю себе цілісною/цілісним?', placeholder: '' },
-          { type: 'textarea', label: 'На які внутрішні та зовнішні ресурси я можу спертися?', placeholder: '' },
-        ]
-      },
-      {
-        id: 'b3', icon: 'ti-lock', iconColor: '#EF9F27',
-        title: 'Простір для важкого',
-        subtitle: 'Те, що важко сказати вголос. Але що існує.',
-        open: false,
-        fields: [
-          { type: 'note', text: 'Цей розділ — ваш простір. Ви можете написати тут щось, про що поки не готові говорити. Достатньо того, що це буде зафіксоване — побачене вами.' },
-          { type: 'secrets', count: 3, labelPrefix: 'Тема' },
-        ]
-      },
-      {
-        id: 'b4', icon: 'ti-body-scan', iconColor: 'var(--teal)',
-        title: 'Тіло як свідок',
-        subtitle: 'Тіло зберігає те, що розум намагається забути',
-        open: false,
-        fields: [
-          { type: 'textarea', label: 'Де у тілі ви зазвичай відчуваєте тривогу або напругу?', placeholder: '' },
-          { type: 'textarea', label: 'Яке відчуття в тілі вказує, що ви в безпеці?', placeholder: '' },
-          { type: 'textarea', label: 'Яке відчуття в тілі сигналізує, що ситуація небезпечна?', placeholder: '' },
-          { type: 'bodymap', legend: 'Т — тривога · П — порожнеча · Б — біль · С — спокій / тепло' },
-        ]
-      },
-      {
-        id: 'b5', icon: 'ti-users', iconColor: 'var(--teal)',
-        title: 'Стосунки та патерни',
-        subtitle: 'Ми вчимося бути собою у стосунках з іншими',
-        open: false,
-        fields: [
-          { type: 'textarea', label: 'Людина, поруч з якою я почуваюся собою:', placeholder: '' },
-          { type: 'textarea', label: 'Стосунки, які мене виснажують:', placeholder: '' },
-          { type: 'textarea', label: 'Якби важлива для вас людина писала анкету про вас, що б вона написала в графі «Вона/він мене надихає тим...»?', placeholder: '' },
-          { type: 'textarea', label: 'А в графі «Мені важко, коли вона/він...»?', placeholder: '' },
-          { type: 'textarea', label: 'Який патерн у стосунках ви помічаєте в себе знову і знову?', placeholder: '' },
-        ]
-      },
-      {
-        id: 'b6', icon: 'ti-book', iconColor: 'var(--teal)',
-        title: 'Моя історія',
-        subtitle: 'Часова лінія — як свідчення про силу, не про біль',
-        open: false,
-        fields: [
-          { type: 'textarea', label: 'Три моменти, коли я себе поважала/поважав або зробила/зробив щось складне:', placeholder: '', tall: true },
-          { type: 'textarea', label: 'Люди, які вірили в мене:', placeholder: '' },
-          { type: 'textarea', label: 'Що я хочу передати собі — тій/тому, якою/яким я була/був раніше?', placeholder: '' },
-        ]
-      },
-      {
-        id: 'b7', icon: 'ti-shield', iconColor: 'var(--teal)',
-        title: 'Антикризовий протокол',
-        subtitle: 'Конкретні дії на момент, коли стає важко',
-        open: false,
-        fields: [
-          { type: 'textarea', label: 'Ознаки, що я наближаюся до кризового стану:', placeholder: '' },
-          { type: 'textarea', label: 'Мої перші три кроки, коли стає важко:', placeholder: '' },
-          { type: 'textarea', label: 'Контакти, яким я можу зателефонувати:', placeholder: '' },
-          { type: 'textarea', label: 'Ключові інсайти з терапії:', placeholder: '', tall: true },
-          { type: 'highlight', color: 'teal', items: [{ label: 'Лист собі — на початку шляху:', tall: true }] },
-        ]
-      },
-    ]
-  },
-  c: {
-    icon: '🛡️', title: 'Версія В — Ветерани',
-    sub: 'З повагою до твого досвіду',
-    color: 'coral', accentClass: 'c',
-    sections: [
-      {
-        id: 'c1', icon: 'ti-circle-dot', iconColor: 'var(--coral)',
-        title: 'Перший контакт',
-        subtitle: 'Де ви зараз. Що привело вас сюди.',
-        open: true,
-        fields: [
-          { type: 'textarea', label: 'Як вам комфортно, щоб до вас зверталися?', placeholder: '' },
-          { type: 'scale', label: 'Ваш стан сьогодні (1 — виснаження, 10 — повний ресурс):', hints: ['Виснаження', 'Повний ресурс'] },
-          { type: 'highlight', color: 'coral', items: [
-            { label: 'Я тут, тому що...' },
-            { label: 'Чого я точно НЕ хочу від цих зустрічей:' },
-            { label: 'Що для мене буде ознакою, що ця робота мала сенс:' },
-          ]},
-        ]
-      },
-      {
-        id: 'c2', icon: 'ti-id-badge-2', iconColor: 'var(--coral)',
-        title: 'Ким я є',
-        subtitle: 'Служба змінює людину. Але не скасовує того, ким ти є.',
-        open: false,
-        fields: [
-          { type: 'textarea', label: 'До служби я був/була людиною, яка:', placeholder: '' },
-          { type: 'textarea', label: 'Служба мене навчила:', placeholder: '' },
-          { type: 'textarea', label: 'Що зі мною залишилося незмінним — попри все:', placeholder: '' },
-          { type: 'textarea', label: 'Чим я пишаюся:', placeholder: '' },
-          { type: 'textarea', label: 'З чим мені важко жити:', placeholder: '' },
-          { type: 'textarea', label: 'Як я зараз відповідаю на питання «Хто ти?»', placeholder: '' },
-        ]
-      },
-      {
-        id: 'c3', icon: 'ti-body-scan', iconColor: 'var(--coral)',
-        title: 'Моє тіло після служби',
-        subtitle: 'Тіло пам\'ятає. Це нормально.',
-        open: false,
-        fields: [
-          { type: 'note', text: 'Ця сторінка — без оцінок і діагнозів. Просто спостереження.' },
-          { type: 'textarea', label: 'Де у тілі живе напруга або біль?', placeholder: '' },
-          { type: 'textarea', label: 'Що допомагає тілу розслабитися?', placeholder: '' },
-          { type: 'textarea', label: 'Які відчуття в тілі сигналізують про небезпеку — навіть якщо її немає?', placeholder: '' },
-          { type: 'bodymap', legend: 'Н — напруга · О — оніміння · А — тривожна активація · С — спокій' },
-        ]
-      },
-      {
-        id: 'c4', icon: 'ti-lock', iconColor: '#EF9F27',
-        title: 'Те, що важко носити',
-        subtitle: 'Деякі речі не мають слів. Але вони є.',
-        open: false,
-        fields: [
-          { type: 'note', text: 'Ви не зобов\'язані пояснювати. Можете показати терапевту — або не показувати.' },
-          { type: 'secrets', count: 3, labelPrefix: '#' },
-        ]
-      },
-      {
-        id: 'c5', icon: 'ti-users', iconColor: 'var(--coral)',
-        title: 'Мої люди',
-        subtitle: 'Служба — це не лише бойові дії. Це про тих, хто поруч.',
-        open: false,
-        fields: [
-          { type: 'textarea', label: 'Людина з досвіду служби, яка мене розуміє:', placeholder: '' },
-          { type: 'textarea', label: 'Людина вдома, яка намагається зрозуміти:', placeholder: '' },
-          { type: 'textarea', label: 'Що найважче пояснити близьким, які не служили?', placeholder: '' },
-          { type: 'textarea', label: 'Що ви хочете, щоб ваша родина знала — але важко сказати вголос?', placeholder: '' },
-        ]
-      },
-      {
-        id: 'c6', icon: 'ti-anchor', iconColor: 'var(--coral)',
-        title: 'Моя опора',
-        subtitle: 'Те, що тримає. Те, заради чого.',
-        open: false,
-        fields: [
-          { type: 'textarea', label: 'Що дає мені сили продовжувати?', placeholder: '' },
-          { type: 'textarea', label: 'Заради кого або чого я роблю цю роботу над собою?', placeholder: '' },
-          { type: 'textarea', label: 'Три речі, які залишаються незмінними — попри все:', placeholder: '' },
-          { type: 'textarea', label: 'Мій перший крок, коли стає важко:', placeholder: '' },
-          { type: 'textarea', label: 'Контакти, яким я можу зателефонувати:', placeholder: '' },
-          { type: 'highlight', color: 'coral', items: [{ label: 'Послання собі:', tall: true }] },
-        ]
-      },
-    ]
-  }
+const versionMeta = {
+  a: { label: '🌸 Підлітки', accent: '#7F77DD', bg: '#EEEDFE', dark: '#3C3489' },
+  b: { label: '🌿 Дорослі', accent: '#1D9E75', bg: '#E1F5EE', dark: '#085041' },
+  c: { label: '🛡️ Ветерани', accent: '#D85A30', bg: '#FAECE7', dark: '#712B13' },
 };
 
-let selectedVersion = null;
+const blockDefs = {
+  a: [
+    { id:'a-intro', icon:'😊', color:'#7F77DD', bg:'#EEEDFE', title:'Привіт! Це — я', desc:'Знайомство, рівень зарядки, очікування від терапії', tag:'Початок', build: buildAIntro },
+    { id:'a-inner', icon:'💜', color:'#C85A8A', bg:'#FAEBF2', title:'Мій внутрішній світ', desc:'Маленька Я, Захисник, Мудрий Дорослий — схема-терапія', tag:'Самопізнання', build: buildAInner },
+    { id:'a-secrets', icon:'🔐', color:'#C8892A', bg:'#FDF1DC', title:'Секретики', desc:'Те, про що поки страшно говорити вголос', tag:'Особистий простір', build: buildASecrets },
+    { id:'a-body', icon:'🫀', color:'#1D9E75', bg:'#E1F5EE', title:'Моє тіло', desc:'Де живе тривога, що тіло намагається сказати', tag:'Соматика', build: buildABody },
+    { id:'a-relations', icon:'🤝', color:'#4A7FC1', bg:'#EBF2FC', title:'Мої стосунки', desc:'Хто поруч, патерни у стосунках', tag:'Стосунки', build: buildARelations },
+    { id:'a-crisis', icon:'🌱', color:'#3A9E7E', bg:'#E3F5EF', title:'Антикризовий пакет', desc:'Що допомагає, мій план, лист собі', tag:'Ресурси', build: buildACrisis },
+  ],
+  b: [
+    { id:'b-entry', icon:'○', color:'#1D9E75', bg:'#E1F5EE', title:'Точка входу', desc:'Ресурсний стан, метафора, очікування від терапії', tag:'Початок', build: buildBEntry },
+    { id:'b-inner', icon:'◈', color:'#7F77DD', bg:'#EEEDFE', title:'Внутрішній ландшафт', desc:'Вразлива, захисна та ресурсна частини особистості', tag:'Самопізнання', build: buildBInner },
+    { id:'b-hard', icon:'▪', color:'#C8892A', bg:'#FDF1DC', title:'Простір для важкого', desc:'Те, що важко сказати вголос. Але що існує.', tag:'Особистий простір', build: buildBHard },
+    { id:'b-body', icon:'◉', color:'#1D9E75', bg:'#E1F5EE', title:'Тіло як свідок', desc:'Соматичний мапінг, нейроцепція, безпека', tag:'Соматика', build: buildBBody },
+    { id:'b-relations', icon:'◇', color:'#4A7FC1', bg:'#EBF2FC', title:'Стосунки та патерни', desc:'Менталізація, перспектива іншого, повторювані патерни', tag:'Стосунки', build: buildBRelations },
+    { id:'b-story', icon:'📖', color:'#C85A8A', bg:'#FAEBF2', title:'Моя історія', desc:'Таймлайн сили, нарративна терапія', tag:'Нарратив', build: buildBStory },
+    { id:'b-crisis', icon:'◎', color:'#3A9E7E', bg:'#E3F5EF', title:'Антикризовий протокол', desc:'Ознаки кризи, план дій, лист собі', tag:'Ресурси', build: buildBCrisis },
+  ],
+  c: [
+    { id:'c-entry', icon:'○', color:'#D85A30', bg:'#FAECE7', title:'Перший контакт', desc:'Ресурсний стан, межі, очікування', tag:'Початок', build: buildCEntry },
+    { id:'c-identity', icon:'◈', color:'#D85A30', bg:'#FAECE7', title:'Ким я є', desc:'Ідентичність до і після служби, зміни та незмінне', tag:'Ідентичність', build: buildCIdentity },
+    { id:'c-body', icon:'◉', color:'#C8892A', bg:'#FDF1DC', title:'Тіло після служби', desc:'Соматичний мапінг, сигнали небезпеки та безпеки', tag:'Соматика', build: buildCBody },
+    { id:'c-hard', icon:'▪', color:'#C8892A', bg:'#FDF1DC', title:'Те, що важко носити', desc:'Без примусу. Лише якщо сам/сама хочеш.', tag:'Особистий простір', build: buildCHard },
+    { id:'c-people', icon:'◇', color:'#4A7FC1', bg:'#EBF2FC', title:'Мої люди', desc:'Ті, хто розуміє, і ті, хто намагається', tag:'Стосунки', build: buildCPeople },
+    { id:'c-support', icon:'◎', color:'#3A9E7E', bg:'#E3F5EF', title:'Моя опора', desc:'Ресурси, план, послання собі', tag:'Ресурси', build: buildCSupport },
+  ],
+};
 
-function selectVersion(v) {
-  selectedVersion = v;
-  ['a','b','c'].forEach(x => {
-    document.getElementById('vc-'+x).className = 'version-card' + (x===v ? ' selected-'+v : '');
-  });
-  const btn = document.getElementById('start-btn');
-  const labels = { a: 'Починаємо!', b: 'Починаємо!', c: 'Починаємо!' };
-  btn.textContent = '';
-  btn.innerHTML = '<i class="ti ti-arrow-right"></i> ' + labels[v];
-  btn.className = 'start-btn v-' + v;
-  btn.disabled = false;
+function setVersion(v) {
+  currentVersion = v;
+  document.querySelectorAll('.vtab').forEach(t => t.className = 'vtab');
+  document.querySelectorAll('.vtab')[['a','b','c'].indexOf(v)].classList.add('active-' + v);
+  buildHome();
 }
 
-function startApp() {
-  if (!selectedVersion) return;
-  currentVersion = selectedVersion;
-  document.getElementById('intro').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  buildApp();
-}
-
-function buildApp() {
+function buildHome() {
   const v = currentVersion;
-  const data = versions[v];
+  const vm = versionMeta[v];
+  const blocks = blockDefs[v];
+  const inner = document.getElementById('home-inner');
+  inner.innerHTML = '';
 
-  document.getElementById('topbar-title').textContent = data.title;
-  document.getElementById('topbar-sub').textContent = data.sub;
-  document.getElementById('tp-fill').className = 'tp-fill ' + v;
-  document.getElementById('save-btn').className = 'save-btn primary-' + v;
-  
-  document.getElementById('copy-btn').className = 'save-btn';
-
-  const headerWrap = document.getElementById('version-header-wrap');
-  headerWrap.innerHTML = `
-    <div class="version-header ${v}">
-      <span class="vh-icon">${data.icon}</span>
-      <div>
-        <div class="vh-title ${v}">${data.title}</div>
-        <div class="vh-sub">${data.sub}</div>
-      </div>
-    </div>`;
-
-  const wrap = document.getElementById('sections-wrap');
-  wrap.innerHTML = '';
-
-  data.sections.forEach(sec => {
-    const card = document.createElement('div');
-    card.className = 'section-card';
-
-    const header = document.createElement('div');
-    header.className = 'section-header';
-    header.onclick = () => toggleSection(sec.id);
-    header.innerHTML = `
-      <i class="ti ${sec.icon} section-icon" style="color:${sec.iconColor}" aria-hidden="true"></i>
-      <div class="section-text">
-        <div class="section-title">${sec.title}</div>
-        <div class="section-subtitle">${sec.subtitle}</div>
-      </div>
-      <i class="ti ti-chevron-down chevron${sec.open ? ' open' : ''}" id="chev-${sec.id}" aria-hidden="true"></i>`;
-    card.appendChild(header);
-
-    const body = document.createElement('div');
-    body.className = 'section-body' + (sec.open ? '' : ' hidden');
-    body.id = 'body-' + sec.id;
-
-    sec.fields.forEach(f => {
-      if (f.type === 'textarea') {
-        const g = document.createElement('div');
-        g.className = 'field-group';
-        g.innerHTML = `<label class="field-label">${f.label}</label>`;
-        const ta = document.createElement('textarea');
-        ta.placeholder = f.placeholder || '';
-        if (f.tall) ta.style.minHeight = '100px';
-        ta.oninput = updateProgress;
-        g.appendChild(ta);
-        body.appendChild(g);
-      } else if (f.type === 'scale') {
-        const g = document.createElement('div');
-        g.className = 'field-group';
-        const scaleId = 'scale-' + sec.id + '-' + Math.random().toString(36).slice(2,6);
-        g.innerHTML = `<label class="field-label">${f.label}</label><div class="scale-row" id="${scaleId}"></div><div class="scale-hints"><span>${f.hints[0]}</span><span>${f.hints[1]}</span></div>`;
-        body.appendChild(g);
-        setTimeout(() => {
-          const row = document.getElementById(scaleId);
-          if (!row) return;
-          for (let i = 1; i <= 10; i++) {
-            const btn = document.createElement('button');
-            btn.className = 'scale-btn';
-            btn.textContent = i;
-            btn.onclick = () => {
-              row.querySelectorAll('.scale-btn').forEach(b => { b.className = 'scale-btn'; });
-              btn.classList.add('sel-' + v);
-              updateProgress();
-            };
-            row.appendChild(btn);
-          }
-        }, 0);
-      } else if (f.type === 'highlight') {
-        const box = document.createElement('div');
-        box.className = 'highlight-box ' + f.color;
-        f.items.forEach(item => {
-          const lbl = document.createElement('div');
-          lbl.className = 'hl-label';
-          lbl.textContent = item.label;
-          const ta = document.createElement('textarea');
-          ta.oninput = updateProgress;
-          if (item.tall) ta.style.minHeight = '100px';
-          lbl.style.marginTop = '10px';
-          box.appendChild(lbl);
-          box.appendChild(ta);
-        });
-        body.appendChild(box);
-      } else if (f.type === 'pills') {
-        const g = document.createElement('div');
-        g.className = 'field-group';
-        g.innerHTML = `<label class="field-label">${f.label}</label>`;
-        const pg = document.createElement('div');
-        pg.className = 'checkbox-group';
-        f.options.forEach(opt => {
-          const pill = document.createElement('span');
-          pill.className = 'check-pill';
-          pill.textContent = opt;
-          pill.onclick = () => { pill.classList.toggle('on-' + v); updateProgress(); };
-          pg.appendChild(pill);
-        });
-        g.appendChild(pg);
-        body.appendChild(g);
-      } else if (f.type === 'inner-title') {
-        const t = document.createElement('div');
-        t.className = 'section-inner-title ' + f.color;
-        t.textContent = f.text;
-        body.appendChild(t);
-      } else if (f.type === 'note') {
-        const n = document.createElement('div');
-        n.className = 'note-block';
-        n.textContent = f.text;
-        body.appendChild(n);
-      } else if (f.type === 'bodymap') {
-        const bm = document.createElement('div');
-        bm.className = 'body-map-area';
-        bm.innerHTML = `<i class="ti ti-user body-map-icon" aria-hidden="true"></i><div class="body-map-hint"><strong>Намалюйте або опишіть нижче, де що відчуваєте</strong>${f.legend}</div>`;
-        body.appendChild(bm);
-      } else if (f.type === 'secrets') {
-        for (let i = 1; i <= f.count; i++) {
-          const box = document.createElement('div');
-          box.className = 'secret-box';
-          const lbl = document.createElement('div');
-          lbl.className = 'secret-label';
-          lbl.textContent = f.labelPrefix === '#' ? `#${i}` : `${f.labelPrefix} #${i}`;
-          box.appendChild(lbl);
-          const sw = document.createElement('div');
-          sw.className = 'secret-scale';
-          const sl = document.createElement('span');
-          sl.textContent = 'Готовність (0–10):';
-          sw.appendChild(sl);
-          const sr = document.createElement('div');
-          sr.className = 'scale-row';
-          const srId = 'ss-' + sec.id + '-' + i;
-          sr.id = srId;
-          for (let j = 0; j <= 10; j++) {
-            const btn = document.createElement('button');
-            btn.className = 'scale-btn';
-            btn.textContent = j;
-            btn.style.cssText = 'width:30px;height:30px;font-size:12px';
-            btn.onclick = ((row, val) => () => {
-              row.querySelectorAll('.scale-btn').forEach(b => { b.className='scale-btn'; b.style.cssText='width:30px;height:30px;font-size:12px'; });
-              btn.classList.add('sel-' + v);
-              updateProgress();
-            })(sr, j);
-            sr.appendChild(btn);
-          }
-          sw.appendChild(sr);
-          box.appendChild(sw);
-          const ta = document.createElement('textarea');
-          ta.style.minHeight = '80px';
-          ta.oninput = updateProgress;
-          box.appendChild(ta);
-          body.appendChild(box);
-        }
-      }
-    });
-
-    card.appendChild(body);
-    wrap.appendChild(card);
+  const grouped = {};
+  blocks.forEach(b => {
+    if (!grouped[b.tag]) grouped[b.tag] = [];
+    grouped[b.tag].push(b);
   });
 
+  Object.entries(grouped).forEach(([tag, items]) => {
+    const lbl = document.createElement('div');
+    lbl.className = 'section-label';
+    lbl.textContent = tag;
+    inner.appendChild(lbl);
+
+    const grid = document.createElement('div');
+    grid.className = 'block-grid';
+    items.forEach(b => {
+      const card = document.createElement('div');
+      card.className = 'block-card';
+      card.style.setProperty('--card-accent', b.color);
+      card.style.cssText += `--card-accent:${b.color}`;
+      card.style.borderTopColor = b.color;
+      card.innerHTML = `
+        <div class="bc-icon">${b.icon}</div>
+        <div class="bc-title">${b.title}</div>
+        <div class="bc-desc">${b.desc}</div>
+        <span class="bc-tag" style="background:${b.bg};color:${b.color}">${b.tag}</span>`;
+      card.style.setProperty('border-top', `3px solid ${b.color}`);
+      card.onmouseover = () => { card.style.background = b.bg; card.style.borderColor = b.color; };
+      card.onmouseout = () => { card.style.background = ''; card.style.borderColor = ''; };
+      card.onclick = () => openModule(b);
+      grid.appendChild(card);
+    });
+    inner.appendChild(grid);
+  });
+}
+
+function openModule(b) {
+  currentModule = b;
+  document.getElementById('tb-title').textContent = b.title;
+  document.getElementById('tb-sub').textContent = b.desc;
+  document.getElementById('prog-fill').style.background = b.color;
+  document.getElementById('save-btn').style.background = b.color;
+  const inner = document.getElementById('module-inner');
+  inner.innerHTML = '';
+
+  const header = document.createElement('div');
+  header.className = 'module-header';
+  header.style.background = b.bg;
+  header.innerHTML = `<span class="mh-icon">${b.icon}</span><div><div class="mh-title" style="color:${b.color}">${b.title}</div><div class="mh-sub">${b.desc}</div></div>`;
+  inner.appendChild(header);
+
+  b.build(inner, b);
+  showScreen('module');
   updateProgress();
 }
 
-function toggleSection(id) {
-  const body = document.getElementById('body-' + id);
-  const chev = document.getElementById('chev-' + id);
-  body.classList.toggle('hidden');
-  chev.classList.toggle('open');
+function goHome() { showScreen('home'); }
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
 }
 
-function updateProgress() {
-  const wrap = document.getElementById('sections-wrap');
-  if (!wrap) return;
-  const textareas = wrap.querySelectorAll('textarea');
-  const filled = Array.from(textareas).filter(t => t.value.trim().length > 2).length;
-  const pct = textareas.length ? Math.round((filled / textareas.length) * 100) : 0;
-  const fill = document.getElementById('tp-fill');
-  const pctEl = document.getElementById('tp-pct');
-  if (fill) fill.style.width = pct + '%';
-  if (pctEl) pctEl.textContent = pct + '%';
+// ===== HELPERS =====
+function fld(label, ph='', tall=false) {
+  const d = document.createElement('div');
+  d.className = 'field-group';
+  const l = document.createElement('label');
+  l.className = 'field-label';
+  l.textContent = label;
+  d.appendChild(l);
+  const ta = document.createElement('textarea');
+  ta.placeholder = ph;
+  if (tall) ta.style.minHeight = '100px';
+  ta.oninput = updateProgress;
+  d.appendChild(ta);
+  return d;
 }
 
-function goBack() {
-  if (confirm('Повернутися на початок? Введені відповіді не збережуться.')) {
-    document.getElementById('app').style.display = 'none';
-    document.getElementById('finish').style.display = 'none';
-    document.getElementById('intro').style.display = 'flex';
+function scl(label, from, to, color) {
+  const d = document.createElement('div');
+  d.className = 'field-group';
+  const l = document.createElement('label');
+  l.className = 'field-label';
+  l.textContent = label;
+  d.appendChild(l);
+  const row = document.createElement('div');
+  row.className = 'scale-row';
+  for (let i = 1; i <= 10; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'scale-btn';
+    btn.textContent = i;
+    btn.onclick = () => {
+      row.querySelectorAll('.scale-btn').forEach(b => { b.style.background=''; b.style.color=''; b.style.borderColor=''; });
+      btn.style.background = color + '22';
+      btn.style.color = color;
+      btn.style.borderColor = color;
+      updateProgress();
+    };
+    row.appendChild(btn);
   }
+  d.appendChild(row);
+  const h = document.createElement('div');
+  h.className = 'scale-hints';
+  h.innerHTML = `<span>${from}</span><span>${to}</span>`;
+  d.appendChild(h);
+  return d;
 }
 
+function plls(label, opts, color) {
+  const d = document.createElement('div');
+  d.className = 'field-group';
+  const l = document.createElement('label');
+  l.className = 'field-label';
+  l.textContent = label;
+  d.appendChild(l);
+  const pg = document.createElement('div');
+  pg.className = 'pills';
+  opts.forEach(o => {
+    const p = document.createElement('span');
+    p.className = 'pill';
+    p.textContent = o;
+    p.onclick = () => {
+      const on = p.dataset.on === '1';
+      p.dataset.on = on ? '0' : '1';
+      p.style.background = on ? '' : color + '22';
+      p.style.color = on ? '' : color;
+      p.style.borderColor = on ? '' : color;
+      updateProgress();
+    };
+    pg.appendChild(p);
+  });
+  d.appendChild(pg);
+  return d;
+}
 
+function nt(text, color) {
+  const d = document.createElement('div');
+  d.className = 'note-block';
+  d.style.borderColor = color;
+  d.textContent = text;
+  return d;
+}
+
+function hlBox(bg, items) {
+  const box = document.createElement('div');
+  box.className = 'hl-box';
+  box.style.background = bg;
+  items.forEach(item => {
+    const l = document.createElement('div');
+    l.className = 'hl-label';
+    l.textContent = item;
+    box.appendChild(l);
+    const ta = document.createElement('textarea');
+    ta.oninput = updateProgress;
+    box.appendChild(ta);
+  });
+  return box;
+}
+
+function iTitle(text, color) {
+  const d = document.createElement('div');
+  d.className = 'inner-title';
+  d.style.color = color;
+  d.textContent = text;
+  return d;
+}
+
+function secretBox(label, color) {
+  const box = document.createElement('div');
+  box.className = 'secret-box';
+  const lbl = document.createElement('div');
+  lbl.className = 'secret-label';
+  lbl.textContent = label;
+  box.appendChild(lbl);
+  const scaleWrap = document.createElement('div');
+  scaleWrap.style.cssText = 'display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap';
+  const sl = document.createElement('span');
+  sl.style.cssText = 'font-size:12px;color:#854F0B';
+  sl.textContent = 'Готовність (0–10):';
+  scaleWrap.appendChild(sl);
+  const sr = document.createElement('div');
+  sr.style.cssText = 'display:flex;gap:4px;flex-wrap:wrap';
+  for (let j = 0; j <= 10; j++) {
+    const btn = document.createElement('button');
+    btn.style.cssText = 'width:26px;height:26px;border:1.5px solid #E0E0E0;border-radius:6px;background:white;cursor:pointer;font-size:11px;font-weight:600;color:#888';
+    btn.textContent = j;
+    btn.onclick = () => {
+      sr.querySelectorAll('button').forEach(b => { b.style.background='white'; b.style.color='#888'; b.style.borderColor='#E0E0E0'; });
+      btn.style.background = '#FAEEDA'; btn.style.color = '#854F0B'; btn.style.borderColor = '#EF9F27';
+      updateProgress();
+    };
+    sr.appendChild(btn);
+  }
+  scaleWrap.appendChild(sr);
+  box.appendChild(scaleWrap);
+  const ta = document.createElement('textarea');
+  ta.style.minHeight = '80px';
+  ta.oninput = updateProgress;
+  box.appendChild(ta);
+  return box;
+}
+
+function bodyMap(legend) {
+  const d = document.createElement('div');
+  d.className = 'body-map';
+  d.innerHTML = `<i class="ti ti-user" style="font-size:52px;color:#888;display:block;margin-bottom:10px"></i><div style="font-size:13px;color:#888;line-height:1.7"><strong style="display:block;color:#2C2C2C;margin-bottom:4px">Позначте де що відчуваєте</strong>${legend}</div>`;
+  return d;
+}
+
+// ===== VERSION A BLOCKS =====
+function buildAIntro(wrap, b) {
+  wrap.appendChild(fld('Мене звуть (або я хочу, щоб мене називали):', 'Напиши тут...'));
+  wrap.appendChild(fld('Коли мені добре — я схожа/схожий на:', 'Образ, метафора, персонаж...'));
+  wrap.appendChild(fld('Коли мені важко — я схожа/схожий на:', 'Образ, метафора, персонаж...'));
+  wrap.appendChild(scl('Мій рівень зарядки сьогодні:', 'Порожньо', 'Повний заряд', b.color));
+  wrap.appendChild(fld('Пісня, яка зараз крутиться в голові:', 'Назва або настрій...'));
+  wrap.appendChild(fld('Якщо моє життя — серіал, воно зараз у якому жанрі?', 'Мелодрама, бойовик, комедія...'));
+  wrap.appendChild(hlBox(b.bg, ['Я прийшла/прийшов сюди, тому що...', 'Я боюся, що тут...', 'Я сподіваюся, що через місяць...']));
+}
+
+function buildAInner(wrap, b) {
+  wrap.appendChild(nt('Всередині нас живе ціла компанія. Познайомимося з ними.', b.color));
+  wrap.appendChild(iTitle('Маленька Я — той, хто боїться і потребує любові', b.color));
+  wrap.appendChild(fld('Чого я найбільше боюся?'));
+  wrap.appendChild(fld('Коли мені хочеться сховатися — що я роблю?'));
+  wrap.appendChild(fld('Які слова підтримки мені так важливо почути?'));
+  wrap.appendChild(iTitle('Мій Захисник — той, хто мене рятує', b.color));
+  wrap.appendChild(plls('Як я рятуюся від стресу?', ['Завмираю','Замовкаю','Смішу всіх','Йду до кімнати','Дивлюся відео','Злюся','Плачу','Їм','Йду гуляти','Залітаю в роботу'], b.color));
+  wrap.appendChild(fld('Мої улюблені думки-лякалки:'));
+  wrap.appendChild(iTitle('Мій Мудрий Дорослий — той, хто знає відповіді', b.color));
+  wrap.appendChild(fld('У чому моя сила?'));
+  wrap.appendChild(fld('На кого або що я можу спертися, коли важко?'));
+}
+
+function buildASecrets(wrap, b) {
+  wrap.appendChild(nt('Ти можеш написати тут що завгодно — або нічого. Можеш сказати терапевту «я щось написала, але не готова про це говорити». Цього достатньо.', b.color));
+  for (let i = 1; i <= 3; i++) wrap.appendChild(secretBox(`Секретик #${i}`, b.color));
+}
+
+function buildABody(wrap, b) {
+  wrap.appendChild(bodyMap('Т — тривога · Н — напруга · П — порожнеча · С — спокій · Б — біль'));
+  wrap.appendChild(fld('Де у тілі живе тривога або напруга?'));
+  wrap.appendChild(fld('Що моє тіло намагається мені сказати?'));
+}
+
+function buildARelations(wrap, b) {
+  wrap.appendChild(fld('Людина, яка мене розуміє:'));
+  wrap.appendChild(fld('Людина, з якою мені важко:'));
+  wrap.appendChild(fld('Якби близька людина заповнювала анкету про мене, що б вона написала в графі «Вона/він мене надихає тим...»?'));
+  wrap.appendChild(fld('А в графі «Мені важко, коли вона/він...»?'));
+}
+
+function buildACrisis(wrap, b) {
+  wrap.appendChild(fld('Коли мене накриває тривога, я можу:'));
+  wrap.appendChild(fld('Люди, яким я можу написати або зателефонувати:'));
+  wrap.appendChild(fld('Місця, де мені стає легше:'));
+  wrap.appendChild(fld('Три якірні речі (предмети, відчуття, спогади):'));
+  wrap.appendChild(hlBox(b.bg, ['Моє послання собі в майбутньому:']));
+}
+
+// ===== VERSION B BLOCKS =====
+function buildBEntry(wrap, b) {
+  wrap.appendChild(fld('Як вам комфортно, щоб до вас зверталися?', 'Ім\'я або звертання...'));
+  wrap.appendChild(scl('Ваш ресурсний стан сьогодні:', 'Виснаження', 'Повний ресурс', b.color));
+  wrap.appendChild(fld('Якщо описати свій стан одним образом або метафорою:'));
+  wrap.appendChild(hlBox(b.bg, ['Я звернулась/звернувся, тому що...', 'Моє очікування від терапії:', 'Чого я побоююся в цьому процесі:', 'Що буде ознакою позитивних змін через 3 місяці:']));
+}
+
+function buildBInner(wrap, b) {
+  wrap.appendChild(iTitle('Вразлива частина — потреби та страхи', b.color));
+  wrap.appendChild(fld('Чого я найбільше боюся в глибині душі?'));
+  wrap.appendChild(fld('Які мої базові потреби найчастіше залишаються незадоволеними?'));
+  wrap.appendChild(fld('Якого послання або визнання мені не вистачає?'));
+  wrap.appendChild(iTitle('Захисна частина — стратегії виживання', b.color));
+  wrap.appendChild(fld('Як я справляюся з болем або стресом?', 'Мої звичні стратегії...'));
+  wrap.appendChild(fld('Яке переконання лежить в основі? («Якщо я не буду... то...»)'));
+  wrap.appendChild(iTitle('Ресурсна частина — мудрість та сила', b.color));
+  wrap.appendChild(fld('У яких ситуаціях я відчуваю себе цілісною/цілісним?'));
+  wrap.appendChild(fld('На які внутрішні та зовнішні ресурси я можу спертися?'));
+}
+
+function buildBHard(wrap, b) {
+  wrap.appendChild(nt('Цей розділ — ваш простір. Ви можете написати тут щось, про що поки не готові говорити. Достатньо того, що це буде зафіксоване — побачене вами.', b.color));
+  for (let i = 1; i <= 3; i++) wrap.appendChild(secretBox(`Тема #${i}`, b.color));
+}
+
+function buildBBody(wrap, b) {
+  wrap.appendChild(fld('Де у тілі ви зазвичай відчуваєте тривогу або напругу?'));
+  wrap.appendChild(fld('Яке відчуття в тілі вказує, що ви в безпеці?'));
+  wrap.appendChild(fld('Яке відчуття в тілі сигналізує, що ситуація небезпечна?'));
+  wrap.appendChild(bodyMap('Т — тривога · П — порожнеча · Б — біль · С — спокій / тепло'));
+}
+
+function buildBRelations(wrap, b) {
+  wrap.appendChild(fld('Людина, поруч з якою я почуваюся собою:'));
+  wrap.appendChild(fld('Стосунки, які мене виснажують:'));
+  wrap.appendChild(fld('Якби важлива для вас людина писала анкету про вас, що б вона написала в графі «Вона/він мене надихає тим...»?'));
+  wrap.appendChild(fld('А в графі «Мені важко, коли вона/він...»?'));
+  wrap.appendChild(fld('Який патерн у стосунках ви помічаєте в себе знову і знову?'));
+}
+
+function buildBStory(wrap, b) {
+  wrap.appendChild(nt('Часова лінія — як свідчення про силу, не про біль.', b.color));
+  wrap.appendChild(fld('Три моменти, коли я себе поважала/поважав або зробила/зробив щось складне:', '', true));
+  wrap.appendChild(fld('Люди, які вірили в мене:'));
+  wrap.appendChild(fld('Що я хочу передати собі — тій/тому, якою/яким я була/був раніше?'));
+}
+
+function buildBCrisis(wrap, b) {
+  wrap.appendChild(fld('Ознаки, що я наближаюся до кризового стану:'));
+  wrap.appendChild(fld('Мої перші три кроки, коли стає важко:'));
+  wrap.appendChild(fld('Контакти, яким я можу зателефонувати:'));
+  wrap.appendChild(fld('Ключові інсайти з терапії:', '', true));
+  wrap.appendChild(hlBox(b.bg, ['Лист собі — на початку шляху:']));
+}
+
+// ===== VERSION C BLOCKS =====
+function buildCEntry(wrap, b) {
+  wrap.appendChild(fld('Як вам комфортно, щоб до вас зверталися?'));
+  wrap.appendChild(scl('Ваш стан сьогодні:', 'Виснаження', 'Повний ресурс', b.color));
+  wrap.appendChild(hlBox(b.bg, ['Я тут, тому що...', 'Чого я точно НЕ хочу від цих зустрічей:', 'Що для мене буде ознакою, що ця робота мала сенс:']));
+}
+
+function buildCIdentity(wrap, b) {
+  wrap.appendChild(nt('Служба змінює людину. Але не скасовує того, ким ти є.', b.color));
+  wrap.appendChild(fld('До служби я був/була людиною, яка:'));
+  wrap.appendChild(fld('Служба мене навчила:'));
+  wrap.appendChild(fld('Що зі мною залишилося незмінним — попри все:'));
+  wrap.appendChild(fld('Чим я пишаюся:'));
+  wrap.appendChild(fld('З чим мені важко жити:'));
+  wrap.appendChild(fld('Як я зараз відповідаю на питання «Хто ти?»'));
+}
+
+function buildCBody(wrap, b) {
+  wrap.appendChild(nt('Ця сторінка — без оцінок і діагнозів. Просто спостереження.', b.color));
+  wrap.appendChild(fld('Де у тілі живе напруга або біль?'));
+  wrap.appendChild(fld('Що допомагає тілу розслабитися?'));
+  wrap.appendChild(fld('Які відчуття в тілі сигналізують про небезпеку — навіть якщо її немає?'));
+  wrap.appendChild(bodyMap('Н — напруга · О — оніміння · А — тривожна активація · С — спокій'));
+}
+
+function buildCHard(wrap, b) {
+  wrap.appendChild(nt('Ви не зобов\'язані пояснювати. Можете показати терапевту — або не показувати. Правило одне: ніякого примусу.', b.color));
+  for (let i = 1; i <= 3; i++) wrap.appendChild(secretBox(`#${i}`, b.color));
+}
+
+function buildCPeople(wrap, b) {
+  wrap.appendChild(fld('Людина з досвіду служби, яка мене розуміє:'));
+  wrap.appendChild(fld('Людина вдома, яка намагається зрозуміти:'));
+  wrap.appendChild(fld('Що найважче пояснити близьким, які не служили?'));
+  wrap.appendChild(fld('Що ви хочете, щоб ваша родина знала — але важко сказати вголос?'));
+}
+
+function buildCSupport(wrap, b) {
+  wrap.appendChild(fld('Що дає мені сили продовжувати?'));
+  wrap.appendChild(fld('Заради кого або чого я роблю цю роботу над собою?'));
+  wrap.appendChild(fld('Три речі, які залишаються незмінними — попри все:'));
+  wrap.appendChild(fld('Мій перший крок, коли стає важко:'));
+  wrap.appendChild(fld('Контакти, яким я можу зателефонувати:'));
+  wrap.appendChild(hlBox(b.bg, ['Послання собі:']));
+}
+
+// ===== PROGRESS =====
+function updateProgress() {
+  const inner = document.getElementById('module-inner');
+  if (!inner) return;
+  const tas = inner.querySelectorAll('textarea');
+  const filled = Array.from(tas).filter(t => t.value.trim().length > 2).length;
+  const pct = tas.length ? Math.round(filled / tas.length * 100) : 0;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-pct').textContent = pct + '%';
+}
+
+// ===== SAVE =====
 function buildAnswersText() {
-  const v = currentVersion;
-  const data = versions[v];
-  const wrap = document.getElementById('sections-wrap');
-  let text = 'ТЕРАПЕВТИЧНА АНКЕТА САМОПІЗНАННЯ\n';
-  text += data.title + '\n';
-  text += 'Дата: ' + new Date().toLocaleDateString('uk-UA') + '\n';
-  text += '─'.repeat(50) + '\n\n';
-  wrap.querySelectorAll('.section-card').forEach(card => {
-    const title = card.querySelector('.section-title');
-    if (title) text += '\n▸ ' + title.textContent.toUpperCase() + '\n\n';
-    card.querySelectorAll('textarea').forEach(ta => {
-      if (!ta.value.trim()) return;
-      const fg = ta.closest('.field-group');
-      const lbl = fg ? fg.querySelector('.field-label') : null;
-      const hl = ta.previousElementSibling;
-      const label = lbl ? lbl.textContent : (hl && hl.classList.contains('hl-label') ? hl.textContent : '');
-      if (label) text += label.trim() + '\n';
-      text += ta.value.trim() + '\n\n';
-    });
+  const b = currentModule;
+  const inner = document.getElementById('module-inner');
+  let text = (b ? b.title.toUpperCase() : '') + '\n';
+  text += 'Дата: ' + new Date().toLocaleDateString('uk-UA') + '\n' + '─'.repeat(50) + '\n\n';
+  inner.querySelectorAll('textarea').forEach(ta => {
+    if (!ta.value.trim()) return;
+    const fg = ta.closest('.field-group');
+    const lbl = fg ? fg.querySelector('.field-label') : null;
+    const prev = ta.previousElementSibling;
+    const label = lbl ? lbl.textContent : (prev && prev.classList.contains('hl-label') ? prev.textContent : '');
+    if (label) text += label.trim() + '\n';
+    text += ta.value.trim() + '\n\n';
   });
   return text;
+}
+
+function savePDF() {
+  const b = currentModule;
+  const inner = document.getElementById('module-inner');
+  const accent = b ? b.color : '#7F77DD';
+  let html_fields = '';
+  inner.querySelectorAll('textarea').forEach(ta => {
+    if (!ta.value.trim()) return;
+    const fg = ta.closest('.field-group');
+    const lbl = fg ? fg.querySelector('.field-label') : null;
+    const prev = ta.previousElementSibling;
+    const label = lbl ? lbl.textContent : (prev && prev.classList.contains('hl-label') ? prev.textContent : '');
+    html_fields += `<div class="f">${label?`<div class="fl">${label}</div>`:''}<div class="fv">${ta.value.trim().replace(/\n/g,'<br>')}</div></div>`;
+  });
+
+  const win = window.open('','_blank');
+  if (!win) { alert('Дозволь pop-up для цього сайту і спробуй знову.'); return; }
+  win.document.write(`<!DOCTYPE html><html lang="uk"><head><meta charset="UTF-8"><title>${b?b.title:''}</title>
+  <style>@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  body{font-family:Arial,sans-serif;color:#2C2C2C;padding:32px 40px;max-width:680px;margin:0 auto;font-size:13px;line-height:1.6}
+  h1{color:${accent};font-size:20px;margin:0 0 4px}.meta{color:#999;font-size:12px;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid ${accent}}
+  .f{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #f0f0f0}.fl{font-size:11px;color:#999;margin-bottom:3px}.fv{font-size:13px}
+  .footer{margin-top:32px;font-size:10px;color:#ccc;text-align:center}
+  .hint{background:#f0f0f0;border-radius:8px;padding:12px 16px;margin-bottom:24px;font-size:12px;color:#555}@media print{.hint{display:none}}</style></head><body>
+  <div class="hint">💡 Щоб зберегти як PDF: <strong>Ctrl+P</strong> → <strong>«Зберегти як PDF»</strong></div>
+  <h1>${b?b.icon+' '+b.title:''}</h1>
+  <div class="meta">${b?versionMeta[currentVersion].label:''} &nbsp;·&nbsp; ${new Date().toLocaleDateString('uk-UA')}</div>
+  ${html_fields}
+  <div class="footer">© Оксана Урожай · Терапевтична анкета самопізнання</div>
+  <script>window.onload=function(){window.print()}<\/script></body></html>`);
+  win.document.close();
 }
 
 function copyAnswers() {
   const text = buildAnswersText();
   navigator.clipboard.writeText(text).then(() => {
-    const status = document.getElementById('save-status');
-    const btn = document.getElementById('copy-btn');
+    const btn = document.querySelector('[onclick="copyAnswers()"]');
     btn.innerHTML = '<i class="ti ti-check"></i> Скопійовано!';
-    if (status) status.textContent = '';
-    setTimeout(() => { btn.innerHTML = '<i class="ti ti-copy"></i> Копіювати'; }, 3000);
-  }).catch(() => {
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.select(); document.execCommand('copy');
-    document.body.removeChild(ta);
-    const btn = document.getElementById('copy-btn');
-    btn.innerHTML = '<i class="ti ti-check"></i> Скопійовано!';
-    setTimeout(() => { btn.innerHTML = '<i class="ti ti-copy"></i> Копіювати'; }, 3000);
+    setTimeout(() => btn.innerHTML = '<i class="ti ti-copy"></i> Копіювати', 3000);
   });
 }
 
-function savePDF() {
-  const v = currentVersion;
-  const data = versions[v];
-  const wrap = document.getElementById('sections-wrap');
-  const accent = { a: '#7F77DD', b: '#1D9E75', c: '#D85A30' }[v];
-
-  let sectionsHtml = '';
-  wrap.querySelectorAll('.section-card').forEach(card => {
-    const titleEl = card.querySelector('.section-title');
-    let fieldsHtml = '';
-    card.querySelectorAll('textarea').forEach(ta => {
-      if (!ta.value.trim()) return;
-      const fg = ta.closest('.field-group');
-      const lbl = fg ? fg.querySelector('.field-label') : null;
-      const hl = ta.previousElementSibling;
-      const label = lbl ? lbl.textContent.trim() : (hl && hl.classList.contains('hl-label') ? hl.textContent.trim() : '');
-      fieldsHtml += `<div class="field">
-        ${label ? `<div class="field-label">${label}</div>` : ''}
-        <div class="field-value">${ta.value.trim().replace(/\n/g, '<br>')}</div>
-      </div>`;
-    });
-    if (!fieldsHtml) return;
-    sectionsHtml += `<div class="section">
-      <div class="section-title">${titleEl ? titleEl.textContent : ''}</div>
-      ${fieldsHtml}
-    </div>`;
-  });
-
-  const html = `<!DOCTYPE html>
-<html lang="uk">
-<head>
-<meta charset="UTF-8">
-<title>Терапевтична анкета — ${data.title}</title>
-<style>
-  @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
-  body { font-family: Arial, Helvetica, sans-serif; color: #2C2C2C; padding: 32px 40px; max-width: 680px; margin: 0 auto; font-size: 13px; line-height: 1.6; }
-  h1 { color: ${accent}; font-size: 20px; margin: 0 0 4px; }
-  .meta { color: #999; font-size: 12px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid ${accent}; }
-  .section { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #eee; }
-  .section-title { font-size: 12px; font-weight: bold; color: ${accent}; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
-  .field { margin-bottom: 12px; }
-  .field-label { font-size: 11px; color: #999; margin-bottom: 3px; }
-  .field-value { font-size: 13px; color: #2C2C2C; }
-  .footer { margin-top: 32px; font-size: 10px; color: #ccc; text-align: center; }
-  .print-hint { background: #f0f0f0; border-radius: 8px; padding: 12px 16px; margin-bottom: 24px; font-size: 12px; color: #555; display: flex; align-items: center; gap: 8px; }
-  @media print { .print-hint { display: none; } }
-</style>
-</head>
-<body>
-<div class="print-hint">
-  💡 Щоб зберегти як PDF: натисни <strong>Ctrl+P</strong> (або ⌘P на Mac) → у діалозі обери <strong>«Зберегти як PDF»</strong>
-</div>
-<h1>Терапевтична анкета самопізнання</h1>
-<div class="meta">${data.title} &nbsp;·&nbsp; ${new Date().toLocaleDateString('uk-UA')}</div>
-${sectionsHtml}
-<div class="footer">© Оксана Урожай · Терапевтична анкета самопізнання</div>
-<script>window.onload = function(){ window.print(); }<\/script>
-</body>
-</html>`;
-
-  const win = window.open('', '_blank');
-  if (win) {
-    win.document.write(html);
-    win.document.close();
-  } else {
-    alert('Браузер заблокував нове вікно. Дозволь pop-up для цього сайту і спробуй знову.');
-  }
-
-  const status = document.getElementById('save-status');
-  if (status) { status.textContent = 'Відкрито для збереження'; setTimeout(() => status.textContent = '', 4000); }
-}
-
-function finishSession() {
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('finish').style.display = 'flex';
-  launchConfetti();
-}
-
-function restartApp() {
-  document.getElementById('finish').style.display = 'none';
-  document.getElementById('intro').style.display = 'flex';
-  selectedVersion = null;
-  ['a','b','c'].forEach(x => document.getElementById('vc-'+x).className = 'version-card');
-  const btn = document.getElementById('start-btn');
-  btn.className = 'start-btn';
-  btn.innerHTML = '<i class="ti ti-arrow-right"></i> Обери версію, щоб почати';
-  btn.disabled = true;
-}
-
-function launchConfetti() {
-  const colors = ['#7F77DD','#1D9E75','#D85A30','#EF9F27','#F0997B','#5DCAA5'];
-  for (let i = 0; i < 80; i++) {
-    setTimeout(() => {
-      const el = document.createElement('div');
-      el.className = 'confetti-piece';
-      el.style.left = Math.random() * 100 + 'vw';
-      el.style.background = colors[Math.floor(Math.random() * colors.length)];
-      el.style.width = (6 + Math.random() * 8) + 'px';
-      el.style.height = (6 + Math.random() * 8) + 'px';
-      el.style.animationDuration = (2 + Math.random() * 3) + 's';
-      el.style.animationDelay = Math.random() * 0.5 + 's';
-      document.body.appendChild(el);
-      setTimeout(() => el.remove(), 5000);
-    }, i * 30);
-  }
-}
+// INIT
+buildHome();
 </script>
 </body>
 </html>
