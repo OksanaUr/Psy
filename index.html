@@ -30,7 +30,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   position:fixed;top:0;left:0;right:0;bottom:0;
   overflow-y:auto;overflow-x:hidden;
   transform:translateX(100%);
-  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  transition:transform 0.25s ease;
   visibility:hidden;
   background:var(--bg);
   z-index:1;
@@ -41,10 +41,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   z-index:2;
 }
 .screen.slide-out{
-  transform:translateX(-30%);
+  transform:translateX(-20%);
   visibility:visible;
   z-index:1;
-  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  transition:transform 0.25s ease;
 }
 #landing{
   background:linear-gradient(160deg,#EEEDFE 0%,#E1F5EE 50%,#EBF0F8 100%);
@@ -167,7 +167,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .prog-bar{width:60px;height:4px;border-radius:2px;background:var(--border);overflow:hidden;flex-shrink:0}
 .prog-fill{height:100%;border-radius:2px;transition:width .4s}
 .prog-pct{font-size:11px;font-weight:600;color:var(--muted);min-width:28px}
-.module-inner{max-width:680px;margin:0 auto;padding:1.5rem 1rem 6rem}
+.module-inner{max-width:680px;margin:0 auto;padding:1.5rem 1rem 7rem}
 .module-header{border-radius:var(--rl);padding:1.25rem 1.5rem;margin-bottom:1rem;display:flex;align-items:center;gap:14px}
 .mh-icon{font-size:2rem}
 .mh-title{font-size:1.1rem;font-weight:800}
@@ -216,7 +216,7 @@ textarea:focus{outline:none;background:var(--white)}
 .t-btn.secondary{background:white;border:1.5px solid}
 
 /* SAVE BAR */
-.save-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-top:1px solid var(--border);padding:12px 1rem;display:flex;align-items:center;gap:8px;z-index:50;flex-wrap:wrap}
+.save-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--border);padding:12px 1rem;align-items:center;gap:8px;z-index:300;flex-wrap:wrap;box-shadow:0 -2px 16px rgba(0,0,0,.06);display:none}
 .s-btn{padding:10px 16px;border-radius:50px;border:1.5px solid var(--border);font-size:13px;font-weight:700;cursor:pointer;background:var(--white);color:var(--text);transition:all .15s;display:flex;align-items:center;gap:6px}
 .s-btn.primary{color:white;border-color:transparent}
 .s-btn:hover{opacity:.85}
@@ -375,7 +375,7 @@ textarea:focus{outline:none;background:var(--white)}
     <button onclick="goLanding()" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text);flex-shrink:0"><i class="ti ti-home"></i></button>
   </div>
   <div class="module-inner" id="module-inner"></div>
-  <div class="save-bar">
+  <div class="save-bar" id="module-save-bar">
     <button class="s-btn" onclick="moduleBack()">← Назад</button>
     <button class="s-btn primary" id="save-btn" onclick="savePDF()">⬇ Зберегти PDF</button>
     <button class="s-btn" onclick="copyAnswers()">⧉ Копіювати</button>
@@ -402,13 +402,16 @@ function showScreen(id){
   if(prev){
     prev.classList.add('slide-out');
     prev.classList.remove('active');
-    setTimeout(()=>{ prev.classList.remove('slide-out'); }, 380);
+    setTimeout(()=>{ prev.classList.remove('slide-out'); }, 280);
   }
 
-  // Reset scroll
   next.scrollTop = 0;
   next.classList.add('active');
   _prevScreen = prev ? prev.id : null;
+
+  // Show save-bar only on module screen
+  const saveBar = document.getElementById('module-save-bar');
+  if(saveBar) saveBar.style.display = (id === 'module') ? 'flex' : 'none';
 }
 // goHub defined in NAVIGATION OVERRIDES
 // showTool defined in NAVIGATION OVERRIDES below
@@ -423,6 +426,12 @@ function fld(label,ph='',tall=false){
 function scl(label,from,to,color){
   const d=document.createElement('div');d.className='field-group';
   const l=document.createElement('label');l.className='field-label';l.textContent=label;d.appendChild(l);
+
+  // Hidden textarea to capture value for PDF
+  const hiddenTA=document.createElement('textarea');
+  hiddenTA.style.cssText='position:absolute;opacity:0;height:0;pointer-events:none';
+  hiddenTA.readOnly=true;
+  d.appendChild(hiddenTA);
 
   let selected=0;
   const wrap=document.createElement('div');wrap.style.cssText='margin-top:10px';
@@ -464,6 +473,7 @@ function scl(label,from,to,color){
     });
     valLabel.textContent=val+'/10';
     valLabel.style.color=color||'#2C2C2C';
+    hiddenTA.value = val > 0 ? label+': '+val+'/10' : '';
     updateProgress();
   }
 
