@@ -39,6 +39,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   transform:translateX(0);
   visibility:visible;
   z-index:2;
+  padding-bottom:0;
 }
 .screen.slide-out{
   transform:translateX(-20%);
@@ -216,7 +217,7 @@ textarea:focus{outline:none;background:var(--white)}
 .t-btn.secondary{background:white;border:1.5px solid}
 
 /* SAVE BAR */
-.save-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--border);padding:12px 1rem;align-items:center;gap:8px;z-index:300;flex-wrap:wrap;box-shadow:0 -2px 16px rgba(0,0,0,.06);display:none}
+.save-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1.5px solid var(--border);padding:12px 1rem;align-items:center;gap:8px;z-index:1000;flex-wrap:wrap;box-shadow:0 -4px 20px rgba(0,0,0,.08);display:none}
 .s-btn{padding:10px 16px;border-radius:50px;border:1.5px solid var(--border);font-size:13px;font-weight:700;cursor:pointer;background:var(--white);color:var(--text);transition:all .15s;display:flex;align-items:center;gap:6px}
 .s-btn.primary{color:white;border-color:transparent}
 .s-btn:hover{opacity:.85}
@@ -375,12 +376,13 @@ textarea:focus{outline:none;background:var(--white)}
     <button onclick="goLanding()" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text);flex-shrink:0"><i class="ti ti-home"></i></button>
   </div>
   <div class="module-inner" id="module-inner"></div>
-  <div class="save-bar" id="module-save-bar">
-    <button class="s-btn" onclick="moduleBack()">← Назад</button>
-    <button class="s-btn primary" id="save-btn" onclick="savePDF()">⬇ Зберегти PDF</button>
-    <button class="s-btn" onclick="copyAnswers()">⧉ Копіювати</button>
-    <span style="font-size:12px;color:var(--muted);margin-left:auto" id="s-status"></span>
-  </div>
+</div>
+
+<div class="save-bar" id="module-save-bar" style="display:none">
+  <button class="s-btn" onclick="moduleBack()">← Назад</button>
+  <button class="s-btn primary" id="save-btn" onclick="savePDF()">⬇ Зберегти PDF</button>
+  <button class="s-btn" onclick="copyAnswers()">⧉ Копіювати</button>
+  <span style="font-size:12px;color:var(--muted);margin-left:auto" id="s-status"></span>
 </div>
 
 <script>
@@ -558,8 +560,47 @@ function readiness(color){
   box.appendChild(row);const hint=document.createElement('div');hint.style.cssText='font-size:11px;color:var(--muted);margin-top:6px;font-style:italic';hint.textContent='0 — зовсім не готова · 10 — повністю готова. Якщо менше 5 — краще спочатку перейти до «Техніки стабілізації».';box.appendChild(hint);return box;
 }
 function timerCard(id,name,desc,steps,times,color,bg){
-  const card=document.createElement('div');card.className='timer-card';card.style.cssText=`background:${bg};border:1px solid ${color}44;margin-bottom:12px`;
-  card.innerHTML=`<div style="font-size:14px;font-weight:700;color:${color};margin-bottom:4px">${name}</div><div style="font-size:12px;color:var(--muted);margin-bottom:10px">${desc}</div><div class="timer-progress"><div class="timer-fill" id="tf-${id}" style="background:${color};width:0%"></div></div><div class="timer-display" id="td-${id}" style="color:${color}">00:00</div><div class="timer-instruction" id="ti-${id}">Натисни «Почати» і дихай разом зі мною</div><div><button class="t-btn primary" id="tb-${id}" style="background:${color}" onclick="startTimer('${id}',${JSON.stringify(steps)},${JSON.stringify(times)})">Почати</button><button class="t-btn secondary" style="color:${color};border-color:${color}" onclick="resetTimer('${id}')">Скинути</button></div>`;
+  const card=document.createElement('div');
+  card.className='timer-card';
+  card.style.background=bg;
+  card.style.border='1px solid '+color+'44';
+  card.style.marginBottom='12px';
+
+  const nameEl=document.createElement('div');
+  nameEl.style.cssText='font-size:14px;font-weight:700;margin-bottom:4px;color:'+color;
+  nameEl.textContent=name;
+  card.appendChild(nameEl);
+
+  const descEl=document.createElement('div');
+  descEl.style.cssText='font-size:12px;color:var(--muted);margin-bottom:10px';
+  descEl.textContent=desc;
+  card.appendChild(descEl);
+
+  const progWrap=document.createElement('div');progWrap.className='timer-progress';
+  const progFill=document.createElement('div');progFill.className='timer-fill';
+  progFill.id='tf-'+id;progFill.style.background=color;progFill.style.width='0%';
+  progWrap.appendChild(progFill);card.appendChild(progWrap);
+
+  const dispEl=document.createElement('div');dispEl.className='timer-display';
+  dispEl.id='td-'+id;dispEl.style.color=color;dispEl.textContent='00:00';
+  card.appendChild(dispEl);
+
+  const instrEl=document.createElement('div');instrEl.className='timer-instruction';
+  instrEl.id='ti-'+id;instrEl.textContent='Натисни «Почати» і дихай разом зі мною';
+  card.appendChild(instrEl);
+
+  const btnWrap=document.createElement('div');
+  const startBtn=document.createElement('button');
+  startBtn.className='t-btn primary';startBtn.id='tb-'+id;
+  startBtn.style.background=color;startBtn.textContent='Почати';
+  startBtn.onclick=function(){startTimer(id,steps,times);};
+  const resetBtn=document.createElement('button');
+  resetBtn.className='t-btn secondary';
+  resetBtn.style.color=color;resetBtn.style.borderColor=color;
+  resetBtn.textContent='Скинути';
+  resetBtn.onclick=function(){resetTimer(id);};
+  btnWrap.appendChild(startBtn);btnWrap.appendChild(resetBtn);
+  card.appendChild(btnWrap);
   return card;
 }
 
