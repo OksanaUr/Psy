@@ -338,6 +338,7 @@ textarea:focus{outline:none;background:var(--white)}
   </div>
   <div class="module-inner" id="module-inner"></div>
   <div class="save-bar">
+    <button class="s-btn" onclick="moduleBack()"><i class="ti ti-arrow-left"></i> Назад</button>
     <button class="s-btn primary" id="save-btn" onclick="savePDF()"><i class="ti ti-download"></i> Зберегти PDF</button>
     <button class="s-btn" onclick="copyAnswers()"><i class="ti ti-copy"></i> Копіювати</button>
     <span style="font-size:12px;color:var(--muted);margin-left:auto" id="s-status"></span>
@@ -367,9 +368,77 @@ function fld(label,ph='',tall=false){
 function scl(label,from,to,color){
   const d=document.createElement('div');d.className='field-group';
   const l=document.createElement('label');l.className='field-label';l.textContent=label;d.appendChild(l);
-  const row=document.createElement('div');row.className='scale-row';
-  for(let i=1;i<=10;i++){const btn=document.createElement('button');btn.className='scale-btn';btn.textContent=i;btn.onclick=()=>{row.querySelectorAll('.scale-btn').forEach(b=>{b.style.background='';b.style.color='';b.style.borderColor=''});btn.style.background=color+'22';btn.style.color=color;btn.style.borderColor=color;updateProgress()};row.appendChild(btn)}
-  d.appendChild(row);const h=document.createElement('div');h.className='scale-hints';h.innerHTML=`<span>${from}</span><span>${to}</span>`;d.appendChild(h);return d;
+
+  let selected=0;
+  const wrap=document.createElement('div');wrap.style.cssText='margin-top:10px';
+
+  // Battery container
+  const battWrap=document.createElement('div');battWrap.style.cssText='display:flex;align-items:center;gap:12px';
+
+  // Battery SVG
+  const battSvg=document.createElement('div');battSvg.style.cssText='flex:1;position:relative;cursor:pointer';
+  battSvg.innerHTML=`<svg id="batt-${label.slice(0,8).replace(/\s/g,'')}" viewBox="0 0 220 48" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+    <rect x="2" y="6" width="204" height="36" rx="8" ry="8" fill="none" stroke="#C0C0C0" stroke-width="2.5"/>
+    <rect x="206" y="16" width="10" height="16" rx="3" fill="#C0C0C0"/>
+    ${Array.from({length:10},(_,i)=>`
+      <rect class="batt-seg" data-val="${i+1}" x="${4+i*20}" y="8" width="18" height="32" rx="4" fill="#EEEEEE" stroke="none"/>
+    `).join('')}
+  </svg>`;
+
+  const segs=battSvg.querySelectorAll('.batt-seg');
+
+  function updateBatt(val){
+    selected=val;
+    segs.forEach((seg,i)=>{
+      const segVal=i+1;
+      if(segVal<=val){
+        // Color gradient: green for low, yellow mid, red high (for stress/anxiety)
+        // or use passed color
+        let fill=color;
+        if(!color||color==='auto'){
+          if(val<=3) fill='#57CC99';
+          else if(val<=6) fill='#FFD166';
+          else fill='#E76F51';
+        }
+        seg.setAttribute('fill',fill);
+        seg.style.opacity='1';
+      } else {
+        seg.setAttribute('fill','#EEEEEE');
+        seg.style.opacity='1';
+      }
+    });
+    valLabel.textContent=val+'/10';
+    valLabel.style.color=color||'#2C2C2C';
+    updateProgress();
+  }
+
+  segs.forEach((seg,i)=>{
+    seg.style.cursor='pointer';
+    seg.style.transition='fill 0.15s';
+    seg.onmouseover=()=>{
+      const hoverVal=i+1;
+      segs.forEach((s,j)=>s.setAttribute('fill',j<hoverVal?(color||'#7F77DD')+'88':'#EEEEEE'));
+    };
+    seg.onmouseout=()=>updateBatt(selected);
+    seg.onclick=()=>{
+      const clickVal=i+1;
+      if(selected===clickVal){updateBatt(0)}else{updateBatt(clickVal)}
+    };
+  });
+
+  battWrap.appendChild(battSvg);
+
+  // Value label
+  const valLabel=document.createElement('div');valLabel.style.cssText='font-size:1.4rem;font-weight:800;min-width:44px;text-align:center;color:#C0C0C0';valLabel.textContent='—';
+  battWrap.appendChild(valLabel);
+  wrap.appendChild(battWrap);
+
+  // Hints
+  const hints=document.createElement('div');hints.style.cssText='display:flex;justify-content:space-between;font-size:11px;color:#888;margin-top:4px;padding:0 2px';hints.innerHTML=`<span>${from}</span><span>${to}</span>`;
+  wrap.appendChild(hints);
+
+  d.appendChild(wrap);
+  return d;
 }
 function plls(label,opts,color){
   const d=document.createElement('div');d.className='field-group';
@@ -394,7 +463,27 @@ function secretBox(label){
   for(let j=0;j<=10;j++){const btn=document.createElement('button');btn.style.cssText='width:26px;height:26px;border:1.5px solid #E0E0E0;border-radius:6px;background:white;cursor:pointer;font-size:11px;font-weight:600;color:#888';btn.textContent=j;btn.onclick=()=>{sr.querySelectorAll('button').forEach(b=>{b.style.background='white';b.style.color='#888';b.style.borderColor='#E0E0E0'});btn.style.background='#FAEEDA';btn.style.color='#854F0B';btn.style.borderColor='#EF9F27';updateProgress()};sr.appendChild(btn)}
   sw.appendChild(sr);box.appendChild(sw);const ta=document.createElement('textarea');ta.style.minHeight='80px';ta.oninput=updateProgress;box.appendChild(ta);return box;
 }
-function bodyMap(legend){const d=document.createElement('div');d.className='body-map';d.innerHTML=`<i class="ti ti-user" style="font-size:52px;color:#888;display:block;margin-bottom:10px"></i><div style="font-size:13px;color:#888;line-height:1.7"><strong style="display:block;color:#2C2C2C;margin-bottom:4px">Позначте де що відчуваєте</strong>${legend}</div>`;return d}
+function bodyMap(legend){
+  const uid='bm'+(typeof window._bmc==='undefined'?window._bmc=1:++window._bmc);
+  const d=document.createElement('div');d.style.cssText='margin-top:16px';
+  const lbl=document.createElement('label');lbl.className='field-label';lbl.textContent='Позначте на схемі де що відчуваєте (оберіть відчуття → натисніть на зону):';d.appendChild(lbl);
+  const feelings=[{id:'anxiety',label:'Тривога',color:'#F4A261'},{id:'tension',label:'Напруга',color:'#E76F51'},{id:'pain',label:'Біль',color:'#C85A3A'},{id:'numb',label:'Оніміння',color:'#8B9BB4'},{id:'calm',label:'Спокій',color:'#57CC99'},{id:'empty',label:'Порожнеча',color:'#B0BEC5'}];
+  const leg=document.createElement('div');leg.style.cssText='display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px';
+  feelings.forEach(f=>{const btn=document.createElement('div');btn.style.cssText='display:flex;align-items:center;gap:4px;font-size:12px;cursor:pointer;padding:4px 10px;border-radius:20px;border:1.5px solid '+f.color+';background:'+f.color+'22;color:#2C2C2C;font-weight:500';btn.textContent=f.label;btn.onclick=(()=>{const ff=f;return ()=>setBodyFeeling(uid,ff.id,ff.color,ff.label)})();leg.appendChild(btn)});
+  const clr=document.createElement('div');clr.style.cssText='display:flex;align-items:center;gap:4px;font-size:12px;cursor:pointer;padding:4px 10px;border-radius:20px;border:1.5px solid #E0E0E0;background:#F5F5F5;color:#888;font-weight:500';clr.textContent='x Очистити';clr.onclick=()=>clearBodyMap(uid,zones);leg.appendChild(clr);d.appendChild(leg);
+  const ind=document.createElement('div');ind.id=uid+'-indicator';ind.style.cssText='font-size:12px;color:#888;margin-bottom:8px;font-style:italic';ind.textContent='Оберіть відчуття зверху, потім натисніть на зону тіла';d.appendChild(ind);
+  const svgWrap=document.createElement('div');svgWrap.style.cssText='display:flex;justify-content:center;background:#F9F9F9;border-radius:12px;border:1.5px solid #E0E0E0;padding:16px';
+  const zones=[{id:'head',label:'Голова',p:'M110,20 Q140,10 170,20 Q185,40 180,65 Q170,85 140,88 Q110,85 100,65 Q95,40 110,20 Z'},{id:'neck',label:'Шия',p:'M125,88 L155,88 L158,108 L122,108 Z'},{id:'chest',label:'Груди',p:'M90,108 L190,108 L195,160 L85,160 Z'},{id:'belly',label:'Живіт',p:'M88,160 L192,160 L190,210 L90,210 Z'},{id:'pelvis',label:'Таз',p:'M90,210 L190,210 L185,240 L95,240 Z'},{id:'lsh',label:'Ліве плече',p:'M55,108 L90,108 L88,140 L52,135 Z'},{id:'rsh',label:'Праве плече',p:'M190,108 L225,108 L228,135 L192,140 Z'},{id:'larm',label:'Ліва рука',p:'M40,135 L55,135 L58,195 L38,195 Z'},{id:'rarm',label:'Права рука',p:'M225,135 L240,135 L242,195 L222,195 Z'},{id:'lhand',label:'Ліва кисть',p:'M36,195 L60,195 L58,220 L34,218 Z'},{id:'rhand',label:'Права кисть',p:'M220,195 L244,195 L246,218 L222,220 Z'},{id:'lthigh',label:'Ліве стегно',p:'M90,240 L138,240 L136,300 L88,300 Z'},{id:'rthigh',label:'Праве стегно',p:'M142,240 L190,240 L192,300 L144,300 Z'},{id:'lshin',label:'Ліва гомілка',p:'M88,300 L136,300 L134,360 L86,358 Z'},{id:'rshin',label:'Права гомілка',p:'M144,300 L192,300 L194,358 L146,360 Z'},{id:'lfoot',label:'Ліва стопа',p:'M82,358 L136,358 L134,378 L78,374 Z'},{id:'rfoot',label:'Права стопа',p:'M144,358 L198,358 L202,374 L146,378 Z'}];
+  const svgNS='http://www.w3.org/2000/svg';const svg=document.createElementNS(svgNS,'svg');svg.setAttribute('viewBox','20 0 240 390');svg.setAttribute('width','240');svg.setAttribute('height','370');
+  zones.forEach(z=>{const path=document.createElementNS(svgNS,'path');path.setAttribute('d',z.p);path.setAttribute('fill','#E8EAF0');path.setAttribute('stroke','#C5C8D8');path.setAttribute('stroke-width','1.5');path.setAttribute('stroke-linejoin','round');path.style.cursor='pointer';path.style.transition='all 0.2s';path.id=uid+'-'+z.id;path.dataset.zone=z.id;path.dataset.feeling='';path.dataset.label=z.label;path.onmouseover=()=>{if(!path.dataset.feeling)path.setAttribute('fill','#D0D4E8')};path.onmouseout=()=>{if(!path.dataset.feeling)path.setAttribute('fill','#E8EAF0')};path.onclick=(()=>{const zz=z;return ()=>{const st=window['_bm_'+uid];if(!st||!st.feeling)return;if(path.dataset.feeling===st.feeling){path.dataset.feeling='';path.setAttribute('fill','#E8EAF0');path.setAttribute('stroke','#C5C8D8')}else{path.dataset.feeling=st.feeling;path.dataset.feelingLabel=st.label;path.setAttribute('fill',st.color);path.setAttribute('stroke',st.color)}updateBodyMapText(uid,zones);updateProgress()}})();const title=document.createElementNS(svgNS,'title');title.textContent=z.label;path.appendChild(title);svg.appendChild(path)});
+  svgWrap.appendChild(svg);d.appendChild(svgWrap);
+  const ta=document.createElement('textarea');ta.id=uid+'-text';ta.style.cssText='margin-top:10px;min-height:56px;background:#F9F9F9;font-size:12px';ta.placeholder='Тут автоматично з\'явиться опис позначок...';ta.readOnly=true;d.appendChild(ta);
+  const nl=document.createElement('label');nl.className='field-label';nl.textContent='Додаткові спостереження:';nl.style.marginTop='12px';d.appendChild(nl);const notes=document.createElement('textarea');notes.oninput=updateProgress;d.appendChild(notes);
+  window['_bm_'+uid]={feeling:null,color:null,label:null};return d;
+}
+function setBodyFeeling(uid,feeling,color,label){window['_bm_'+uid]={feeling,color,label};const ind=document.getElementById(uid+'-indicator');if(ind){ind.innerHTML='<span style="display:inline-flex;align-items:center;gap:6px;background:'+color+'22;padding:3px 10px;border-radius:10px;border:1.5px solid '+color+'"><span style="width:10px;height:10px;border-radius:50%;background:'+color+';display:inline-block"></span>Обрано: <strong>'+label+'</strong> — натисніть на зону</span>'}}
+function clearBodyMap(uid,zones){if(!zones)return;zones.forEach(z=>{const p=document.getElementById(uid+'-'+z.id);if(p){p.dataset.feeling='';p.setAttribute('fill','#E8EAF0');p.setAttribute('stroke','#C5C8D8')}});const ta=document.getElementById(uid+'-text');if(ta)ta.value='';const ind=document.getElementById(uid+'-indicator');if(ind)ind.textContent='Оберіть відчуття зверху, потім натисніть на зону тіла';window['_bm_'+uid]={feeling:null,color:null,label:null};updateProgress()}
+function updateBodyMapText(uid,zones){const groups={};zones.forEach(z=>{const p=document.getElementById(uid+'-'+z.id);if(p&&p.dataset.feeling){const l=p.dataset.feelingLabel||p.dataset.feeling;if(!groups[l])groups[l]=[];groups[l].push(z.label)}});const ta=document.getElementById(uid+'-text');if(ta){if(!Object.keys(groups).length){ta.value='';return}ta.value=Object.entries(groups).map(([f,pts])=>f+': '+pts.join(', ')).join('\n')}}
 function stopBox(text){const d=document.createElement('div');d.className='stop-box';d.innerHTML=`<span style="font-size:1.5rem">🛑</span><div style="font-size:13px;color:#7A5000;line-height:1.6"><strong style="display:block;margin-bottom:4px;color:#5A3800">Зупинись і перевір себе</strong>${text}</div>`;return d}
 function readiness(color){
   const box=document.createElement('div');box.className='readiness-box';
