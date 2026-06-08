@@ -18,7 +18,6 @@
   --slate:#5A6E7C;--slate-l:#EDF1F4;
   --green:#3A8B5C;--green-l:#E3F5EC;
   --warm:#7C5A4A;--warm-l:#F5EDE8;
-  --gold:#C8892A;--gold-l:#FDF1DC;
   --pink:#C85A8A;--pink-l:#FAEBF2;
   --blue:#4A7FC1;--blue-l:#EBF2FC;
   --text:#2C2C2C;--muted:#888;--border:#E0E0E0;
@@ -27,60 +26,70 @@
 }
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 
-/* SCREENS */
 .screen{display:none;min-height:100vh}
 .screen.active{display:block}
 
-/* ========== MAIN HUB ========== */
+/* ========== SCREEN 1: LANDING ========== */
+#landing{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem 1.5rem;background:linear-gradient(160deg,#EEEDFE 0%,#E1F5EE 50%,#EBF0F8 100%);position:relative;overflow:hidden}
+.land-shape{position:absolute;border-radius:50%;opacity:.09;animation:float 7s ease-in-out infinite}
+.ls1{width:350px;height:350px;background:var(--purple);top:-100px;left:-80px}
+.ls2{width:220px;height:220px;background:var(--teal);bottom:-60px;right:-50px;animation-delay:2s}
+.ls3{width:140px;height:140px;background:var(--navy);top:35%;right:6%;animation-delay:4s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+.land-content{position:relative;z-index:1;max-width:560px}
+.land-badge{display:inline-flex;align-items:center;gap:6px;background:white;padding:6px 16px;border-radius:20px;font-size:12px;color:var(--purple-d);font-weight:500;margin-bottom:1.5rem;box-shadow:0 2px 12px rgba(127,119,221,.15);animation:fadeUp .6s ease both}
+.land-title{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;color:var(--purple-d);line-height:1.15;margin-bottom:.5rem;animation:fadeUp .6s ease .1s both}
+.land-title span{color:var(--teal-d)}
+.land-sub{font-size:1rem;color:var(--muted);line-height:1.7;margin-bottom:.75rem;animation:fadeUp .6s ease .2s both}
+.land-author{font-size:13px;color:var(--purple-d);font-weight:600;margin-bottom:2.5rem;animation:fadeUp .6s ease .25s both}
+.land-quote{font-size:13px;color:var(--muted);font-style:italic;margin-bottom:2rem;line-height:1.6;animation:fadeUp .6s ease .3s both;max-width:420px;margin-left:auto;margin-right:auto}
+.land-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 48px;border-radius:50px;border:none;font-size:17px;font-weight:700;cursor:pointer;background:var(--purple);color:white;transition:all .2s;box-shadow:0 4px 24px rgba(127,119,221,.35);animation:fadeUp .6s ease .4s both}
+.land-btn:hover{background:var(--purple-d);transform:translateY(-2px);box-shadow:0 8px 32px rgba(127,119,221,.4)}
+.land-note{font-size:11px;color:var(--muted);margin-top:1rem;animation:fadeUp .6s ease .5s both}
+
+/* ========== SCREEN 2: HUB ========== */
 #hub{background:var(--bg)}
-.hub-hero{background:linear-gradient(135deg,#EEEDFE 0%,#E1F5EE 50%,#EBF0F8 100%);padding:3rem 1rem 2rem;text-align:center;position:relative;overflow:hidden}
-.hs{position:absolute;border-radius:50%;opacity:.09;animation:float 7s ease-in-out infinite}
-.hs1{width:280px;height:280px;background:var(--purple);top:-80px;left:-60px}
-.hs2{width:180px;height:180px;background:var(--teal);bottom:-50px;right:-40px;animation-delay:2s}
-.hs3{width:120px;height:120px;background:var(--navy);top:40%;right:8%;animation-delay:4s}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.hub-badge{display:inline-flex;align-items:center;gap:6px;background:white;padding:5px 14px;border-radius:20px;font-size:12px;color:var(--purple-d);font-weight:500;margin-bottom:1rem;box-shadow:0 2px 10px rgba(127,119,221,.15);position:relative;z-index:1}
-.hub-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:var(--purple-d);line-height:1.2;margin-bottom:.5rem;position:relative;z-index:1}
-.hub-title span{color:var(--teal-d)}
-.hub-sub{font-size:.95rem;color:var(--muted);line-height:1.6;position:relative;z-index:1}
+.hub-topbar{background:white;border-bottom:1px solid var(--border);padding:12px 1rem;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:100}
+.hub-topbar-title{font-size:14px;font-weight:700;color:var(--text);flex:1}
+.hub-topbar-sub{font-size:11px;color:var(--muted)}
+.home-btn{background:none;border:none;cursor:pointer;color:var(--muted);font-size:20px;padding:4px;border-radius:8px;display:flex;align-items:center;transition:all .15s}
+.home-btn:hover{background:#eee;color:var(--text)}
 
-.hub-inner{max-width:720px;margin:0 auto;padding:2rem 1rem 3rem}
-.hub-grid{display:grid;grid-template-columns:1fr;gap:16px}
+.hub-hero{background:linear-gradient(135deg,#EEEDFE 0%,#E1F5EE 50%,#EBF0F8 100%);padding:2rem 1rem 1.5rem;text-align:center}
+.hub-icon{font-size:2.5rem;display:block;margin-bottom:.5rem}
+.hub-title{font-size:1.4rem;font-weight:800;color:var(--purple-d);margin-bottom:.25rem}
+.hub-sub{font-size:13px;color:var(--muted)}
 
-.hub-card{background:var(--white);border-radius:var(--rl);border:1.5px solid var(--border);overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.05);transition:all .2s;cursor:pointer}
-.hub-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.1)}
-.hc-top{padding:1.5rem;display:flex;align-items:center;gap:16px}
-.hc-icon{font-size:2.8rem;flex-shrink:0}
+.hub-inner{max-width:680px;margin:0 auto;padding:1.5rem 1rem 3rem}
+.hub-grid{display:grid;grid-template-columns:1fr;gap:14px}
+.hub-card{background:var(--white);border-radius:var(--rl);border:1.5px solid var(--border);overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.05);transition:all .2s;cursor:pointer}
+.hub-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.1)}
+.hc-top{padding:1.5rem;display:flex;align-items:center;gap:14px}
+.hc-icon{font-size:2.6rem;flex-shrink:0}
 .hc-info{flex:1}
-.hc-title{font-size:1.1rem;font-weight:800;margin-bottom:4px}
+.hc-title{font-size:1rem;font-weight:800;margin-bottom:4px}
 .hc-desc{font-size:13px;color:var(--muted);line-height:1.5}
-.hc-blocks{display:flex;flex-wrap:wrap;gap:6px;padding:0 1.5rem 1.25rem}
-.hc-tag{font-size:11px;font-weight:600;padding:3px 10px;border-radius:10px}
-.hc-arrow{margin-left:auto;font-size:20px;opacity:.4;transition:all .2s}
+.hc-arrow{font-size:22px;opacity:.35;transition:all .2s}
 .hub-card:hover .hc-arrow{opacity:1;transform:translateX(4px)}
+.hc-tags{display:flex;flex-wrap:wrap;gap:6px;padding:0 1.5rem 1.25rem}
+.hc-tag{font-size:10px;font-weight:600;padding:3px 10px;border-radius:10px}
 
-/* ========== TOOL SCREENS ========== */
-.topbar{position:sticky;top:0;z-index:100;background:rgba(245,247,250,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:10px 1rem;display:flex;align-items:center;gap:10px}
+/* ========== SCREEN 3: TOOL HOME ========== */
+#toolhome{background:var(--bg)}
+.topbar{position:sticky;top:0;z-index:100;background:rgba(245,247,250,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:10px 1rem;display:flex;align-items:center;gap:8px}
 .back-btn{background:none;border:none;cursor:pointer;color:var(--muted);font-size:20px;padding:4px;border-radius:8px;display:flex;align-items:center;transition:all .15s;flex-shrink:0}
 .back-btn:hover{background:#eee;color:var(--text)}
 .tb-info{flex:1;min-width:0}
-.tb-title{font-size:14px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-title{font-size:14px;font-weight:700;color:var(--text)}
 .tb-sub{font-size:11px;color:var(--muted)}
-.prog-bar{width:60px;height:4px;border-radius:2px;background:var(--border);overflow:hidden;flex-shrink:0}
-.prog-fill{height:100%;border-radius:2px;transition:width .4s}
-.prog-pct{font-size:11px;font-weight:600;color:var(--muted);min-width:28px}
 
-/* TOOL HOME */
-.tool-hero{padding:1.5rem 1rem 1rem;text-align:center}
+.tool-hero{padding:1.75rem 1rem 1.25rem;text-align:center}
 .th-icon{font-size:2.5rem;display:block;margin-bottom:.5rem}
-.th-title{font-size:1.3rem;font-weight:800;margin-bottom:.25rem}
+.th-title{font-size:1.2rem;font-weight:800;margin-bottom:.25rem}
 .th-sub{font-size:13px;color:var(--muted);line-height:1.5}
 
-.tool-inner{max-width:680px;margin:0 auto;padding:.5rem 1rem 3rem}
-.section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:1.25rem 0 .75rem}
-
-/* VERSION TABS (anketa) */
 .vtabs{display:flex;gap:8px;justify-content:center;margin:1rem 0}
 .vtab{padding:8px 18px;border-radius:50px;border:1.5px solid var(--border);background:white;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;color:var(--muted)}
 .vtab:hover{background:var(--bg)}
@@ -88,7 +97,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .vtab.vb{background:var(--teal-l);color:var(--teal-d);border-color:var(--teal)}
 .vtab.vc{background:var(--coral-l);color:var(--coral-d);border-color:var(--coral)}
 
-/* BLOCK GRID */
+.tool-inner{max-width:680px;margin:0 auto;padding:.5rem 1rem 3rem}
+.section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:1.25rem 0 .75rem}
 .block-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .block-card{background:var(--white);border-radius:var(--rl);border:1.5px solid var(--border);padding:1.1rem;cursor:pointer;transition:all .2s;box-shadow:0 2px 6px rgba(0,0,0,.04);display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden}
 .block-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
@@ -99,12 +109,37 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .bc-tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;display:inline-block;margin-top:2px}
 .bc-warn{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--amber);margin-top:2px}
 
-/* SAFETY BTN */
 .safety-btn{display:flex;align-items:center;gap:10px;background:var(--sage);color:white;border:none;border-radius:var(--r);padding:12px 16px;margin:.75rem auto;max-width:680px;width:calc(100% - 2rem);cursor:pointer;font-size:14px;font-weight:700;transition:all .15s;box-shadow:0 2px 10px rgba(74,124,110,.3)}
 .safety-btn:hover{opacity:.9;transform:translateY(-1px)}
 
-/* MODULE */
-.module-inner{max-width:680px;margin:0 auto;padding:1.5rem 1rem 5rem}
+/* ========== SCREEN 4: PTSD COVER ========== */
+#ptsdcover{min-height:100vh;background:linear-gradient(160deg,#3D5A7A 0%,#4A6E8A 40%,#5A7E90 70%,#5A8C7E 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.5rem;text-align:center;position:relative;overflow:hidden}
+.ptsd-cover-topbar{position:absolute;top:0;left:0;right:0;padding:12px 1rem;display:flex;align-items:center;gap:8px;z-index:10}
+.cs{position:absolute;border-radius:50%;opacity:.07}
+.cs1{width:400px;height:400px;background:white;top:-150px;left:-100px}
+.cs2{width:280px;height:280px;background:#5A8C7E;bottom:-80px;right:-80px}
+.cover-content{position:relative;z-index:1;max-width:520px}
+.cover-icon{font-size:3.5rem;margin-bottom:1.25rem;display:block;animation:fadeUp .6s ease both}
+.cover-badge-dark{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:5px 14px;border-radius:20px;font-size:12px;color:rgba(255,255,255,.9);font-weight:500;margin-bottom:1.25rem}
+.cover-title-dark{font-size:clamp(2rem,5vw,3rem);font-weight:800;color:white;line-height:1.15;margin-bottom:.75rem}
+.cover-title-dark span{color:#A8E6CF}
+.cover-sub-dark{font-size:1rem;color:rgba(255,255,255,.75);line-height:1.7;margin-bottom:1.5rem}
+.cover-note-dark{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:var(--rl);padding:1.25rem 1.5rem;margin-bottom:2rem;text-align:left}
+.cover-note-dark p{font-size:13px;color:rgba(255,255,255,.8);line-height:1.7}
+.cover-note-dark p+p{margin-top:8px}
+.cover-note-dark strong{color:white}
+.cover-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.cover-btn-main{display:inline-flex;align-items:center;gap:10px;padding:14px 36px;border-radius:50px;border:none;font-size:15px;font-weight:700;cursor:pointer;background:white;color:#3D5A7A;transition:all .2s;box-shadow:0 4px 20px rgba(0,0,0,.25)}
+.cover-btn-main:hover{transform:translateY(-2px)}
+.cover-btn-ghost{padding:14px 24px;border-radius:50px;border:1.5px solid rgba(255,255,255,.35);background:transparent;color:rgba(255,255,255,.85);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+.cover-btn-ghost:hover{background:rgba(255,255,255,.1)}
+
+/* ========== SCREEN 5: MODULE ========== */
+#module{background:var(--bg)}
+.prog-bar{width:60px;height:4px;border-radius:2px;background:var(--border);overflow:hidden;flex-shrink:0}
+.prog-fill{height:100%;border-radius:2px;transition:width .4s}
+.prog-pct{font-size:11px;font-weight:600;color:var(--muted);min-width:28px}
+.module-inner{max-width:680px;margin:0 auto;padding:1.5rem 1rem 6rem}
 .module-header{border-radius:var(--rl);padding:1.25rem 1.5rem;margin-bottom:1rem;display:flex;align-items:center;gap:14px}
 .mh-icon{font-size:2rem}
 .mh-title{font-size:1.1rem;font-weight:800}
@@ -120,7 +155,6 @@ textarea{width:100%;border:1.5px solid var(--border);border-radius:var(--r);padd
 textarea:focus{outline:none;background:var(--white)}
 .scale-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .scale-btn{width:40px;height:40px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--white);cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);transition:all .15s}
-.scale-btn:hover{background:var(--bg);transform:scale(1.05)}
 .scale-hints{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:5px}
 .pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .pill{padding:7px 13px;border:1.5px solid var(--border);border-radius:20px;font-size:13px;cursor:pointer;color:var(--muted);background:var(--white);transition:all .15s;user-select:none;font-weight:500}
@@ -135,7 +169,6 @@ textarea:focus{outline:none;background:var(--white)}
 .info-block.amber{background:var(--amber-l);border-left:3px solid var(--amber)}
 .info-block.warm{background:var(--warm-l);border-left:3px solid var(--warm)}
 .info-title{font-size:12px;font-weight:700;margin-bottom:6px}
-.info-text{font-size:13px;color:var(--text);line-height:1.7}
 .secret-box{border-left:3px solid #EF9F27;background:#FAEEDA;border-radius:0 var(--r) var(--r) 0;padding:14px;margin-top:12px}
 .secret-label{font-size:12px;font-weight:700;color:#854F0B;margin-bottom:10px}
 .body-map{border:2px dashed var(--border);border-radius:var(--r);padding:20px;margin-top:12px;text-align:center;background:var(--bg)}
@@ -155,51 +188,58 @@ textarea:focus{outline:none;background:var(--white)}
 .t-btn.secondary{background:white;border:1.5px solid}
 
 /* SAVE BAR */
-.save-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-top:1px solid var(--border);padding:12px 1rem;display:flex;align-items:center;gap:8px;z-index:50;flex-wrap:wrap}
-.s-btn{padding:10px 18px;border-radius:50px;border:1.5px solid var(--border);font-size:13px;font-weight:700;cursor:pointer;background:var(--white);color:var(--text);transition:all .15s;display:flex;align-items:center;gap:6px}
+.save-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-top:1px solid var(--border);padding:12px 1rem;display:flex;align-items:center;gap:8px;z-index:50;flex-wrap:wrap}
+.s-btn{padding:10px 16px;border-radius:50px;border:1.5px solid var(--border);font-size:13px;font-weight:700;cursor:pointer;background:var(--white);color:var(--text);transition:all .15s;display:flex;align-items:center;gap:6px}
 .s-btn.primary{color:white;border-color:transparent}
 .s-btn:hover{opacity:.85}
-
-/* PTSD COVER */
-.ptsd-cover{min-height:100vh;background:linear-gradient(160deg,#1A2E45 0%,#2C4A6E 40%,#3D5F7A 70%,#4A7C6E 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.5rem;text-align:center;position:relative;overflow:hidden}
-.ptsd-cover .cs{position:absolute;border-radius:50%;opacity:.06}
-.ptsd-cover .cs1{width:400px;height:400px;background:white;top:-150px;left:-100px}
-.ptsd-cover .cs2{width:300px;height:300px;background:#4A7C6E;bottom:-80px;right:-80px}
-.cover-content{position:relative;z-index:1;max-width:520px}
-.cover-icon{font-size:3.5rem;margin-bottom:1.5rem;display:block;animation:fadeUp .6s ease both}
-.cover-badge-dark{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);padding:5px 14px;border-radius:20px;font-size:12px;color:rgba(255,255,255,.8);font-weight:500;margin-bottom:1.25rem}
-.cover-title-dark{font-size:clamp(2rem,5vw,3rem);font-weight:800;color:white;line-height:1.15;margin-bottom:.75rem}
-.cover-title-dark span{color:#7BC8A8}
-.cover-sub-dark{font-size:1rem;color:rgba(255,255,255,.65);line-height:1.7;margin-bottom:2rem}
-.cover-note-dark{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:var(--rl);padding:1.25rem 1.5rem;margin-bottom:2rem;text-align:left}
-.cover-note-dark p{font-size:13px;color:rgba(255,255,255,.75);line-height:1.7}
-.cover-note-dark p+p{margin-top:8px}
-.cover-note-dark strong{color:rgba(255,255,255,.95)}
-.cover-btn-dark{display:inline-flex;align-items:center;gap:10px;padding:16px 40px;border-radius:50px;border:none;font-size:16px;font-weight:700;cursor:pointer;background:white;color:var(--navy-d);transition:all .2s;box-shadow:0 4px 24px rgba(0,0,0,.3)}
-.cover-btn-dark:hover{transform:translateY(-2px)}
 
 .confetti-piece{position:fixed;width:10px;height:10px;top:-10px;border-radius:2px;animation:cfall linear forwards;pointer-events:none;z-index:9999}
 @keyframes cfall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
 
 @media(max-width:480px){
   .block-grid{grid-template-columns:1fr}
-  .hub-grid{grid-template-columns:1fr}
   .vtabs{flex-wrap:wrap}
+  .land-btn{padding:14px 36px;font-size:15px}
 }
 </style>
 </head>
 <body>
 
-<!-- ========== MAIN HUB ========== -->
-<div class="screen active" id="hub">
+<!-- ========== 1. LANDING ========== -->
+<div class="screen active" id="landing">
+  <div class="land-shape ls1"></div>
+  <div class="land-shape ls2"></div>
+  <div class="land-shape ls3"></div>
+  <div class="land-content">
+    <div class="land-badge"><i class="ti ti-heart"></i> Психологічний кабінет</div>
+    <h1 class="land-title">Оксана<br><span>Урожай</span></h1>
+    <p class="land-sub">Психотерапевт · Психолог</p>
+    <p class="land-author">Авторські інструменти самодослідження</p>
+    <p class="land-quote">«Тут немає правильних чи неправильних відповідей.<br>Є лише ти — і твоя правда.»</p>
+    <button class="land-btn" onclick="goHub()">
+      <i class="ti ti-arrow-right"></i> Почати
+    </button>
+    <p class="land-note">Всі відповіді залишаються лише на вашому пристрої</p>
+  </div>
+</div>
+
+<!-- ========== 2. HUB ========== -->
+<div class="screen" id="hub">
+  <div class="hub-topbar">
+    <button class="home-btn" onclick="goLanding()" title="На головну"><i class="ti ti-home"></i></button>
+    <div>
+      <div class="hub-topbar-title">Психологічний кабінет · Оксана Урожай</div>
+      <div style="font-size:11px;color:var(--muted)">Оберіть інструмент</div>
+    </div>
+  </div>
   <div class="hub-hero">
-    <div class="hs hs1"></div><div class="hs hs2"></div><div class="hs hs3"></div>
-    <div class="hub-badge"><i class="ti ti-heart"></i> Психологічний кабінет · Оксана Урожай</div>
-    <h1 class="hub-title">Інструменти<br><span>самодослідження</span></h1>
-    <p class="hub-sub">Обери інструмент, який потрібен тобі прямо зараз</p>
+    <span class="hub-icon">🗂️</span>
+    <div class="hub-title">Інструменти самодослідження</div>
+    <div class="hub-sub">Оберіть інструмент, який потрібен прямо зараз</div>
   </div>
   <div class="hub-inner">
     <div class="hub-grid">
+
       <div class="hub-card" onclick="showTool('anketa')">
         <div class="hc-top" style="background:linear-gradient(135deg,#EEEDFE,#E1F5EE)">
           <span class="hc-icon">📓</span>
@@ -209,11 +249,10 @@ textarea:focus{outline:none;background:var(--white)}
           </div>
           <i class="ti ti-chevron-right hc-arrow" style="color:var(--purple)"></i>
         </div>
-        <div class="hc-blocks">
+        <div class="hc-tags">
           <span class="hc-tag" style="background:var(--purple-l);color:var(--purple-d)">🌸 Підлітки</span>
           <span class="hc-tag" style="background:var(--teal-l);color:var(--teal-d)">🌿 Дорослі</span>
           <span class="hc-tag" style="background:var(--coral-l);color:var(--coral-d)">🛡️ Ветерани</span>
-          <span class="hc-tag" style="background:#f0f0f0;color:#888">6–7 блоків</span>
         </div>
       </div>
 
@@ -222,119 +261,90 @@ textarea:focus{outline:none;background:var(--white)}
           <span class="hc-icon">🌊</span>
           <div class="hc-info">
             <div class="hc-title" style="color:var(--navy-d)">Тривожність — самодослідження</div>
-            <div class="hc-desc">Зрозуміти, стабілізуватися, впоратися. Дихальні техніки з таймером, трекер, КБТ-протокол.</div>
+            <div class="hc-desc">Зрозуміти, стабілізуватися, впоратися. Дихання з таймером, трекер, КБТ-протокол.</div>
           </div>
           <i class="ti ti-chevron-right hc-arrow" style="color:var(--blue)"></i>
         </div>
-        <div class="hc-blocks">
+        <div class="hc-tags">
           <span class="hc-tag" style="background:var(--blue-l);color:var(--blue)">📊 Оцінка стану</span>
           <span class="hc-tag" style="background:var(--green-l);color:var(--green)">🌬️ Дихання</span>
-          <span class="hc-tag" style="background:var(--amber-l);color:var(--amber)">🧠 КБТ-протокол</span>
-          <span class="hc-tag" style="background:#f0f0f0;color:#888">7 блоків</span>
+          <span class="hc-tag" style="background:var(--amber-l);color:var(--amber)">🧠 КБТ</span>
         </div>
       </div>
 
       <div class="hub-card" onclick="showTool('ptsd-cover')">
-        <div class="hc-top" style="background:linear-gradient(135deg,#1A2E45,#2C4A6E)">
+        <div class="hc-top" style="background:linear-gradient(135deg,#4A6E8A,#5A8C7E)">
           <span class="hc-icon">🌊</span>
           <div class="hc-info">
             <div class="hc-title" style="color:white">Мій шлях до безпеки</div>
-            <div class="hc-desc" style="color:rgba(255,255,255,.65)">Самодослідження та стабілізація для людей з травматичним досвідом (ПТСР).</div>
+            <div class="hc-desc" style="color:rgba(255,255,255,.7)">Самодослідження та стабілізація для людей з травматичним досвідом (ПТСР).</div>
           </div>
           <i class="ti ti-chevron-right hc-arrow" style="color:rgba(255,255,255,.6)"></i>
         </div>
-        <div class="hc-blocks">
+        <div class="hc-tags">
           <span class="hc-tag" style="background:var(--sage-l);color:var(--sage)">🆘 Безпека</span>
           <span class="hc-tag" style="background:var(--navy-l);color:var(--navy)">⚡ Реакція</span>
           <span class="hc-tag" style="background:var(--green-l);color:var(--green)">⚓ Стабілізація</span>
-          <span class="hc-tag" style="background:#f0f0f0;color:#888">8 блоків</span>
         </div>
       </div>
+
     </div>
-    <p style="text-align:center;font-size:12px;color:var(--muted);margin-top:2rem">© Оксана Урожай · Психотерапевт · Всі відповіді залишаються лише на вашому пристрої</p>
+    <p style="text-align:center;font-size:11px;color:var(--muted);margin-top:2rem">© Оксана Урожай · Психотерапевт<br>Тривога — це лише шторм у твоїй голові. Але ти — цілий океан, здатний його витримати.</p>
   </div>
 </div>
 
-<!-- ========== ANKETA TOOL ========== -->
-<div class="screen" id="anketa">
+<!-- ========== 3. TOOL HOME ========== -->
+<div class="screen" id="toolhome">
   <div class="topbar">
-    <button class="back-btn" onclick="goHub()" title="На головну"><i class="ti ti-home"></i></button>
-    <div class="tb-info"><div class="tb-title">Терапевтична анкета самопізнання</div><div class="tb-sub" id="anketa-tb-sub">Оберіть версію</div></div>
-  </div>
-  <div class="tool-hero" style="background:linear-gradient(135deg,#EEEDFE,#E1F5EE)">
-    <span class="th-icon">📓</span>
-    <div class="th-title" style="color:var(--purple-d)">Терапевтична анкета самопізнання</div>
-    <div class="th-sub">Обери версію і блок, який потрібен прямо зараз</div>
-    <div class="vtabs">
-      <button class="vtab va" onclick="setAnketaVersion('a')">🌸 Підлітки</button>
-      <button class="vtab" onclick="setAnketaVersion('b')">🌿 Дорослі</button>
-      <button class="vtab" onclick="setAnketaVersion('c')">🛡️ Ветерани</button>
+    <button class="back-btn" onclick="goHub()" title="Назад до інструментів"><i class="ti ti-arrow-left"></i></button>
+    <div class="tb-info">
+      <div class="tb-title" id="tool-title">Інструмент</div>
+      <div class="tb-sub" id="tool-sub"></div>
     </div>
+    <button class="back-btn" onclick="goLanding()" title="На головну"><i class="ti ti-home"></i></button>
   </div>
-  <div class="tool-inner" id="anketa-blocks"></div>
+  <div id="tool-hero-wrap"></div>
+  <div class="tool-inner" id="tool-blocks"></div>
 </div>
 
-<!-- ========== ANXIETY TOOL ========== -->
-<div class="screen" id="anxiety">
-  <div class="topbar">
-    <button class="back-btn" onclick="goHub()" title="На головну"><i class="ti ti-home"></i></button>
-    <div class="tb-info"><div class="tb-title">Тривожність — самодослідження</div><div class="tb-sub">Обери блок, який потрібен зараз</div></div>
-  </div>
-  <div class="tool-hero" style="background:linear-gradient(135deg,#EBF2FC,#E3F5EF)">
-    <span class="th-icon">🌊</span>
-    <div class="th-title" style="color:var(--navy-d)">Моя тривожність</div>
-    <div class="th-sub">Обери блок, який потрібен прямо зараз</div>
-  </div>
-  <div class="tool-inner" id="anxiety-blocks"></div>
-</div>
-
-<!-- ========== PTSD COVER ========== -->
+<!-- ========== 4. PTSD COVER ========== -->
 <div class="screen" id="ptsd-cover">
-  <div class="ptsd-cover">
-    <div class="cs cs1"></div><div class="cs cs2"></div>
-    <div class="cover-content">
-      <span class="cover-icon">🌊</span>
-      <div class="cover-badge-dark"><i class="ti ti-shield-heart"></i> Авторська методика · Оксана Урожай</div>
-      <h1 class="cover-title-dark">Мій шлях<br>до <span>безпеки</span></h1>
-      <p class="cover-sub-dark">Інструмент самодослідження та стабілізації для людей, які пережили травматичний досвід</p>
-      <div class="cover-note-dark">
-        <p><strong>Перш ніж почати:</strong></p>
-        <p>Цей інструмент — не замінник терапії, а доповнення до неї. Ти маєш право зупинитися в будь-який момент.</p>
-        <p><strong>Якщо стане важко</strong> — натисни кнопку «Моя безпека» на наступній сторінці.</p>
-      </div>
-      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-        <button class="cover-btn-dark" onclick="showTool('ptsd')"><i class="ti ti-arrow-right"></i> Перейти до інструменту</button>
-        <button onclick="goHub()" style="padding:16px 24px;border-radius:50px;border:1.5px solid rgba(255,255,255,.3);background:transparent;color:rgba(255,255,255,.8);font-size:14px;font-weight:600;cursor:pointer">На головну</button>
-      </div>
+  <div class="cs cs1"></div><div class="cs cs2"></div>
+  <div class="ptsd-cover-topbar">
+    <button class="back-btn" style="color:rgba(255,255,255,.7)" onclick="goHub()"><i class="ti ti-arrow-left"></i></button>
+    <div style="flex:1;font-size:13px;color:rgba(255,255,255,.7)">Мій шлях до безпеки</div>
+    <button class="back-btn" style="color:rgba(255,255,255,.7)" onclick="goLanding()"><i class="ti ti-home"></i></button>
+  </div>
+  <div class="cover-content">
+    <span class="cover-icon">🌊</span>
+    <div class="cover-badge-dark"><i class="ti ti-shield-heart"></i> Авторська методика · Оксана Урожай</div>
+    <h1 class="cover-title-dark">Мій шлях<br>до <span>безпеки</span></h1>
+    <p class="cover-sub-dark">Інструмент самодослідження та стабілізації для людей, які пережили травматичний досвід</p>
+    <div class="cover-note-dark">
+      <p><strong>Перш ніж почати:</strong></p>
+      <p>Цей інструмент — доповнення до терапії. Ти маєш право зупинитися в будь-який момент.</p>
+      <p><strong>Якщо стане важко</strong> — натисни кнопку «Моя безпека» на наступній сторінці.</p>
+    </div>
+    <div class="cover-btns">
+      <button class="cover-btn-main" onclick="showTool('ptsd')"><i class="ti ti-arrow-right"></i> Перейти до інструменту</button>
+      <button class="cover-btn-ghost" onclick="goHub()">Назад</button>
     </div>
   </div>
 </div>
 
-<!-- ========== PTSD TOOL ========== -->
-<div class="screen" id="ptsd">
-  <div class="topbar">
-    <button class="back-btn" onclick="showTool('ptsd-cover')" title="Назад"><i class="ti ti-arrow-left"></i></button>
-    <div class="tb-info"><div class="tb-title">Мій шлях до безпеки</div><div class="tb-sub">Обери блок, який потрібен зараз</div></div>
-    <button class="back-btn" onclick="goHub()" title="На головну" style="margin-left:4px"><i class="ti ti-home"></i></button>
-  </div>
-  <button class="safety-btn" onclick="openModule('ptsd','safety')">
-    <i class="ti ti-shield-heart" style="font-size:20px"></i>
-    <span><div style="font-size:14px;font-weight:700">🆘 Моя безпека</div><div style="font-size:11px;opacity:.8">Якщо стало важко — починай тут</div></span>
-    <span style="font-size:10px;background:rgba(255,255,255,.2);padding:2px 8px;border-radius:10px;font-weight:500">Завжди доступно</span>
-  </button>
-  <div class="tool-inner" id="ptsd-blocks"></div>
-</div>
-
-<!-- ========== MODULE SCREEN ========== -->
+<!-- ========== 5. MODULE ========== -->
 <div class="screen" id="module">
   <div class="topbar">
-    <button class="back-btn" id="mod-back-btn" onclick="moduleBack()" title="Назад"><i class="ti ti-arrow-left"></i></button>
-    <div class="tb-info"><div class="tb-title" id="mod-title"></div><div class="tb-sub" id="mod-sub"></div></div>
+    <button class="back-btn" onclick="moduleBack()" title="Назад до блоків"><i class="ti ti-arrow-left"></i></button>
+    <div class="tb-info">
+      <div class="tb-title" id="mod-title"></div>
+      <div class="tb-sub" id="mod-sub"></div>
+    </div>
     <div style="display:flex;align-items:center;gap:6px">
       <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
       <span class="prog-pct" id="prog-pct">0%</span>
     </div>
-    <button class="back-btn" onclick="goHub()" title="На головну" style="margin-left:4px"><i class="ti ti-home"></i></button>
+    <button class="back-btn" onclick="goLanding()" title="На головну"><i class="ti ti-home"></i></button>
   </div>
   <div class="module-inner" id="module-inner"></div>
   <div class="save-bar">
@@ -346,6 +356,7 @@ textarea:focus{outline:none;background:var(--white)}
 </div>
 
 <script>
+
 // ===== STATE =====
 let currentTool = null;
 let currentModuleId = null;
@@ -700,6 +711,76 @@ function savePDF(){
 function copyAnswers(){
   const text=buildAnswersText();
   navigator.clipboard.writeText(text).then(()=>{const btn=document.querySelector('[onclick="copyAnswers()"]');btn.innerHTML='<i class="ti ti-check"></i> Скопійовано!';setTimeout(()=>btn.innerHTML='<i class="ti ti-copy"></i> Копіювати',3000)});
+}
+
+// ===== NAVIGATION OVERRIDES =====
+function goLanding(){ showScreen('landing'); }
+function goHub(){ showScreen('hub'); }
+
+function showTool(id){
+  currentTool = id;
+  if(id === 'ptsd-cover'){ showScreen('ptsd-cover'); return; }
+  if(id === 'ptsd'){
+    document.getElementById('tool-title').textContent = 'Мій шлях до безпеки';
+    document.getElementById('tool-sub').textContent = 'Оберіть блок, який потрібен зараз';
+    buildToolHero('🌊','Мій шлях до безпеки','Оберіть блок, який потрібен прямо зараз','linear-gradient(135deg,#4A6E8A,#5A8C7E)','white','rgba(255,255,255,.7)');
+    const safetyWrap = document.createElement('div');
+    safetyWrap.style.cssText = 'max-width:680px;margin:0 auto;padding:0 1rem';
+    const safetyBtnEl = document.createElement('button');
+    safetyBtnEl.className = 'safety-btn';
+    safetyBtnEl.style.cssText = 'width:100%;margin:.75rem 0';
+    safetyBtnEl.innerHTML = '<i class="ti ti-shield-heart" style="font-size:20px"></i><span><div style="font-size:14px;font-weight:700">🆘 Моя безпека</div><div style="font-size:11px;opacity:.8">Якщо стало важко — починай тут</div></span><span style="font-size:10px;background:rgba(255,255,255,.2);padding:2px 8px;border-radius:10px">Завжди доступно</span>';
+    safetyBtnEl.onclick = () => openModule('ptsd','safety');
+    safetyWrap.appendChild(safetyBtnEl);
+    const toolBlocks = document.getElementById('tool-blocks');
+    toolBlocks.innerHTML = '';
+    toolBlocks.parentNode.insertBefore(safetyWrap, toolBlocks);
+    buildPtsdBlocks();
+    showScreen('toolhome'); return;
+  }
+  if(id === 'anketa'){
+    document.getElementById('tool-title').textContent = 'Терапевтична анкета самопізнання';
+    document.getElementById('tool-sub').textContent = 'Оберіть версію та блок';
+    buildToolHero('📓','Терапевтична анкета самопізнання','Обери версію і блок, який потрібен прямо зараз','linear-gradient(135deg,#EEEDFE,#E1F5EE)','var(--purple-d)','var(--muted)',true);
+    setAnketaVersion('a');
+    showScreen('toolhome'); return;
+  }
+  if(id === 'anxiety'){
+    document.getElementById('tool-title').textContent = 'Тривожність — самодослідження';
+    document.getElementById('tool-sub').textContent = 'Оберіть блок, який потрібен зараз';
+    buildToolHero('🌊','Тривожність — самодослідження','Обери блок, який потрібен прямо зараз','linear-gradient(135deg,#EBF2FC,#E3F5EF)','var(--navy-d)','var(--muted)');
+    buildAnxietyBlocks();
+    showScreen('toolhome'); return;
+  }
+}
+
+function buildToolHero(icon,title,sub,bg,titleColor,subColor,hasTabs=false){
+  const wrap = document.getElementById('tool-hero-wrap');
+  wrap.innerHTML = '';
+  const hero = document.createElement('div');
+  hero.className = 'tool-hero';
+  hero.style.background = bg;
+  hero.innerHTML = `<span class="th-icon">${icon}</span><div class="th-title" style="color:${titleColor}">${title}</div><div class="th-sub" style="color:${subColor}">${sub}</div>`;
+  if(hasTabs){
+    const tabs = document.createElement('div');
+    tabs.className = 'vtabs';
+    [{v:'a',label:'🌸 Підлітки'},{v:'b',label:'🌿 Дорослі'},{v:'c',label:'🛡️ Ветерани'}].forEach(t=>{
+      const btn = document.createElement('button');
+      btn.className = 'vtab' + (t.v==='a'?' va':'');
+      btn.textContent = t.label;
+      btn.onclick = () => setAnketaVersion(t.v);
+      tabs.appendChild(btn);
+    });
+    hero.appendChild(tabs);
+  }
+  wrap.appendChild(hero);
+}
+
+function moduleBack(){
+  // Remove any injected safety wrap before going back
+  const old = document.querySelector('#toolhome > div.safety-wrap-injected');
+  if(old) old.remove();
+  showScreen('toolhome');
 }
 </script>
 </body>
