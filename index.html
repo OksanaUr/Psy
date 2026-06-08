@@ -257,10 +257,12 @@ textarea:focus{outline:none;background:var(--white)}
   <div class="land-shape ls3"></div>
   <div class="land-content">
     <div class="land-badge"><i class="ti ti-heart"></i> Психологічний кабінет</div>
-    <h1 class="land-title">Оксана<br><span>Урожай</span></h1>
-    <p class="land-sub">Психотерапевт · Психолог</p>
-    <p class="land-author">Авторські інструменти самодослідження</p>
-    <p class="land-quote">«Тут немає правильних чи неправильних відповідей.<br>Є лише ти — і твоя правда.»</p>
+    <h1 class="land-title">Простір<br><span>самопізнання</span></h1>
+    <div class="land-quote-big">
+      <span class="q-line1">Тут немає правильних чи неправильних відповідей.</span>
+      <span class="q-line2">Є лише <span class="q-accent">ти</span> —</span>
+      <span class="q-line3">і твоя правда.</span>
+    </div>
     <button class="land-btn" onclick="goHub()">
       <i class="ti ti-arrow-right"></i> Почати
     </button>
@@ -273,14 +275,14 @@ textarea:focus{outline:none;background:var(--white)}
   <div class="hub-topbar">
     <button onclick="goLanding()" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text);flex-shrink:0"><i class="ti ti-home"></i> Додому</button>
     <div>
-      <div class="hub-topbar-title">Психологічний кабінет · Оксана Урожай</div>
+      <div class="hub-topbar-title">Психологічний кабінет</div>
       <div style="font-size:11px;color:var(--muted)">Оберіть інструмент</div>
     </div>
   </div>
   <div class="hub-hero">
     <span class="hub-icon">🗂️</span>
     <div class="hub-title">Інструменти самодослідження</div>
-    <div class="hub-sub">Оберіть інструмент, який потрібен прямо зараз</div>
+    <div class="hub-sub">Оберіть інструмент, який потрібен вашому клієнту</div>
   </div>
   <div class="hub-inner">
     <div class="hub-grid">
@@ -349,7 +351,7 @@ textarea:focus{outline:none;background:var(--white)}
       </div>
 
     </div>
-    <p style="text-align:center;font-size:11px;color:var(--muted);margin-top:2rem">© Оксана Урожай · Психотерапевт<br>Тривога — це лише шторм у твоїй голові. Але ти — цілий океан, здатний його витримати.</p>
+    <p style="text-align:center;font-size:11px;color:var(--muted);margin-top:2rem">© Оксана Урожай · Психолог, 2026<br>Тривога — це лише шторм у твоїй голові. Але ти — цілий океан, здатний його витримати.</p>
   </div>
 </div>
 
@@ -425,7 +427,7 @@ textarea:focus{outline:none;background:var(--white)}
   </div>
   <div class="cover-content">
     <span class="cover-icon">🌊</span>
-    <div class="cover-badge-dark"><i class="ti ti-shield-heart"></i> Авторська методика · Оксана Урожай</div>
+    <div class="cover-badge-dark"><i class="ti ti-shield-heart"></i> Психологічний кабінет</div>
     <h1 class="cover-title-dark">Мій шлях<br>до <span>безпеки</span></h1>
     <p class="cover-sub-dark">Інструмент самодослідження та стабілізації для людей, які пережили травматичний досвід</p>
     <div class="cover-note-dark">
@@ -880,7 +882,7 @@ function savePDF(){
   let fields='';
   inner.querySelectorAll('textarea').forEach(ta=>{if(!ta.value.trim())return;const fg=ta.closest('.field-group');const lbl=fg?fg.querySelector('.field-label'):null;const prev=ta.previousElementSibling;const label=lbl?lbl.textContent:(prev&&(prev.classList.contains('hl-label')||prev.style.fontWeight==='700')?prev.textContent:'');fields+=`<div class="f">${label?`<div class="fl">${label}</div>`:''}<div class="fv">${ta.value.trim().replace(/\n/g,'<br>')}</div></div>`});
   const win=window.open('','_blank');if(!win){alert('Дозволь pop-up для цього сайту.');return}
-  win.document.write(`<!DOCTYPE html><html lang="uk"><head><meta charset="UTF-8"><title>${m?m.title:''}</title><style>@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}body{font-family:Arial,sans-serif;color:#2C2C2C;padding:32px 40px;max-width:680px;margin:0 auto;font-size:13px;line-height:1.6}h1{color:${accent};font-size:20px;margin:0 0 4px}.meta{color:#999;font-size:12px;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid ${accent}}.f{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #f0f0f0}.fl{font-size:11px;color:#999;margin-bottom:3px}.fv{font-size:13px}.footer{margin-top:32px;font-size:10px;color:#ccc;text-align:center}.hint{background:#f0f0f0;border-radius:8px;padding:12px 16px;margin-bottom:24px;font-size:12px;color:#555}@media print{.hint{display:none}}</style></head><body><div class="hint">💡 Щоб зберегти як PDF: <strong>Ctrl+P</strong> → <strong>«Зберегти як PDF»</strong></div><h1>${m?m.icon+' '+m.title:''}</h1><div class="meta">© Оксана Урожай · ${new Date().toLocaleDateString('uk-UA')}</div>${fields}<div class="footer">© Оксана Урожай · Психологічний кабінет</div><script>window.onload=function(){window.print()}<\/script></body></html>`);
+  win.document.write(`<!DOCTYPE html><html lang="uk"><head><meta charset="UTF-8"><title>${m?m.title:''}</title><style>@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}body{font-family:Arial,sans-serif;color:#2C2C2C;padding:32px 40px;max-width:680px;margin:0 auto;font-size:13px;line-height:1.6}h1{color:${accent};font-size:20px;margin:0 0 4px}.meta{color:#999;font-size:12px;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid ${accent}}.f{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #f0f0f0}.fl{font-size:11px;color:#999;margin-bottom:3px}.fv{font-size:13px}.footer{margin-top:32px;font-size:10px;color:#ccc;text-align:center}.hint{background:#f0f0f0;border-radius:8px;padding:12px 16px;margin-bottom:24px;font-size:12px;color:#555}@media print{.hint{display:none}}</style></head><body><div class="hint">💡 Щоб зберегти як PDF: <strong>Ctrl+P</strong> → <strong>«Зберегти як PDF»</strong></div><h1>${m?m.icon+' '+m.title:''}</h1><div class="meta">© Оксана Урожай · ${new Date().toLocaleDateString('uk-UA')}</div>${fields}<div class="footer">© Оксана Урожай, психолог · 2026</div><script>window.onload=function(){window.print()}<\/script></body></html>`);
   win.document.close();
 }
 
