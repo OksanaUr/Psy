@@ -76,13 +76,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .land-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 48px;border-radius:50px;border:none;font-size:17px;font-weight:700;cursor:pointer;background:var(--purple);color:white;transition:all .2s;box-shadow:0 4px 24px rgba(127,119,221,.35);animation:fadeUp .6s ease .4s both}
 .land-btn:hover{background:var(--purple-d);transform:translateY(-2px);box-shadow:0 8px 32px rgba(127,119,221,.4)}
 .land-note{font-size:11px;color:var(--muted);margin-top:1rem;animation:fadeUp .6s ease .5s both}
-.land-quote-big{position:relative;margin:0 auto 2.5rem;max-width:460px;padding:.5rem 1.5rem 1.5rem 1rem;animation:fadeUp .6s ease .3s both;text-align:left}
-.land-quote-big::before{content:'"';position:absolute;top:-10px;left:-5px;font-size:7rem;line-height:1;color:var(--purple);opacity:.18;font-family:Georgia,serif}
-.land-quote-big::after{content:'"';position:absolute;bottom:-40px;right:0;font-size:7rem;line-height:1;color:var(--purple);opacity:.18;font-family:Georgia,serif;transform:rotate(180deg)}
-.q-line1{display:block;font-size:clamp(.95rem,2.5vw,1.05rem);color:var(--muted);font-style:italic;line-height:1.7;margin-bottom:.3rem}
-.q-line2{display:block;font-size:clamp(1.2rem,3vw,1.5rem);color:var(--purple-d);font-weight:800;font-style:italic;line-height:1.4;margin-bottom:.3rem}
-.q-line3{display:block;font-size:clamp(.95rem,2.5vw,1.05rem);color:var(--muted);font-style:italic;line-height:1.7}
-.q-accent{color:var(--teal-d);font-style:normal}
+.land-quote-big{position:relative;margin:0 auto 2.5rem;max-width:440px;padding:1.5rem 1.5rem 1.5rem 2.5rem;animation:fadeUp .6s ease .3s both;text-align:left;border-left:3px solid var(--purple);background:rgba(127,119,221,.06);border-radius:0 var(--r) var(--r) 0}
+.q-line1{display:block;font-size:1rem;color:var(--muted);font-style:italic;line-height:1.8;margin-bottom:.4rem}
+.q-line2{display:block;font-size:1.4rem;color:var(--purple-d);font-weight:800;line-height:1.4;margin-bottom:.4rem;letter-spacing:-.01em}
+.q-line3{display:block;font-size:1rem;color:var(--teal-d);font-style:italic;line-height:1.8;font-weight:500}
+.q-accent{color:var(--teal-d)}
 
 /* ========== SCREEN 2: HUB ========== */
 #hub{background:var(--bg)}
@@ -280,7 +278,7 @@ textarea:focus{outline:none;background:var(--white)}
 <!-- ========== 2. HUB ========== -->
 <div class="screen" id="hub">
   <div class="hub-topbar">
-    <button onclick="goLanding()" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text);flex-shrink:0"><i class="ti ti-home"></i> Додому</button>
+    <button onclick="goLanding()" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text);flex-shrink:0">🏠 Додому</button>
     <div>
       <div class="hub-topbar-title">Психологічний кабінет</div>
       <div style="font-size:11px;color:var(--muted)">Оберіть інструмент</div>
@@ -320,15 +318,15 @@ textarea:focus{outline:none;background:var(--white)}
           <i class="ti ti-chevron-right hc-arrow" style="color:var(--blue)"></i>
         </div>
         <div class="hc-tags">
-          <span class="hc-tag" style="background:var(--blue-l);color:var(--blue)">📊 Оцінка стану</span>
-          <span class="hc-tag" style="background:var(--green-l);color:var(--green)">🌬️ Дихання</span>
-          <span class="hc-tag" style="background:var(--amber-l);color:var(--amber)">🧠 КБТ</span>
+          <span class="hc-tag" style="background:var(--blue-l);color:var(--blue)">Оцінка стану</span>
+          <span class="hc-tag" style="background:var(--green-l);color:var(--green)">Дихання</span>
+          <span class="hc-tag" style="background:var(--amber-l);color:var(--amber)">КБТ</span>
         </div>
       </div>
 
       <div class="hub-card" onclick="showTool('ptsd-cover')">
         <div class="hc-top" style="background:linear-gradient(135deg,#4A6E8A,#5A8C7E)">
-          <span class="hc-icon">🌊</span>
+          <span class="hc-icon">🛡️</span>
           <div class="hc-info">
             <div class="hc-title" style="color:white">Мій шлях до безпеки</div>
             <div class="hc-desc" style="color:rgba(255,255,255,.7)">Самодослідження та стабілізація для людей з травматичним досвідом (ПТСР).</div>
@@ -336,9 +334,9 @@ textarea:focus{outline:none;background:var(--white)}
           <i class="ti ti-chevron-right hc-arrow" style="color:rgba(255,255,255,.6)"></i>
         </div>
         <div class="hc-tags">
-          <span class="hc-tag" style="background:var(--sage-l);color:var(--sage)">🆘 Безпека</span>
-          <span class="hc-tag" style="background:var(--navy-l);color:var(--navy)">⚡ Реакція</span>
-          <span class="hc-tag" style="background:var(--green-l);color:var(--green)">⚓ Стабілізація</span>
+          <span class="hc-tag" style="background:var(--sage-l);color:var(--sage)">Безпека</span>
+          <span class="hc-tag" style="background:var(--navy-l);color:var(--navy)">Реакція</span>
+          <span class="hc-tag" style="background:var(--green-l);color:var(--green)">Стабілізація</span>
         </div>
       </div>
 
@@ -352,7 +350,7 @@ textarea:focus{outline:none;background:var(--white)}
           <span style="font-size:11px;font-weight:700;background:#FDF1DC;color:#C8892A;padding:4px 10px;border-radius:10px;flex-shrink:0">Скоро</span>
         </div>
         <div class="hc-tags">
-          <span class="hc-tag" style="background:#F5EDE8;color:#7C5A4A">👨‍👩‍👧 Родини</span>
+          <span class="hc-tag" style="background:#F5EDE8;color:#7C5A4A">Родини</span>
           <span class="hc-tag" style="background:#FDF1DC;color:#C8892A">В розробці</span>
         </div>
       </div>
@@ -383,7 +381,7 @@ textarea:focus{outline:none;background:var(--white)}
       <div class="vsel-card" onclick="selectAnketaVersion('a')" style="border-color:var(--purple-l)">
         <span class="vsel-card-icon">🌸</span>
         <div class="vsel-card-info">
-          <div class="vsel-card-title" style="color:var(--purple-d)">Підлітки</div>
+          <div class="vsel-card-title" style="color:var(--purple-d)">🌸 Підлітки</div>
           <div class="vsel-card-desc">12–17 років · Жива мова, ігрові елементи, безпечний простір для самопізнання</div>
         </div>
         <span class="vsel-arrow">→</span>
@@ -392,7 +390,7 @@ textarea:focus{outline:none;background:var(--white)}
       <div class="vsel-card" onclick="selectAnketaVersion('b')" style="border-color:var(--teal-l)">
         <span class="vsel-card-icon">🌿</span>
         <div class="vsel-card-info">
-          <div class="vsel-card-title" style="color:var(--teal-d)">Дорослі</div>
+          <div class="vsel-card-title" style="color:var(--teal-d)">🌿 Дорослі</div>
           <div class="vsel-card-desc">18+ років · Глибока рефлексія, робота з внутрішніми частинами особистості</div>
         </div>
         <span class="vsel-arrow">→</span>
@@ -401,7 +399,7 @@ textarea:focus{outline:none;background:var(--white)}
       <div class="vsel-card" onclick="selectAnketaVersion('c')" style="border-color:var(--coral-l)">
         <span class="vsel-card-icon">🛡️</span>
         <div class="vsel-card-info">
-          <div class="vsel-card-title" style="color:var(--coral-d)">Ветерани</div>
+          <div class="vsel-card-title" style="color:var(--coral-d)">🛡️ Ветерани</div>
           <div class="vsel-card-desc">Ветерани та ветеранки · Акцент на ідентичності, тілесності та реінтеграції після служби</div>
         </div>
         <span class="vsel-arrow">→</span>
@@ -418,7 +416,7 @@ textarea:focus{outline:none;background:var(--white)}
       <div class="tb-title" id="tool-title">Інструмент</div>
       <div class="tb-sub" id="tool-sub"></div>
     </div>
-    <button class="back-btn" onclick="goLanding()" title="На головну" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text)"><i class="ti ti-home"></i> Додому</button>
+    <button class="back-btn" onclick="goLanding()" title="На головну" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text)">🏠 Додому</button>
   </div>
   <div id="tool-hero-wrap"></div>
   <div class="tool-inner" id="tool-blocks"></div>
@@ -430,7 +428,7 @@ textarea:focus{outline:none;background:var(--white)}
   <div class="ptsd-cover-topbar">
     <button class="back-btn" style="color:rgba(255,255,255,.7)" onclick="goHub()"><i class="ti ti-arrow-left"></i></button>
     <div style="flex:1;font-size:13px;color:rgba(255,255,255,.7)">Мій шлях до безпеки</div>
-    <button class="back-btn" style="color:rgba(255,255,255,.7)" onclick="goLanding()"><i class="ti ti-home"></i></button>
+    <button class="back-btn" style="color:rgba(255,255,255,.7)" onclick="goLanding()">🏠</button>
   </div>
   <div class="cover-content">
     <span class="cover-icon">🌊</span>
@@ -461,7 +459,7 @@ textarea:focus{outline:none;background:var(--white)}
       <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
       <span class="prog-pct" id="prog-pct">0%</span>
     </div>
-    <button onclick="goLanding()" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text);flex-shrink:0"><i class="ti ti-home"></i></button>
+    <button onclick="goLanding()" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text);flex-shrink:0">🏠</button>
   </div>
   <div class="module-inner" id="module-inner"></div>
 </div>
@@ -733,8 +731,8 @@ const anketaBlocks={
   b:[
     {id:'b-entry',icon:'○',color:'#1D9E75',bg:'#E1F5EE',title:'Точка входу',desc:'Ресурсний стан, метафора, очікування',tag:'Початок'},
     {id:'b-inner',icon:'◈',color:'#7F77DD',bg:'#EEEDFE',title:'Внутрішній ландшафт',desc:'Вразлива, захисна та ресурсна частини',tag:'Самопізнання'},
-    {id:'b-hard',icon:'▪',color:'#C8892A',bg:'#FDF1DC',title:'Простір для важкого',desc:'Те, що важко сказати вголос',tag:'Особистий простір'},
-    {id:'b-body',icon:'◉',color:'#1D9E75',bg:'#E1F5EE',title:'Тіло як свідок',desc:'Соматичний мапінг, нейроцепція',tag:'Соматика'},
+    {id:'b-hard',icon:'🔐',color:'#C8892A',bg:'#FDF1DC',title:'Простір для важкого',desc:'Те, що важко сказати вголос',tag:'Особистий простір'},
+    {id:'b-body',icon:'🫀',color:'#1D9E75',bg:'#E1F5EE',title:'Тіло як свідок',desc:'Соматичний мапінг, нейроцепція',tag:'Соматика'},
     {id:'b-relations',icon:'◇',color:'#4A7FC1',bg:'#EBF2FC',title:'Стосунки та патерни',desc:'Менталізація, повторювані патерни',tag:'Стосунки'},
     {id:'b-story',icon:'📖',color:'#C85A8A',bg:'#FAEBF2',title:'Моя історія',desc:'Таймлайн сили, нарративна терапія',tag:'Нарратив'},
     {id:'b-crisis',icon:'◎',color:'#3A9E7E',bg:'#E3F5EF',title:'Антикризовий протокол',desc:'Ознаки кризи, план дій, лист собі',tag:'Ресурси'},
@@ -742,8 +740,8 @@ const anketaBlocks={
   c:[
     {id:'c-entry',icon:'○',color:'#D85A30',bg:'#FAECE7',title:'Перший контакт',desc:'Ресурсний стан, межі, очікування',tag:'Початок'},
     {id:'c-identity',icon:'◈',color:'#D85A30',bg:'#FAECE7',title:'Ким я є',desc:'Ідентичність до і після служби',tag:'Ідентичність'},
-    {id:'c-body',icon:'◉',color:'#C8892A',bg:'#FDF1DC',title:'Тіло після служби',desc:'Соматичний мапінг, сигнали небезпеки',tag:'Соматика'},
-    {id:'c-hard',icon:'▪',color:'#C8892A',bg:'#FDF1DC',title:'Те, що важко носити',desc:'Без примусу. Лише якщо сам хочеш.',tag:'Особистий простір'},
+    {id:'c-body',icon:'🫀',color:'#C8892A',bg:'#FDF1DC',title:'Тіло після служби',desc:'Соматичний мапінг, сигнали небезпеки',tag:'Соматика'},
+    {id:'c-hard',icon:'🔐',color:'#C8892A',bg:'#FDF1DC',title:'Те, що важко носити',desc:'Без примусу. Лише якщо сам хочеш.',tag:'Особистий простір'},
     {id:'c-people',icon:'◇',color:'#4A7FC1',bg:'#EBF2FC',title:'Мої люди',desc:'Ті, хто розуміє, і ті, хто намагається',tag:'Стосунки'},
     {id:'c-support',icon:'◎',color:'#3A9E7E',bg:'#E3F5EF',title:'Моя опора',desc:'Ресурси, план, послання собі',tag:'Ресурси'},
   ]
@@ -770,10 +768,10 @@ function setAnketaVersion(v){
 
 // ANXIETY BLOCKS
 const anxietyBlockDefs=[
-  {id:'assess',icon:'📊',color:'#4A7FC1',bg:'#EBF2FC',title:'Оцінка стану',desc:'Як сильна тривога, коли і як проявляється',tag:'Зрозуміти',sub:'Діагностика актуальної тривоги'},
+  {id:'assess',icon:'📊',color:'#4A7FC1',bg:'#EBF2FC',title:'📊 Оцінка стану',desc:'Як сильна тривога, коли і як проявляється',tag:'Зрозуміти',sub:'Діагностика актуальної тривоги'},
   {id:'body-ax',icon:'🫀',color:'#7B6FBF',bg:'#EDEAFC',title:'Тривога в тілі',desc:'Тілесні симптоми та сигнали нервової системи',tag:'Зрозуміти',sub:'Соматичні прояви тривоги'},
   {id:'thoughts',icon:'🧠',color:'#C85A3A',bg:'#FAECE7',title:'Думки та переконання',desc:'КБТ-протокол: зловити й переосмислити думку',tag:'Зрозуміти',sub:'КБТ-робота з тривожними думками'},
-  {id:'breathing',icon:'🌬️',color:'#3A9E7E',bg:'#E3F5EF',title:'Дихання',desc:'Три техніки з таймером',tag:'Впоратись',sub:'Дихальні техніки з таймером'},
+  {id:'breathing',icon:'🌬️',color:'#3A9E7E',bg:'#E3F5EF',title:'🌬️ Дихання',desc:'Три техніки з таймером',tag:'Впоратись',sub:'Дихальні техніки з таймером'},
   {id:'grounding',icon:'⚓',color:'#2A8B8B',bg:'#E0F5F5',title:'Заземлення',desc:'Техніки повернення до тут і зараз',tag:'Впоратись',sub:'Повернення до теперішнього моменту'},
   {id:'coping',icon:'🧰',color:'#C8892A',bg:'#FDF1DC',title:'Мій арсенал',desc:'Копінг-стратегії та кризовий план',tag:'Впоратись',sub:'Стратегії та особистий кризовий план'},
   {id:'tracker',icon:'📈',color:'#4A7FC1',bg:'#EBF2FC',title:'Трекер тривоги',desc:'Щоденний моніторинг та рефлексія',tag:'Відстежити',sub:'Трекер та аналіз патернів'},
@@ -823,25 +821,25 @@ const allModules={
     'a-crisis':{title:'Антикризовий пакет',sub:'Ресурси та план',icon:'🌱',color:'#3A9E7E',bg:'#E3F5EF',build:(w,m)=>{w.appendChild(fld('Коли мене накриває тривога, я можу:'));w.appendChild(fld('Люди, яким я можу написати або зателефонувати:'));w.appendChild(fld('Місця, де мені стає легше:'));w.appendChild(fld('Три якірні речі:'));w.appendChild(hlBox(m.bg,['Моє послання собі в майбутньому:']))}},
     'b-entry':{title:'Точка входу',sub:'Де ви зараз і що привело сюди',icon:'○',color:'#1D9E75',bg:'#E1F5EE',build:(w,m)=>{w.appendChild(fld('Як вам комфортно, щоб до вас зверталися?'));w.appendChild(scl('Ваш ресурсний стан сьогодні:','Виснаження','Повний ресурс',m.color));w.appendChild(fld('Якщо описати свій стан одним образом або метафорою:'));w.appendChild(hlBox(m.bg,['Я звернулась/звернувся, тому що...','Моє очікування від терапії:','Чого я побоююся в цьому процесі:','Що буде ознакою позитивних змін через 3 місяці:']))}},
     'b-inner':{title:'Внутрішній ландшафт',sub:'Три частини особистості',icon:'◈',color:'#7F77DD',bg:'#EEEDFE',build:(w,m)=>{w.appendChild(iTitle('Вразлива частина',m.color));w.appendChild(fld('Чого я найбільше боюся в глибині душі?'));w.appendChild(fld('Яких потреб мені не вистачає?'));w.appendChild(fld('Якого послання або визнання мені не вистачає?'));w.appendChild(iTitle('Захисна частина',m.color));w.appendChild(fld('Як я справляюся з болем або стресом?'));w.appendChild(fld('Яке переконання лежить в основі? («Якщо я не буду... то...»)'));w.appendChild(iTitle('Ресурсна частина',m.color));w.appendChild(fld('У яких ситуаціях я відчуваю себе цілісною/цілісним?'));w.appendChild(fld('На які ресурси я можу спертися?'))}},
-    'b-hard':{title:'Простір для важкого',sub:'Те, що важко сказати вголос',icon:'▪',color:'#C8892A',bg:'#FDF1DC',build:(w,m)=>{w.appendChild(nt('Цей розділ — ваш простір. Ви можете написати тут щось, про що поки не готові говорити.',m.color));for(let i=1;i<=3;i++)w.appendChild(secretBox(`Тема #${i}`))}},
-    'b-body':{title:'Тіло як свідок',sub:'Нейроцепція та безпека',icon:'◉',color:'#1D9E75',bg:'#E1F5EE',build:(w,m)=>{w.appendChild(fld('Де у тілі ви зазвичай відчуваєте тривогу або напругу?'));w.appendChild(fld('Яке відчуття в тілі вказує, що ви в безпеці?'));w.appendChild(fld('Яке відчуття в тілі сигналізує про небезпеку?'));w.appendChild(bodyMap('Т — тривога · П — порожнеча · Б — біль · С — спокій / тепло'))}},
+    'b-hard':{title:'Простір для важкого',sub:'Те, що важко сказати вголос',icon:'🔐',color:'#C8892A',bg:'#FDF1DC',build:(w,m)=>{w.appendChild(nt('Цей розділ — ваш простір. Ви можете написати тут щось, про що поки не готові говорити.',m.color));for(let i=1;i<=3;i++)w.appendChild(secretBox(`Тема #${i}`))}},
+    'b-body':{title:'Тіло як свідок',sub:'Нейроцепція та безпека',icon:'🫀',color:'#1D9E75',bg:'#E1F5EE',build:(w,m)=>{w.appendChild(fld('Де у тілі ви зазвичай відчуваєте тривогу або напругу?'));w.appendChild(fld('Яке відчуття в тілі вказує, що ви в безпеці?'));w.appendChild(fld('Яке відчуття в тілі сигналізує про небезпеку?'));w.appendChild(bodyMap('Т — тривога · П — порожнеча · Б — біль · С — спокій / тепло'))}},
     'b-relations':{title:'Стосунки та патерни',sub:'Менталізація та когнітивні викривлення',icon:'◇',color:'#4A7FC1',bg:'#EBF2FC',build:(w,m)=>{w.appendChild(fld('Людина, поруч з якою я почуваюся собою:'));w.appendChild(fld('Стосунки, які мене виснажують:'));w.appendChild(fld('Якби важлива людина писала анкету про вас, що б вона написала в графі «Надихає тим...»?'));w.appendChild(fld('А в графі «Мені важко, коли...»?'));w.appendChild(fld('Який патерн у стосунках ви помічаєте знову і знову?'))}},
     'b-story':{title:'Моя історія',sub:'Нарративна терапія — свідчення про силу',icon:'📖',color:'#C85A8A',bg:'#FAEBF2',build:(w,m)=>{w.appendChild(nt('Часова лінія — як свідчення про силу, не про біль.',m.color));w.appendChild(fld('Три моменти, коли я себе поважала/поважав або зробила/зробив щось складне:','',true));w.appendChild(fld('Люди, які вірили в мене:'));w.appendChild(fld('Що я хочу передати собі — тій, якою я була раніше?'))}},
     'b-crisis':{title:'Антикризовий протокол',sub:'План дій та лист собі',icon:'◎',color:'#3A9E7E',bg:'#E3F5EF',build:(w,m)=>{w.appendChild(fld('Ознаки, що я наближаюся до кризового стану:'));w.appendChild(fld('Мої перші три кроки, коли стає важко:'));w.appendChild(fld('Контакти, яким я можу зателефонувати:'));w.appendChild(fld('Ключові інсайти з терапії:','',true));w.appendChild(hlBox(m.bg,['Лист собі — на початку шляху:']))}},
     'c-entry':{title:'Перший контакт',sub:'Де ви зараз. Що привело сюди.',icon:'○',color:'#D85A30',bg:'#FAECE7',build:(w,m)=>{w.appendChild(fld('Як вам комфортно, щоб до вас зверталися?'));w.appendChild(scl('Ваш стан сьогодні:','Виснаження','Повний ресурс',m.color));w.appendChild(hlBox(m.bg,['Я тут, тому що...','Чого я точно НЕ хочу від цих зустрічей:','Що буде ознакою, що ця робота мала сенс:']))}},
     'c-identity':{title:'Ким я є',sub:'Ідентичність до і після служби',icon:'◈',color:'#D85A30',bg:'#FAECE7',build:(w,m)=>{w.appendChild(nt('Служба змінює людину. Але не скасовує того, ким ти є.',m.color));w.appendChild(fld('До служби я був/була людиною, яка:'));w.appendChild(fld('Служба мене навчила:'));w.appendChild(fld('Що зі мною залишилося незмінним — попри все:'));w.appendChild(fld('Чим я пишаюся:'));w.appendChild(fld('З чим мені важко жити:'));w.appendChild(fld('Як я зараз відповідаю на питання «Хто ти?»'))}},
-    'c-body':{title:'Тіло після служби',sub:'Без оцінок і діагнозів',icon:'◉',color:'#C8892A',bg:'#FDF1DC',build:(w,m)=>{w.appendChild(nt('Ця сторінка — без оцінок і діагнозів. Просто спостереження.',m.color));w.appendChild(fld('Де у тілі живе напруга або біль?'));w.appendChild(fld('Що допомагає тілу розслабитися?'));w.appendChild(fld('Які відчуття сигналізують про небезпеку — навіть якщо її немає?'));w.appendChild(bodyMap('Н — напруга · О — оніміння · А — тривожна активація · С — спокій'))}},
-    'c-hard':{title:'Те, що важко носити',sub:'Без примусу',icon:'▪',color:'#C8892A',bg:'#FDF1DC',build:(w,m)=>{w.appendChild(nt('Ви не зобов\'язані пояснювати. Можете показати терапевту — або не показувати.',m.color));for(let i=1;i<=3;i++)w.appendChild(secretBox(`#${i}`))}},
+    'c-body':{title:'Тіло після служби',sub:'Без оцінок і діагнозів',icon:'🫀',color:'#C8892A',bg:'#FDF1DC',build:(w,m)=>{w.appendChild(nt('Ця сторінка — без оцінок і діагнозів. Просто спостереження.',m.color));w.appendChild(fld('Де у тілі живе напруга або біль?'));w.appendChild(fld('Що допомагає тілу розслабитися?'));w.appendChild(fld('Які відчуття сигналізують про небезпеку — навіть якщо її немає?'));w.appendChild(bodyMap('Н — напруга · О — оніміння · А — тривожна активація · С — спокій'))}},
+    'c-hard':{title:'Те, що важко носити',sub:'Без примусу',icon:'🔐',color:'#C8892A',bg:'#FDF1DC',build:(w,m)=>{w.appendChild(nt('Ви не зобов\'язані пояснювати. Можете показати терапевту — або не показувати.',m.color));for(let i=1;i<=3;i++)w.appendChild(secretBox(`#${i}`))}},
     'c-people':{title:'Мої люди',sub:'Ті, хто розуміє, і ті, хто намагається',icon:'◇',color:'#4A7FC1',bg:'#EBF2FC',build:(w,m)=>{w.appendChild(fld('Людина з досвіду служби, яка мене розуміє:'));w.appendChild(fld('Людина вдома, яка намагається зрозуміти:'));w.appendChild(fld('Що найважче пояснити близьким, які не служили?'));w.appendChild(fld('Що ви хочете, щоб ваша родина знала — але важко сказати вголос?'))}},
     'c-support':{title:'Моя опора',sub:'Ресурси та послання собі',icon:'◎',color:'#3A9E7E',bg:'#E3F5EF',build:(w,m)=>{w.appendChild(fld('Що дає мені сили продовжувати?'));w.appendChild(fld('Заради кого або чого я роблю цю роботу над собою?'));w.appendChild(fld('Три речі, які залишаються незмінними — попри все:'));w.appendChild(fld('Мій перший крок, коли стає важко:'));w.appendChild(fld('Контакти, яким я можу зателефонувати:'));w.appendChild(hlBox(m.bg,['Послання собі:']))}},
   },
   anxiety:{
-    assess:{title:'Оцінка стану',sub:'Діагностика актуальної тривоги',icon:'📊',color:'#4A7FC1',bg:'#EBF2FC',build:(w,m)=>{w.appendChild(scl('Наскільки сильна моя тривога зараз?','Спокійно','Дуже сильно',m.color));w.appendChild(fld('Коли я вперше помітила, що тривога стала проблемою?'));w.appendChild(plls('Як часто відчуваю тривогу?',['Рідко (кілька разів на місяць)','Іноді (кілька разів на тиждень)','Часто (майже щодня)','Постійно (більшу частину дня)'],m.color));w.appendChild(plls('Коли тривога найсильніша?',['Вранці','Вдень','Ввечері','Вночі','Перед важливими подіями','У людних місцях','Наодинці','Непередбачувано'],m.color));w.appendChild(fld('Що зазвичай передує появі тривоги?'));w.appendChild(fld('Через тривогу я уникаю:'));w.appendChild(fld('Тривога найбільше заважає мені в:'))}},
+    assess:{title:'📊 Оцінка стану',sub:'Діагностика актуальної тривоги',icon:'📊',color:'#4A7FC1',bg:'#EBF2FC',build:(w,m)=>{w.appendChild(scl('Наскільки сильна моя тривога зараз?','Спокійно','Дуже сильно',m.color));w.appendChild(fld('Коли я вперше помітила, що тривога стала проблемою?'));w.appendChild(plls('Як часто відчуваю тривогу?',['Рідко (кілька разів на місяць)','Іноді (кілька разів на тиждень)','Часто (майже щодня)','Постійно (більшу частину дня)'],m.color));w.appendChild(plls('Коли тривога найсильніша?',['Вранці','Вдень','Ввечері','Вночі','Перед важливими подіями','У людних місцях','Наодинці','Непередбачувано'],m.color));w.appendChild(fld('Що зазвичай передує появі тривоги?'));w.appendChild(fld('Через тривогу я уникаю:'));w.appendChild(fld('Тривога найбільше заважає мені в:'))}},
     'body-ax':{title:'Тривога в тілі',sub:'Тілесні симптоми та сигнали',icon:'🫀',color:'#7B6FBF',bg:'#EDEAFC',build:(w,m)=>{w.appendChild(nt('Тіло — перший свідок тривоги. Розпізнати тілесні сигнали — значить навчитися помічати тривогу раніше.',m.color));w.appendChild(plls('Тілесні симптоми під час тривоги:',['Прискорене серцебиття','Утруднене дихання','Напруга в м\'язах','Тремтіння','Пітливість','Нудота','Запаморочення','Головний біль','Стиснення в грудях','Грудка в горлі','Оніміння кінцівок','Порушення сну','Втома','Проблеми з апетитом'],m.color));w.appendChild(fld('Де у тілі я відчуваю тривогу найсильніше?'));w.appendChild(fld('Як моє тіло сигналізує, що тривога починається?'));w.appendChild(fld('Яке відчуття в тілі означає, що я в безпеці?'));w.appendChild(fld('Що допомагає тілу заспокоїтися?'))}},
     thoughts:{title:'Думки та переконання',sub:'КБТ-протокол думки — 7 кроків',icon:'🧠',color:'#C85A3A',bg:'#FAECE7',build:(w,m)=>{w.appendChild(nt('Тривога живиться думками. Цей протокол допоможе «зловити» тривожну думку і подивитися на неї по-іншому.',m.color));w.appendChild(iTitle('Протокол думки — 7 кроків',m.color));[{n:1,l:'Ситуація',ph:'Що сталося? Де, коли, з ким?'},{n:2,l:'Автоматична думка',ph:'«Я не впораюся», «Всі думають що я...»'},{n:3,l:'Емоція та інтенсивність (0–100%)',ph:'Тривога 80%, сором 60%...'},{n:4,l:'Докази ЗА цю думку',ph:'Що підтверджує?'},{n:5,l:'Докази ПРОТИ',ph:'Що спростовує? Чи бувало інакше?'},{n:6,l:'Збалансована думка',ph:'Більш реалістичний погляд...'},{n:7,l:'Емоція після (0–100%)',ph:'Тривога знизилася до...'}].forEach(s=>{const row=document.createElement('div');row.style.cssText='display:flex;gap:12px;margin-bottom:14px;align-items:flex-start';const num=document.createElement('div');num.style.cssText=`width:28px;height:28px;border-radius:50%;background:${m.color}22;color:${m.color};font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0`;num.textContent=s.n;const cont=document.createElement('div');cont.style.flex='1';const lbl=document.createElement('div');lbl.style.cssText=`font-size:12px;font-weight:700;color:${m.color};margin-bottom:6px`;lbl.textContent=s.l;const ta=document.createElement('textarea');ta.placeholder=s.ph;ta.oninput=updateProgress;cont.appendChild(lbl);cont.appendChild(ta);row.appendChild(num);row.appendChild(cont);w.appendChild(row)});w.appendChild(plls('Глибші переконання в основі:',['«Світ небезпечний»','«Я не впораюся»','«Мене відкинуть»','«Я маю бути ідеальною»','«Якщо може піти не так — піде»','«Я відповідальна за все»'],m.color));w.appendChild(fld('Звідки взялося це переконання?','',true))}},
     breathing:{title:'Дихальні техніки',sub:'Таймер дихання — обери техніку і дихай',icon:'🌬️',color:'#3A9E7E',bg:'#E3F5EF',build:(w,m)=>{w.appendChild(nt('Дихання — найшвидший спосіб вплинути на нервову систему. Вже через 2–3 хвилини рівень кортизолу знижується.',m.color));w.appendChild(timerCard('box','📦 Квадратне дихання','Вдих — затримка — видих — затримка, по 4 секунди',['Вдих 4 с','Затримка 4 с','Видих 4 с','Затримка 4 с'],[4,4,4,4],m.color,m.bg));w.appendChild(timerCard('f478','💤 Дихання 4-7-8','Активує парасимпатичну систему, допомагає при панічних атаках',['Вдих 4 с','Затримка 7 с','Видих 8 с'],[4,7,8],m.color,m.bg));w.appendChild(timerCard('phys','🫁 Фізіологічне зітхання','Найшвидше знижує стрес — подвійний вдих і довгий видих',['Вдих через ніс','Ще один короткий вдих','Довгий видих через рот (8 с)'],[2,1,8],m.color,m.bg));w.appendChild(fld('Яка техніка тобі найбільше підходить?'));w.appendChild(fld('Що я відчуваю після дихальної практики?'))}},
     grounding:{title:'Заземлення',sub:'Повернення до тут і зараз',icon:'⚓',color:'#2A8B8B',bg:'#E0F5F5',build:(w,m)=>{w.appendChild(nt('Техніки заземлення повертають до теперішнього моменту, коли тривога або паніка захлестує.',m.color));w.appendChild(iTitle('Техніка 5-4-3-2-1',m.color));[{n:5,l:'👁️ Бачу — назви 5 речей, які бачиш прямо зараз:'},{n:4,l:'✋ Торкаюся — назви 4 речі, яких можеш торкнутися:'},{n:3,l:'👂 Чую — назви 3 звуки, які чуєш зараз:'},{n:2,l:'👃 Відчуваю запах — назви 2 запахи:'},{n:1,l:'👅 Відчуваю смак — назви 1 смак:'}].forEach(s=>{const row=document.createElement('div');row.style.cssText='display:flex;gap:12px;margin-bottom:12px;align-items:flex-start';const num=document.createElement('div');num.style.cssText=`width:28px;height:28px;border-radius:50%;background:${m.color}22;color:${m.color};font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0`;num.textContent=s.n;const cont=document.createElement('div');cont.style.flex='1';const lbl=document.createElement('div');lbl.style.cssText=`font-size:12px;font-weight:700;color:${m.color};margin-bottom:6px`;lbl.textContent=s.l;const ta=document.createElement('textarea');ta.style.minHeight='52px';ta.oninput=updateProgress;cont.appendChild(lbl);cont.appendChild(ta);row.appendChild(num);row.appendChild(cont);w.appendChild(row)});w.appendChild(fld('Мій особистий якір (що найкраще повертає мене в тут і зараз)?','',true));w.appendChild(fld('Які техніки заземлення мені найбільше допомагають?'))}},
-    coping:{title:'Мій арсенал',sub:'Копінг-стратегії та кризовий план',icon:'🧰',color:'#C8892A',bg:'#FDF1DC',build:(w,m)=>{w.appendChild(nt('Немає універсальних стратегій. Важливо знайти свої — ті, що працюють саме для тебе.',m.color));w.appendChild(plls('Стратегії, які вже допомагають мені:',['Прогулянки','Спорт','Музика','Медитація','Дихання','Щоденник','Розмова з другом','Творчість','Серіали','Готування','Природа','Тварини','Молитва'],m.color));w.appendChild(fld('Моя особиста стратегія яка точно працює:'));w.appendChild(iTitle('Мій кризовий план',m.color));w.appendChild(hlBox(m.bg,['Крок 1 — перше що я роблю коли накриває:','Крок 2 — якщо не допомогло:','Крок 3 — якщо стає дуже важко:','Людина, якій я можу зателефонувати:']))}},
+    coping:{title:'Мій арсенал',sub:'Копінг-стратегії та кризовий план',icon:'🧰',color:'#C8892A',bg:'#FDF1DC',build:(w,m)=>{w.appendChild(nt('Немає універсальних стратегій. Важливо знайти свої — ті, що працюють саме для тебе.',m.color));w.appendChild(plls('Стратегії, які вже допомагають мені:',['Прогулянки','Спорт','Музика','Медитація','🌬️ Дихання','Щоденник','Розмова з другом','Творчість','Серіали','Готування','Природа','Тварини','Молитва'],m.color));w.appendChild(fld('Моя особиста стратегія яка точно працює:'));w.appendChild(iTitle('Мій кризовий план',m.color));w.appendChild(hlBox(m.bg,['Крок 1 — перше що я роблю коли накриває:','Крок 2 — якщо не допомогло:','Крок 3 — якщо стає дуже важко:','Людина, якій я можу зателефонувати:']))}},
     tracker:{title:'Трекер тривоги',sub:'Відстежуємо динаміку та патерни',icon:'📈',color:'#4A7FC1',bg:'#EBF2FC',build:(w,m)=>{w.appendChild(nt('Трекер допомагає побачити патерни — коли тривога зростає, після чого знижується.',m.color));const lbl=document.createElement('label');lbl.className='field-label';lbl.textContent='Рівень тривоги по днях (натисни на день → обери рівень 1–5):';lbl.style.marginTop='16px';w.appendChild(lbl);const grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:10px';const dn=['Пн','Вт','Ср','Чт','Пт','Сб','Нд'];const today=new Date();for(let i=6;i>=0;i--){const d=new Date(today);d.setDate(today.getDate()-i);const cell=document.createElement('div');cell.style.cssText='aspect-ratio:1;border-radius:8px;border:1.5px solid #E0E0E0;background:white;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;color:#888;font-weight:600;transition:all .15s';cell.dataset.lv=0;cell.innerHTML=`<span style="font-size:13px;font-weight:700;color:#2C2C2C">${d.getDate()}</span><span>${dn[d.getDay()===0?6:d.getDay()-1]}</span>`;const lvColors=['white','#E8F5E9','#FFF9C4','#FFE0B2','#FFCDD2','#F8BBD9'];const lvBorders=['#E0E0E0','#81C784','#FFD54F','#FFB74D','#E57373','#EC407A'];cell.onclick=()=>{const cur=parseInt(cell.dataset.lv);const next=(cur+1)%6;cell.dataset.lv=next;cell.style.background=lvColors[next];cell.style.borderColor=lvBorders[next];updateProgress()};grid.appendChild(cell)}w.appendChild(grid);const leg=document.createElement('div');leg.style.cssText='display:flex;gap:8px;margin-top:8px;flex-wrap:wrap';[['#E8F5E9','1-Спокійно'],['#FFF9C4','2-Легка'],['#FFE0B2','3-Помірна'],['#FFCDD2','4-Сильна'],['#F8BBD9','5-Дуже сильна']].forEach(([c,l])=>{leg.innerHTML+=`<div style="display:flex;align-items:center;gap:4px;font-size:11px;color:#888"><div style="width:12px;height:12px;border-radius:3px;background:${c};border:1px solid #ccc"></div>${l}</div>`});w.appendChild(leg);w.appendChild(fld('Що я помічаю у своїх патернах тривоги?','',true));w.appendChild(fld('Після яких подій тривога зростає?'));w.appendChild(hlBox(m.bg,['Що змінилося за цей тиждень?','Мій наступний крок:']))}},
   },
   ptsd:{
@@ -942,7 +940,7 @@ function showTool(id){
   if(id === 'ptsd'){
     titleEl.textContent = 'Мій шлях до безпеки';
     subEl.textContent = 'Оберіть блок, який потрібен зараз';
-    buildToolHero('🌊','Мій шлях до безпеки','Оберіть блок, який потрібен прямо зараз','linear-gradient(135deg,#4A6E8A,#5A8C7E)','white','rgba(255,255,255,.7)');
+    buildToolHero('🛡️','Мій шлях до безпеки','Оберіть блок, який потрібен прямо зараз','linear-gradient(135deg,#4A6E8A,#5A8C7E)','white','rgba(255,255,255,.7)');
     // Safety button
     const safetyWrap = document.createElement('div');
     safetyWrap.id = 'ptsd-safety-wrap';
