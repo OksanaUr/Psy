@@ -225,6 +225,22 @@ textarea:focus{outline:none;background:var(--white)}
 .confetti-piece{position:fixed;width:10px;height:10px;top:-10px;border-radius:2px;animation:cfall linear forwards;pointer-events:none;z-index:9999}
 @keyframes cfall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
 
+/* VERSION SELECT */
+.vsel-hero{padding:2.5rem 1rem 1.5rem;text-align:center}
+.vsel-icon{font-size:2.5rem;display:block;margin-bottom:.5rem}
+.vsel-title{font-size:1.2rem;font-weight:800;margin-bottom:.25rem}
+.vsel-sub{font-size:13px;color:var(--muted);line-height:1.5}
+.vsel-inner{max-width:480px;margin:0 auto;padding:1rem 1rem 3rem}
+.vsel-cards{display:flex;flex-direction:column;gap:14px;margin-top:1rem}
+.vsel-card{background:var(--white);border-radius:var(--rl);border:2px solid var(--border);padding:1.5rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:16px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.vsel-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.vsel-card-icon{font-size:2.5rem;flex-shrink:0}
+.vsel-card-info{}
+.vsel-card-title{font-size:1rem;font-weight:800;margin-bottom:4px}
+.vsel-card-desc{font-size:13px;color:var(--muted);line-height:1.5}
+.vsel-arrow{margin-left:auto;font-size:20px;color:var(--muted);transition:all .2s;flex-shrink:0}
+.vsel-card:hover .vsel-arrow{transform:translateX(4px)}
+
 @media(max-width:480px){
   .block-grid{grid-template-columns:1fr}
   .vtabs{flex-wrap:wrap}
@@ -317,12 +333,75 @@ textarea:focus{outline:none;background:var(--white)}
         </div>
       </div>
 
+      <div class="hub-card" style="opacity:.6;cursor:default;pointer-events:none">
+        <div class="hc-top" style="background:linear-gradient(135deg,#F5EDE8,#E8F0F5)">
+          <span class="hc-icon">👨‍👩‍👧</span>
+          <div class="hc-info">
+            <div class="hc-title" style="color:#7C5A4A">Члени сімей військових та ветеранів</div>
+            <div class="hc-desc" style="color:var(--muted)">Підтримка, розуміння досвіду близьких, турбота про себе поруч із тим, хто служив.</div>
+          </div>
+          <span style="font-size:11px;font-weight:700;background:#FDF1DC;color:#C8892A;padding:4px 10px;border-radius:10px;flex-shrink:0">Скоро</span>
+        </div>
+        <div class="hc-tags">
+          <span class="hc-tag" style="background:#F5EDE8;color:#7C5A4A">👨‍👩‍👧 Родини</span>
+          <span class="hc-tag" style="background:#FDF1DC;color:#C8892A">В розробці</span>
+        </div>
+      </div>
+
     </div>
     <p style="text-align:center;font-size:11px;color:var(--muted);margin-top:2rem">© Оксана Урожай · Психотерапевт<br>Тривога — це лише шторм у твоїй голові. Але ти — цілий океан, здатний його витримати.</p>
   </div>
 </div>
 
 <!-- ========== 3. TOOL HOME ========== -->
+<div class="screen" id="vselect">
+  <div class="topbar">
+    <button onclick="goHub()" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text)">← Назад</button>
+    <div class="tb-info">
+      <div class="tb-title">Терапевтична анкета самопізнання</div>
+      <div class="tb-sub">Оберіть версію</div>
+    </div>
+    <button onclick="goLanding()" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text)">🏠</button>
+  </div>
+  <div class="vsel-hero" style="background:linear-gradient(135deg,#EEEDFE,#E1F5EE)">
+    <span class="vsel-icon">📓</span>
+    <div class="vsel-title" style="color:var(--purple-d)">Терапевтична анкета самопізнання</div>
+    <div class="vsel-sub">Оберіть версію, яка підходить вам</div>
+  </div>
+  <div class="vsel-inner">
+    <div class="vsel-cards">
+
+      <div class="vsel-card" onclick="selectAnketaVersion('a')" style="border-color:var(--purple-l)">
+        <span class="vsel-card-icon">🌸</span>
+        <div class="vsel-card-info">
+          <div class="vsel-card-title" style="color:var(--purple-d)">Підлітки</div>
+          <div class="vsel-card-desc">12–17 років · Жива мова, ігрові елементи, безпечний простір для самопізнання</div>
+        </div>
+        <span class="vsel-arrow">→</span>
+      </div>
+
+      <div class="vsel-card" onclick="selectAnketaVersion('b')" style="border-color:var(--teal-l)">
+        <span class="vsel-card-icon">🌿</span>
+        <div class="vsel-card-info">
+          <div class="vsel-card-title" style="color:var(--teal-d)">Дорослі</div>
+          <div class="vsel-card-desc">18+ років · Глибока рефлексія, робота з внутрішніми частинами особистості</div>
+        </div>
+        <span class="vsel-arrow">→</span>
+      </div>
+
+      <div class="vsel-card" onclick="selectAnketaVersion('c')" style="border-color:var(--coral-l)">
+        <span class="vsel-card-icon">🛡️</span>
+        <div class="vsel-card-info">
+          <div class="vsel-card-title" style="color:var(--coral-d)">Ветерани</div>
+          <div class="vsel-card-desc">Ветерани та ветеранки · Акцент на ідентичності, тілесності та реінтеграції після служби</div>
+        </div>
+        <span class="vsel-arrow">→</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <div class="screen" id="toolhome">
   <div class="topbar">
     <button class="back-btn" onclick="goHub()" title="Назад до інструментів" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text)"><i class="ti ti-arrow-left"></i> Назад</button>
@@ -838,10 +917,9 @@ function showTool(id){
   heroWrap.innerHTML = '';
 
   if(id === 'anketa'){
-    titleEl.textContent = 'Терапевтична анкета самопізнання';
-    subEl.textContent = 'Оберіть версію та блок';
-    buildToolHero('📓','Терапевтична анкета самопізнання','Обери версію і блок, який потрібен прямо зараз','linear-gradient(135deg,#EEEDFE,#E1F5EE)','var(--purple-d)','var(--muted)',true);
-    setAnketaVersion('a');
+    // Go to version selection screen instead
+    showScreen('vselect');
+    return;
   }
 
   if(id === 'anxiety'){
@@ -849,6 +927,7 @@ function showTool(id){
     subEl.textContent = 'Оберіть блок, який потрібен зараз';
     buildToolHero('🌊','Тривожність — самодослідження','Обери блок, який потрібен прямо зараз','linear-gradient(135deg,#EBF2FC,#E3F5EF)','var(--navy-d)','var(--muted)');
     buildAnxietyBlocks();
+    window._toolhomeFrom = 'hub';
   }
 
   if(id === 'ptsd'){
@@ -867,6 +946,7 @@ function showTool(id){
     safetyWrap.appendChild(safetyBtnEl);
     blocksWrap.parentNode.insertBefore(safetyWrap, blocksWrap);
     buildPtsdBlocks();
+    window._toolhomeFrom = 'hub';
   }
 
   showScreen('toolhome');
@@ -909,6 +989,34 @@ function buildToolHero(icon,title,sub,bg,titleColor,subColor,hasTabs=false){
 
 function moduleBack(){
   showScreen('toolhome');
+}
+
+function selectAnketaVersion(v){
+  anketaVersion = v;
+  // Build toolhome for anketa with selected version
+  const titleEl = document.getElementById('tool-title');
+  const subEl = document.getElementById('tool-sub');
+  const heroWrap = document.getElementById('tool-hero-wrap');
+  const blocksWrap = document.getElementById('tool-blocks');
+  const existSafe = document.getElementById('ptsd-safety-wrap');
+  if(existSafe) existSafe.remove();
+  if(titleEl) titleEl.textContent = 'Терапевтична анкета самопізнання';
+  const labels = {a:'🌸 Підлітки',b:'🌿 Дорослі',c:'🛡️ Ветерани'};
+  if(subEl) subEl.textContent = labels[v];
+  if(heroWrap) heroWrap.innerHTML = '';
+  if(blocksWrap) blocksWrap.innerHTML = '';
+  buildToolHero('📓','Терапевтична анкета самопізнання','Обери блок, який потрібен прямо зараз','linear-gradient(135deg,#EEEDFE,#E1F5EE)','var(--purple-d)','var(--muted)');
+  setAnketaVersion(v);
+
+  showScreen('toolhome');
+  // Track that we came from vselect
+  window._toolhomeFrom = 'vselect';
+}
+
+function toolhomeBack(){
+  const from = window._toolhomeFrom || 'hub';
+  showScreen(from);
+  window._toolhomeFrom = null;
 }
 </script>
 </body>
