@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Психологічний кабінет · Оксана Урожай</title>
+<title>Психологічний кабінет</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.x/tabler-icons.min.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -18,164 +18,135 @@
   --slate:#5A6E7C;--slate-l:#EDF1F4;
   --green:#3A8B5C;--green-l:#E3F5EC;
   --warm:#7C5A4A;--warm-l:#F5EDE8;
-  --pink:#C85A8A;--pink-l:#FAEBF2;
   --blue:#4A7FC1;--blue-l:#EBF2FC;
+  --pink:#C85A8A;--pink-l:#FAEBF2;
   --text:#2C2C2C;--muted:#888;--border:#E0E0E0;
   --white:#fff;--bg:#F5F7FA;
   --r:12px;--rl:18px;
 }
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 
-.screen{
-  position:fixed;top:0;left:0;right:0;bottom:0;
-  overflow-y:auto;overflow-x:hidden;
-  transform:translateX(100%);
-  transition:transform 0.25s ease;
-  visibility:hidden;
-  background:var(--bg);
-  z-index:1;
-}
-.screen.active{
-  transform:translateX(0);
-  visibility:visible;
-  z-index:2;
-  padding-bottom:0;
-}
-.screen.slide-out{
-  transform:translateX(-20%);
-  visibility:visible;
-  z-index:1;
-  transition:transform 0.25s ease;
-}
-#landing{
-  background:linear-gradient(160deg,#EEEDFE 0%,#E1F5EE 50%,#EBF0F8 100%);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-}
-#ptsd-cover{
-  background:linear-gradient(160deg,#3D5A7A 0%,#4A6E8A 40%,#5A7E90 70%,#5A8C7E 100%);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-}
+/* SCREENS */
+.screen{position:fixed;top:0;left:0;right:0;bottom:0;overflow-y:auto;overflow-x:hidden;transform:translateX(100%);transition:transform .25s ease;visibility:hidden;background:var(--bg);z-index:1}
+.screen.active{transform:translateX(0);visibility:visible;z-index:2}
+.screen.slide-out{transform:translateX(-20%);visibility:visible;z-index:1;transition:transform .25s ease}
 
-/* ========== SCREEN 1: LANDING ========== */
+/* LANDING */
+#landing{background:linear-gradient(160deg,#EEEDFE 0%,#E1F5EE 50%,#EBF0F8 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem 1.5rem;overflow:hidden}
+.ls{position:absolute;border-radius:50%;opacity:.09;animation:float 7s ease-in-out infinite}
+.ls1{width:320px;height:320px;background:var(--purple);top:-80px;left:-70px}
+.ls2{width:200px;height:200px;background:var(--teal);bottom:-50px;right:-40px;animation-delay:2s}
+.ls3{width:130px;height:130px;background:var(--navy);top:38%;right:6%;animation-delay:4s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 
-#landing{text-align:center;padding:2rem 1.5rem;overflow:hidden}
-.land-shape{position:absolute;border-radius:50%;opacity:.09;animation:float 7s ease-in-out infinite}
-.ls1{width:350px;height:350px;background:var(--purple);top:-100px;left:-80px}
-.ls2{width:220px;height:220px;background:var(--teal);bottom:-60px;right:-50px;animation-delay:2s}
-.ls3{width:140px;height:140px;background:var(--navy);top:35%;right:6%;animation-delay:4s}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-
-.land-content{position:relative;z-index:1;max-width:560px}
-.land-badge{display:inline-flex;align-items:center;gap:6px;background:white;padding:6px 16px;border-radius:20px;font-size:12px;color:var(--purple-d);font-weight:500;margin-bottom:1.5rem;box-shadow:0 2px 12px rgba(127,119,221,.15);animation:fadeUp .6s ease both}
-.land-title{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;color:var(--purple-d);line-height:1.15;margin-bottom:.5rem;animation:fadeUp .6s ease .1s both}
+.land-content{position:relative;z-index:1;max-width:520px}
+.land-badge{display:inline-flex;align-items:center;gap:6px;background:white;padding:6px 16px;border-radius:20px;font-size:12px;color:var(--purple-d);font-weight:500;margin-bottom:1.25rem;box-shadow:0 2px 12px rgba(127,119,221,.15);animation:fadeUp .6s ease both}
+.land-title{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;color:var(--purple-d);line-height:1.15;margin-bottom:1.5rem;animation:fadeUp .6s ease .1s both}
 .land-title span{color:var(--teal-d)}
-.land-sub{font-size:1rem;color:var(--muted);line-height:1.7;margin-bottom:.75rem;animation:fadeUp .6s ease .2s both}
-.land-author{font-size:13px;color:var(--purple-d);font-weight:600;margin-bottom:2.5rem;animation:fadeUp .6s ease .25s both}
-.land-quote{font-size:13px;color:var(--muted);font-style:italic;margin-bottom:2rem;line-height:1.6;animation:fadeUp .6s ease .3s both;max-width:420px;margin-left:auto;margin-right:auto}
-.land-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 48px;border-radius:50px;border:none;font-size:17px;font-weight:700;cursor:pointer;background:var(--purple);color:white;transition:all .2s;box-shadow:0 4px 24px rgba(127,119,221,.35);animation:fadeUp .6s ease .4s both}
-.land-btn:hover{background:var(--purple-d);transform:translateY(-2px);box-shadow:0 8px 32px rgba(127,119,221,.4)}
-.land-note{font-size:11px;color:var(--muted);margin-top:1rem;animation:fadeUp .6s ease .5s both}
-.land-quote-big{position:relative;margin:0 auto 2.5rem;max-width:440px;padding:1.5rem 1.5rem 1.5rem 2.5rem;animation:fadeUp .6s ease .3s both;text-align:left;border-left:3px solid var(--purple);background:rgba(127,119,221,.06);border-radius:0 var(--r) var(--r) 0}
+.land-quote{position:relative;margin:0 auto 2.5rem;max-width:440px;padding:1.25rem 1.5rem 1.25rem 2.5rem;animation:fadeUp .6s ease .2s both;text-align:left;border-left:3px solid var(--purple);background:rgba(127,119,221,.06);border-radius:0 var(--r) var(--r) 0}
 .q-line1{display:block;font-size:1rem;color:var(--muted);font-style:italic;line-height:1.8;margin-bottom:.4rem}
-.q-line2{display:block;font-size:1.4rem;color:var(--purple-d);font-weight:800;line-height:1.4;margin-bottom:.4rem;letter-spacing:-.01em}
-.q-line3{display:block;font-size:1rem;color:var(--teal-d);font-style:italic;line-height:1.8;font-weight:500}
-.q-accent{color:var(--teal-d)}
+.q-line2{display:block;font-size:1.4rem;color:var(--purple-d);font-weight:800;line-height:1.4;margin-bottom:.4rem}
+.q-line3{display:block;font-size:1rem;color:var(--teal-d);font-style:italic;font-weight:500;line-height:1.8}
+.land-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 48px;border-radius:50px;border:none;font-size:17px;font-weight:700;cursor:pointer;background:var(--purple);color:white;box-shadow:0 4px 24px rgba(127,119,221,.35);animation:fadeUp .6s ease .3s both;transition:all .2s}
+.land-btn:hover{background:var(--purple-d);transform:translateY(-2px)}
+.land-note{font-size:11px;color:var(--muted);margin-top:1rem;animation:fadeUp .6s ease .4s both}
 
-/* ========== SCREEN 2: HUB ========== */
+/* HUB */
 #hub{background:var(--bg)}
 .hub-topbar{background:white;border-bottom:1px solid var(--border);padding:12px 1rem;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:100}
 .hub-topbar-title{font-size:14px;font-weight:700;color:var(--text);flex:1}
-.hub-topbar-sub{font-size:11px;color:var(--muted)}
-.home-btn{background:none;border:none;cursor:pointer;color:var(--muted);font-size:20px;padding:4px;border-radius:8px;display:flex;align-items:center;transition:all .15s}
-.home-btn:hover{background:#eee;color:var(--text)}
-
+.nav-btn{background:none;border:1.5px solid var(--border);border-radius:20px;cursor:pointer;color:var(--text);font-size:13px;font-weight:600;padding:6px 12px;display:flex;align-items:center;gap:4px;transition:all .15s;white-space:nowrap}
+.nav-btn:hover{background:var(--bg)}
 .hub-hero{background:linear-gradient(135deg,#EEEDFE 0%,#E1F5EE 50%,#EBF0F8 100%);padding:2rem 1rem 1.5rem;text-align:center}
 .hub-icon{font-size:2.5rem;display:block;margin-bottom:.5rem}
 .hub-title{font-size:1.4rem;font-weight:800;color:var(--purple-d);margin-bottom:.25rem}
 .hub-sub{font-size:13px;color:var(--muted)}
+.hub-inner{max-width:720px;margin:0 auto;padding:1.5rem 1rem 3rem}
+.section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:1.5rem 0 .75rem;padding-left:2px}
+.hub-grid{display:grid;grid-template-columns:1fr;gap:12px}
 
-.hub-inner{max-width:680px;margin:0 auto;padding:1.5rem 1rem 3rem}
-.hub-grid{display:grid;grid-template-columns:1fr;gap:14px}
+/* HUB CARDS */
 .hub-card{background:var(--white);border-radius:var(--rl);border:1.5px solid var(--border);overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.05);transition:all .2s;cursor:pointer}
 .hub-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.1)}
-.hc-top{padding:1.5rem;display:flex;align-items:center;gap:14px}
-.hc-icon{font-size:2.6rem;flex-shrink:0}
+.hub-card.coming-soon{opacity:.55;cursor:default;pointer-events:none}
+.hc-top{padding:1.25rem 1.5rem;display:flex;align-items:center;gap:14px}
+.hc-icon{font-size:2.2rem;flex-shrink:0}
 .hc-info{flex:1}
-.hc-title{font-size:1rem;font-weight:800;margin-bottom:4px}
-.hc-desc{font-size:13px;color:var(--muted);line-height:1.5}
-.hc-arrow{font-size:22px;opacity:.35;transition:all .2s}
+.hc-title{font-size:.95rem;font-weight:800;margin-bottom:4px}
+.hc-desc{font-size:12px;color:var(--muted);line-height:1.5}
+.hc-arrow{font-size:20px;opacity:.3;transition:all .2s;flex-shrink:0}
 .hub-card:hover .hc-arrow{opacity:1;transform:translateX(4px)}
-.hc-tags{display:flex;flex-wrap:wrap;gap:6px;padding:0 1.5rem 1.25rem}
+.hc-soon{font-size:10px;font-weight:700;background:var(--amber-l);color:var(--amber);padding:3px 10px;border-radius:10px;flex-shrink:0}
+.hc-tags{display:flex;flex-wrap:wrap;gap:6px;padding:0 1.5rem 1.1rem}
 .hc-tag{font-size:10px;font-weight:600;padding:3px 10px;border-radius:10px}
 
-/* ========== SCREEN 3: TOOL HOME ========== */
+/* VSELECT */
+#vselect{background:var(--bg)}
+.vsel-hero{padding:2rem 1rem 1.5rem;text-align:center}
+.vsel-inner{max-width:480px;margin:0 auto;padding:.5rem 1rem 3rem}
+.vsel-cards{display:flex;flex-direction:column;gap:12px}
+.vsel-card{background:var(--white);border-radius:var(--rl);border:2px solid var(--border);padding:1.25rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.vsel-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.vsel-icon{font-size:2.2rem;flex-shrink:0}
+.vsel-title{font-size:.95rem;font-weight:800;margin-bottom:3px}
+.vsel-desc{font-size:12px;color:var(--muted);line-height:1.5}
+.vsel-arrow{margin-left:auto;font-size:18px;color:var(--muted);flex-shrink:0}
+
+/* TOOL HOME */
 #toolhome{background:var(--bg)}
-.topbar{position:sticky;top:0;z-index:200;background:rgba(245,247,250,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:10px 1rem;display:flex;align-items:center;gap:8px;min-height:52px}
-.back-btn{background:none;border:none;cursor:pointer;color:var(--muted);font-size:20px;padding:4px;border-radius:8px;display:flex;align-items:center;transition:all .15s;flex-shrink:0}
-.back-btn:hover{background:#eee;color:var(--text)}
-.tb-info{flex:1;min-width:0}
-.tb-title{font-size:14px;font-weight:700;color:var(--text)}
-.tb-sub{font-size:11px;color:var(--muted)}
-
 .tool-hero{padding:1.75rem 1rem 1.25rem;text-align:center}
-.th-icon{font-size:2.5rem;display:block;margin-bottom:.5rem}
-.th-title{font-size:1.2rem;font-weight:800;margin-bottom:.25rem}
+.th-icon{font-size:2.2rem;display:block;margin-bottom:.5rem}
+.th-title{font-size:1.1rem;font-weight:800;margin-bottom:.25rem}
 .th-sub{font-size:13px;color:var(--muted);line-height:1.5}
-
-.vtabs{display:flex;gap:8px;justify-content:center;margin:1rem 0}
-.vtab{padding:8px 18px;border-radius:50px;border:1.5px solid var(--border);background:white;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;color:var(--muted)}
+.vtabs{display:flex;gap:8px;justify-content:center;margin:.75rem 0 0}
+.vtab{padding:7px 16px;border-radius:50px;border:1.5px solid var(--border);background:white;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;color:var(--muted)}
 .vtab:hover{background:var(--bg)}
 .vtab.va{background:var(--purple-l);color:var(--purple-d);border-color:var(--purple)}
 .vtab.vb{background:var(--teal-l);color:var(--teal-d);border-color:var(--teal)}
 .vtab.vc{background:var(--coral-l);color:var(--coral-d);border-color:var(--coral)}
-
-.tool-inner{max-width:680px;margin:0 auto;padding:.5rem 1rem 3rem}
-.section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:1.25rem 0 .75rem}
+.tool-inner{max-width:680px;margin:0 auto;padding:.75rem 1rem 3rem}
 .block-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.block-card{background:var(--white);border-radius:var(--rl);border:1.5px solid var(--border);padding:1.1rem;cursor:pointer;transition:all .2s;box-shadow:0 2px 6px rgba(0,0,0,.04);display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden}
+.block-card{background:var(--white);border-radius:var(--rl);border:1.5px solid var(--border);padding:1rem;cursor:pointer;transition:all .2s;box-shadow:0 2px 6px rgba(0,0,0,.04);display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden}
 .block-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
 .block-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
-.bc-icon{font-size:1.6rem}
+.bc-icon{font-size:1.5rem}
 .bc-title{font-size:13px;font-weight:700;color:var(--text);line-height:1.3}
 .bc-desc{font-size:11px;color:var(--muted);line-height:1.5}
 .bc-tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;display:inline-block;margin-top:2px}
 .bc-warn{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--amber);margin-top:2px}
-
 .safety-btn{display:flex;align-items:center;gap:10px;background:var(--sage);color:white;border:none;border-radius:var(--r);padding:12px 16px;margin:.75rem auto;max-width:680px;width:calc(100% - 2rem);cursor:pointer;font-size:14px;font-weight:700;transition:all .15s;box-shadow:0 2px 10px rgba(74,124,110,.3)}
 .safety-btn:hover{opacity:.9;transform:translateY(-1px)}
 
-/* ========== SCREEN 4: PTSD COVER ========== */
+/* PTSD COVER */
+#ptsdcover{min-height:100vh;background:linear-gradient(160deg,#3D5A7A 0%,#4A6E8A 40%,#5A7E90 70%,#5A8C7E 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.5rem;text-align:center;position:relative;overflow:hidden}
+.pc-shape{position:absolute;border-radius:50%;opacity:.07}
+.pc1{width:380px;height:380px;background:white;top:-120px;left:-90px}
+.pc2{width:260px;height:260px;background:#5A8C7E;bottom:-70px;right:-70px}
+.pc-topbar{position:absolute;top:0;left:0;right:0;padding:12px 1rem;display:flex;align-items:center;gap:8px;z-index:10}
+.pc-content{position:relative;z-index:1;max-width:520px}
+.pc-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:5px 14px;border-radius:20px;font-size:12px;color:rgba(255,255,255,.9);font-weight:500;margin-bottom:1.25rem}
+.pc-title{font-size:clamp(2rem,5vw,3rem);font-weight:800;color:white;line-height:1.15;margin-bottom:.75rem}
+.pc-title span{color:#A8E6CF}
+.pc-sub{font-size:1rem;color:rgba(255,255,255,.75);line-height:1.7;margin-bottom:1.5rem}
+.pc-note{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:var(--rl);padding:1.25rem 1.5rem;margin-bottom:2rem;text-align:left}
+.pc-note p{font-size:13px;color:rgba(255,255,255,.8);line-height:1.7}
+.pc-note p+p{margin-top:8px}
+.pc-note strong{color:white}
+.pc-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.pc-btn-main{display:inline-flex;align-items:center;gap:10px;padding:14px 36px;border-radius:50px;border:none;font-size:15px;font-weight:700;cursor:pointer;background:white;color:#3D5A7A;transition:all .2s;box-shadow:0 4px 20px rgba(0,0,0,.25)}
+.pc-btn-main:hover{transform:translateY(-2px)}
+.pc-btn-ghost{padding:14px 24px;border-radius:50px;border:1.5px solid rgba(255,255,255,.35);background:transparent;color:rgba(255,255,255,.85);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
 
-#ptsd-cover{text-align:center;overflow:hidden}
-.ptsd-cover-topbar{position:absolute;top:0;left:0;right:0;padding:12px 1rem;display:flex;align-items:center;gap:8px;z-index:10}
-.cs{position:absolute;border-radius:50%;opacity:.07}
-.cs1{width:400px;height:400px;background:white;top:-150px;left:-100px}
-.cs2{width:280px;height:280px;background:#5A8C7E;bottom:-80px;right:-80px}
-.cover-content{position:relative;z-index:1;max-width:520px}
-.cover-icon{font-size:3.5rem;margin-bottom:1.25rem;display:block;animation:fadeUp .6s ease both}
-.cover-badge-dark{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:5px 14px;border-radius:20px;font-size:12px;color:rgba(255,255,255,.9);font-weight:500;margin-bottom:1.25rem}
-.cover-title-dark{font-size:clamp(2rem,5vw,3rem);font-weight:800;color:white;line-height:1.15;margin-bottom:.75rem}
-.cover-title-dark span{color:#A8E6CF}
-.cover-sub-dark{font-size:1rem;color:rgba(255,255,255,.75);line-height:1.7;margin-bottom:1.5rem}
-.cover-note-dark{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:var(--rl);padding:1.25rem 1.5rem;margin-bottom:2rem;text-align:left}
-.cover-note-dark p{font-size:13px;color:rgba(255,255,255,.8);line-height:1.7}
-.cover-note-dark p+p{margin-top:8px}
-.cover-note-dark strong{color:white}
-.cover-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.cover-btn-main{display:inline-flex;align-items:center;gap:10px;padding:14px 36px;border-radius:50px;border:none;font-size:15px;font-weight:700;cursor:pointer;background:white;color:#3D5A7A;transition:all .2s;box-shadow:0 4px 20px rgba(0,0,0,.25)}
-.cover-btn-main:hover{transform:translateY(-2px)}
-.cover-btn-ghost{padding:14px 24px;border-radius:50px;border:1.5px solid rgba(255,255,255,.35);background:transparent;color:rgba(255,255,255,.85);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
-.cover-btn-ghost:hover{background:rgba(255,255,255,.1)}
-
-/* ========== SCREEN 5: MODULE ========== */
+/* MODULE */
 #module{background:var(--bg)}
+.topbar{position:sticky;top:0;z-index:100;background:rgba(245,247,250,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:10px 1rem;display:flex;align-items:center;gap:8px}
 .prog-bar{width:60px;height:4px;border-radius:2px;background:var(--border);overflow:hidden;flex-shrink:0}
 .prog-fill{height:100%;border-radius:2px;transition:width .4s}
 .prog-pct{font-size:11px;font-weight:600;color:var(--muted);min-width:28px}
 .module-inner{max-width:680px;margin:0 auto;padding:1.5rem 1rem 7rem}
 .module-header{border-radius:var(--rl);padding:1.25rem 1.5rem;margin-bottom:1rem;display:flex;align-items:center;gap:14px}
-.mh-icon{font-size:2rem}
+.mh-icon{font-size:2rem;flex-shrink:0}
 .mh-title{font-size:1.1rem;font-weight:800}
 .mh-sub{font-size:13px;color:var(--muted);margin-top:2px}
 .safety-banner{display:flex;align-items:center;gap:10px;background:var(--sage-l);border:1px solid #9FD4C4;border-radius:var(--r);padding:12px 16px;margin-bottom:1rem;cursor:pointer;transition:all .15s}
@@ -187,9 +158,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .field-label{display:block;font-size:13px;color:var(--muted);margin-bottom:7px;line-height:1.5;font-weight:500}
 textarea{width:100%;border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px;font-size:14px;font-family:inherit;color:var(--text);background:#FAFAFA;resize:vertical;min-height:72px;line-height:1.7;transition:border-color .15s}
 textarea:focus{outline:none;background:var(--white)}
-.scale-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.scale-btn{width:40px;height:40px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--white);cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);transition:all .15s}
-.scale-hints{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:5px}
 .pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .pill{padding:7px 13px;border:1.5px solid var(--border);border-radius:20px;font-size:13px;cursor:pointer;color:var(--muted);background:var(--white);transition:all .15s;user-select:none;font-weight:500}
 .pill:hover{background:var(--bg)}
@@ -203,9 +171,10 @@ textarea:focus{outline:none;background:var(--white)}
 .info-block.amber{background:var(--amber-l);border-left:3px solid var(--amber)}
 .info-block.warm{background:var(--warm-l);border-left:3px solid var(--warm)}
 .info-title{font-size:12px;font-weight:700;margin-bottom:6px}
+.info-text{font-size:13px;color:var(--text);line-height:1.7}
 .secret-box{border-left:3px solid #EF9F27;background:#FAEEDA;border-radius:0 var(--r) var(--r) 0;padding:14px;margin-top:12px}
 .secret-label{font-size:12px;font-weight:700;color:#854F0B;margin-bottom:10px}
-.body-map{border:2px dashed var(--border);border-radius:var(--r);padding:20px;margin-top:12px;text-align:center;background:var(--bg)}
+.body-map-wrap{margin-top:16px}
 .stop-box{background:#FEF3E2;border:1.5px solid #F0C060;border-radius:var(--rl);padding:16px;margin:16px 0;display:flex;gap:12px;align-items:flex-start}
 .readiness-box{background:var(--amber-l);border:1px solid #F0C878;border-radius:var(--r);padding:14px 16px;margin-bottom:1rem}
 .readiness-label{font-size:12px;font-weight:600;color:var(--amber);margin-bottom:8px;display:flex;align-items:center;gap:6px}
@@ -222,76 +191,53 @@ textarea:focus{outline:none;background:var(--white)}
 .t-btn.secondary{background:white;border:1.5px solid}
 
 /* SAVE BAR */
-.save-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1.5px solid var(--border);padding:12px 1rem;align-items:center;gap:8px;z-index:1000;flex-wrap:wrap;box-shadow:0 -4px 20px rgba(0,0,0,.08);display:none}
+.save-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1.5px solid var(--border);padding:12px 1rem;align-items:center;gap:8px;z-index:1000;flex-wrap:wrap;box-shadow:0 -4px 20px rgba(0,0,0,.07);display:none}
 .s-btn{padding:10px 16px;border-radius:50px;border:1.5px solid var(--border);font-size:13px;font-weight:700;cursor:pointer;background:var(--white);color:var(--text);transition:all .15s;display:flex;align-items:center;gap:6px}
 .s-btn.primary{color:white;border-color:transparent}
 .s-btn:hover{opacity:.85}
-
-.confetti-piece{position:fixed;width:10px;height:10px;top:-10px;border-radius:2px;animation:cfall linear forwards;pointer-events:none;z-index:9999}
-@keyframes cfall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
-
-/* VERSION SELECT */
-.vsel-hero{padding:2.5rem 1rem 1.5rem;text-align:center}
-.vsel-icon{font-size:2.5rem;display:block;margin-bottom:.5rem}
-.vsel-title{font-size:1.2rem;font-weight:800;margin-bottom:.25rem}
-.vsel-sub{font-size:13px;color:var(--muted);line-height:1.5}
-.vsel-inner{max-width:480px;margin:0 auto;padding:1rem 1rem 3rem}
-.vsel-cards{display:flex;flex-direction:column;gap:14px;margin-top:1rem}
-.vsel-card{background:var(--white);border-radius:var(--rl);border:2px solid var(--border);padding:1.5rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:16px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
-.vsel-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
-.vsel-card-icon{font-size:2.5rem;flex-shrink:0}
-.vsel-card-info{}
-.vsel-card-title{font-size:1rem;font-weight:800;margin-bottom:4px}
-.vsel-card-desc{font-size:13px;color:var(--muted);line-height:1.5}
-.vsel-arrow{margin-left:auto;font-size:20px;color:var(--muted);transition:all .2s;flex-shrink:0}
-.vsel-card:hover .vsel-arrow{transform:translateX(4px)}
 
 @media(max-width:480px){
   .block-grid{grid-template-columns:1fr}
   .vtabs{flex-wrap:wrap}
   .land-btn{padding:14px 36px;font-size:15px}
+  .hc-top{padding:1rem}
 }
 </style>
 </head>
 <body>
 
-<!-- ========== 1. LANDING ========== -->
+<!-- 1. LANDING -->
 <div class="screen active" id="landing">
-  <div class="land-shape ls1"></div>
-  <div class="land-shape ls2"></div>
-  <div class="land-shape ls3"></div>
+  <div class="ls ls1"></div><div class="ls ls2"></div><div class="ls ls3"></div>
   <div class="land-content">
     <div class="land-badge"><i class="ti ti-heart"></i> Психологічний кабінет</div>
     <h1 class="land-title">Простір<br><span>самопізнання</span></h1>
-    <div class="land-quote-big">
+    <div class="land-quote">
       <span class="q-line1">Тут немає правильних чи неправильних відповідей.</span>
-      <span class="q-line2">Є лише <span class="q-accent">ти</span> —</span>
+      <span class="q-line2">Є лише ти —</span>
       <span class="q-line3">і твоя правда.</span>
     </div>
-    <button class="land-btn" onclick="goHub()">
-      <i class="ti ti-arrow-right"></i> Почати
-    </button>
+    <button class="land-btn" onclick="goHub()"><i class="ti ti-arrow-right"></i> Почати</button>
     <p class="land-note">Всі відповіді залишаються лише на вашому пристрої</p>
   </div>
 </div>
 
-<!-- ========== 2. HUB ========== -->
+<!-- 2. HUB -->
 <div class="screen" id="hub">
   <div class="hub-topbar">
-    <button onclick="goLanding()" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text);flex-shrink:0">🏠 Додому</button>
-    <div>
-      <div class="hub-topbar-title">Психологічний кабінет</div>
-      <div style="font-size:11px;color:var(--muted)">Оберіть інструмент</div>
-    </div>
+    <button class="nav-btn" onclick="goLanding()"><i class="ti ti-home"></i> Додому</button>
+    <div class="hub-topbar-title" style="text-align:center">Психологічний кабінет</div>
   </div>
   <div class="hub-hero">
     <span class="hub-icon">🗂️</span>
     <div class="hub-title">Інструменти самодослідження</div>
-    <div class="hub-sub">Оберіть інструмент, який потрібен вашому клієнту</div>
+    <div class="hub-sub">Оберіть інструмент, який потрібен прямо зараз</div>
   </div>
   <div class="hub-inner">
-    <div class="hub-grid">
 
+    <!-- 1. САМОПІЗНАННЯ -->
+    <div class="section-label">🔍 Самопізнання та діагностика</div>
+    <div class="hub-grid">
       <div class="hub-card" onclick="showTool('anketa')">
         <div class="hc-top" style="background:linear-gradient(135deg,#EEEDFE,#E1F5EE)">
           <span class="hc-icon">📓</span>
@@ -307,7 +253,11 @@ textarea:focus{outline:none;background:var(--white)}
           <span class="hc-tag" style="background:var(--coral-l);color:var(--coral-d)">🛡️ Ветерани</span>
         </div>
       </div>
+    </div>
 
+    <!-- 2. ТРИВОГА ТА ТРАВМА -->
+    <div class="section-label">🌊 Тривога та травма</div>
+    <div class="hub-grid">
       <div class="hub-card" onclick="showTool('anxiety')">
         <div class="hc-top" style="background:linear-gradient(135deg,#EBF2FC,#E3F5EF)">
           <span class="hc-icon">🌊</span>
@@ -318,12 +268,11 @@ textarea:focus{outline:none;background:var(--white)}
           <i class="ti ti-chevron-right hc-arrow" style="color:var(--blue)"></i>
         </div>
         <div class="hc-tags">
-          <span class="hc-tag" style="background:var(--blue-l);color:var(--blue)">Оцінка стану</span>
-          <span class="hc-tag" style="background:var(--green-l);color:var(--green)">Дихання</span>
-          <span class="hc-tag" style="background:var(--amber-l);color:var(--amber)">КБТ</span>
+          <span class="hc-tag" style="background:var(--blue-l);color:var(--blue)">📊 Оцінка стану</span>
+          <span class="hc-tag" style="background:var(--green-l);color:var(--green)">🌬️ Дихання</span>
+          <span class="hc-tag" style="background:var(--amber-l);color:var(--amber)">🧠 КБТ</span>
         </div>
       </div>
-
       <div class="hub-card" onclick="showTool('ptsd-cover')">
         <div class="hc-top" style="background:linear-gradient(135deg,#4A6E8A,#5A8C7E)">
           <span class="hc-icon">🛡️</span>
@@ -334,137 +283,180 @@ textarea:focus{outline:none;background:var(--white)}
           <i class="ti ti-chevron-right hc-arrow" style="color:rgba(255,255,255,.6)"></i>
         </div>
         <div class="hc-tags">
-          <span class="hc-tag" style="background:var(--sage-l);color:var(--sage)">Безпека</span>
-          <span class="hc-tag" style="background:var(--navy-l);color:var(--navy)">Реакція</span>
-          <span class="hc-tag" style="background:var(--green-l);color:var(--green)">Стабілізація</span>
+          <span class="hc-tag" style="background:var(--sage-l);color:var(--sage)">🆘 Безпека</span>
+          <span class="hc-tag" style="background:var(--navy-l);color:var(--navy)">⚡ Реакція</span>
+          <span class="hc-tag" style="background:var(--green-l);color:var(--green)">⚓ Стабілізація</span>
         </div>
       </div>
+    </div>
 
-      <div class="hub-card" style="opacity:.6;cursor:default;pointer-events:none">
+    <!-- 3. ВТРАТА ТА ГОРЕ -->
+    <div class="section-label">🕊️ Втрата та горе</div>
+    <div class="hub-grid">
+      <div class="hub-card" onclick="showTool('grief')">
+        <div class="hc-top" style="background:linear-gradient(135deg,#EDF1F4,#EDEAFC)">
+          <span class="hc-icon">🕊️</span>
+          <div class="hc-info">
+            <div class="hc-title" style="color:var(--purple-d)">Простір горя</div>
+            <div class="hc-desc">Безпечний простір для проживання втрати — питання, практики, арт-терапія, робота з памʼяттю.</div>
+          </div>
+          <i class="ti ti-chevron-right hc-arrow" style="color:var(--purple)"></i>
+        </div>
+        <div class="hc-tags">
+          <span class="hc-tag" style="background:var(--purple-l);color:var(--purple-d)">🕊️ Горе</span>
+          <span class="hc-tag" style="background:var(--slate-l);color:var(--slate)">🎨 Арт-терапія</span>
+          <span class="hc-tag" style="background:var(--green-l);color:var(--green)">⚓ Практики</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. РЕСУРС ТА ВІДНОВЛЕННЯ -->
+    <div class="section-label">🌱 Ресурс та відновлення</div>
+    <div class="hub-grid">
+      <div class="hub-card" onclick="showTool('resources')">
+        <div class="hc-top" style="background:linear-gradient(135deg,#EBF2FC,#E3F5EC)">
+          <span class="hc-icon">🗺️</span>
+          <div class="hc-info">
+            <div class="hc-title" style="color:var(--navy-d)">Моя карта ресурсів</div>
+            <div class="hc-desc">Внутрішні та зовнішні ресурси — те, що допомагає триматися і виходити зі стану пригнічення.</div>
+          </div>
+          <i class="ti ti-chevron-right hc-arrow" style="color:var(--blue)"></i>
+        </div>
+        <div class="hc-tags">
+          <span class="hc-tag" style="background:var(--blue-l);color:var(--blue)">🌍 Зовнішні</span>
+          <span class="hc-tag" style="background:var(--purple-l);color:var(--purple-d)">💎 Внутрішні</span>
+          <span class="hc-tag" style="background:#f0f0f0;color:#888">Дорослі</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. СІМЇ ВІЙСЬКОВИХ -->
+    <div class="section-label">👨‍👩‍👧 Члени сімей військових та ветеранів</div>
+    <div class="hub-grid">
+      <div class="hub-card" onclick="showTool('partner')">
+        <div class="hc-top" style="background:linear-gradient(135deg,#EBF2FC,#EDEAFC)">
+          <span class="hc-icon">💙</span>
+          <div class="hc-info">
+            <div class="hc-title" style="color:var(--navy-d)">Я поруч</div>
+            <div class="hc-desc">Для партнерів ветеранів та військових — про власний стан, почуття, межі та відновлення контакту.</div>
+          </div>
+          <i class="ti ti-chevron-right hc-arrow" style="color:var(--navy)"></i>
+        </div>
+        <div class="hc-tags">
+          <span class="hc-tag" style="background:var(--navy-l);color:var(--navy)">💙 Партнери</span>
+          <span class="hc-tag" style="background:var(--purple-l);color:var(--purple-d)">Сімʼї ветеранів</span>
+        </div>
+      </div>
+      <div class="hub-card coming-soon">
         <div class="hc-top" style="background:linear-gradient(135deg,#F5EDE8,#E8F0F5)">
           <span class="hc-icon">👨‍👩‍👧</span>
           <div class="hc-info">
-            <div class="hc-title" style="color:#7C5A4A">Члени сімей військових та ветеранів</div>
-            <div class="hc-desc" style="color:var(--muted)">Підтримка, розуміння досвіду близьких, турбота про себе поруч із тим, хто служив.</div>
+            <div class="hc-title" style="color:var(--warm)">Більше інструментів</div>
+            <div class="hc-desc" style="color:var(--muted)">Наша сімʼя, Я чекаю, Дитина поруч з ветераном — в розробці.</div>
           </div>
-          <span style="font-size:11px;font-weight:700;background:#FDF1DC;color:#C8892A;padding:4px 10px;border-radius:10px;flex-shrink:0">Скоро</span>
+          <span class="hc-soon">Скоро</span>
         </div>
         <div class="hc-tags">
-          <span class="hc-tag" style="background:#F5EDE8;color:#7C5A4A">Родини</span>
-          <span class="hc-tag" style="background:#FDF1DC;color:#C8892A">В розробці</span>
+          <span class="hc-tag" style="background:var(--warm-l);color:var(--warm)">В розробці</span>
         </div>
       </div>
-
     </div>
-    <p style="text-align:center;font-size:11px;color:var(--muted);margin-top:2rem">© Оксана Урожай · Психолог, 2026<br>Тривога — це лише шторм у твоїй голові. Але ти — цілий океан, здатний його витримати.</p>
+
+    <p style="text-align:center;font-size:11px;color:var(--muted);margin-top:2.5rem;line-height:1.8">© Оксана Урожай · Психолог, 2026<br><em>Тривога — це лише шторм у твоїй голові. Але ти — цілий океан, здатний його витримати.</em></p>
   </div>
 </div>
 
-<!-- ========== 3. TOOL HOME ========== -->
+<!-- 3. VSELECT (anketa version picker) -->
 <div class="screen" id="vselect">
   <div class="topbar">
-    <button onclick="goHub()" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text)">← Назад</button>
-    <div class="tb-info">
-      <div class="tb-title">Терапевтична анкета самопізнання</div>
-      <div class="tb-sub">Оберіть версію</div>
-    </div>
-    <button onclick="goLanding()" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text)">🏠</button>
+    <button class="nav-btn" onclick="goHub()"><i class="ti ti-arrow-left"></i> Назад</button>
+    <div style="flex:1;text-align:center;font-size:14px;font-weight:700;color:var(--text)">Терапевтична анкета</div>
+    <button class="nav-btn" onclick="goLanding()"><i class="ti ti-home"></i></button>
   </div>
   <div class="vsel-hero" style="background:linear-gradient(135deg,#EEEDFE,#E1F5EE)">
-    <span class="vsel-icon">📓</span>
-    <div class="vsel-title" style="color:var(--purple-d)">Терапевтична анкета самопізнання</div>
-    <div class="vsel-sub">Оберіть версію, яка підходить вам</div>
+    <span style="font-size:2.2rem;display:block;margin-bottom:.5rem">📓</span>
+    <div style="font-size:1.1rem;font-weight:800;color:var(--purple-d);margin-bottom:.25rem">Терапевтична анкета самопізнання</div>
+    <div style="font-size:13px;color:var(--muted)">Оберіть версію, яка підходить вам</div>
   </div>
   <div class="vsel-inner">
     <div class="vsel-cards">
-
       <div class="vsel-card" onclick="selectAnketaVersion('a')" style="border-color:var(--purple-l)">
-        <span class="vsel-card-icon">🌸</span>
-        <div class="vsel-card-info">
-          <div class="vsel-card-title" style="color:var(--purple-d)">🌸 Підлітки</div>
-          <div class="vsel-card-desc">12–17 років · Жива мова, ігрові елементи, безпечний простір для самопізнання</div>
-        </div>
+        <span class="vsel-icon">🌸</span>
+        <div><div class="vsel-title" style="color:var(--purple-d)">Підлітки</div><div class="vsel-desc">12–17 років · Жива мова, безпечний простір для самопізнання</div></div>
         <span class="vsel-arrow">→</span>
       </div>
-
       <div class="vsel-card" onclick="selectAnketaVersion('b')" style="border-color:var(--teal-l)">
-        <span class="vsel-card-icon">🌿</span>
-        <div class="vsel-card-info">
-          <div class="vsel-card-title" style="color:var(--teal-d)">🌿 Дорослі</div>
-          <div class="vsel-card-desc">18+ років · Глибока рефлексія, робота з внутрішніми частинами особистості</div>
-        </div>
+        <span class="vsel-icon">🌿</span>
+        <div><div class="vsel-title" style="color:var(--teal-d)">Дорослі</div><div class="vsel-desc">18+ · Глибока рефлексія, робота з внутрішніми частинами особистості</div></div>
         <span class="vsel-arrow">→</span>
       </div>
-
       <div class="vsel-card" onclick="selectAnketaVersion('c')" style="border-color:var(--coral-l)">
-        <span class="vsel-card-icon">🛡️</span>
-        <div class="vsel-card-info">
-          <div class="vsel-card-title" style="color:var(--coral-d)">🛡️ Ветерани</div>
-          <div class="vsel-card-desc">Ветерани та ветеранки · Акцент на ідентичності, тілесності та реінтеграції після служби</div>
-        </div>
+        <span class="vsel-icon">🛡️</span>
+        <div><div class="vsel-title" style="color:var(--coral-d)">Ветерани</div><div class="vsel-desc">Ветерани та ветеранки · Ідентичність, тіло, реінтеграція після служби</div></div>
         <span class="vsel-arrow">→</span>
       </div>
-
     </div>
   </div>
 </div>
 
+<!-- 4. TOOL HOME -->
 <div class="screen" id="toolhome">
   <div class="topbar">
-    <button class="back-btn" onclick="goHub()" title="Назад до інструментів" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text)"><i class="ti ti-arrow-left"></i> Назад</button>
-    <div class="tb-info">
-      <div class="tb-title" id="tool-title">Інструмент</div>
-      <div class="tb-sub" id="tool-sub"></div>
+    <button class="nav-btn" id="toolhome-back-btn" onclick="toolhomeBack()"><i class="ti ti-arrow-left"></i> Назад</button>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:14px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="tool-title"></div>
+      <div style="font-size:11px;color:var(--muted)" id="tool-sub"></div>
     </div>
-    <button class="back-btn" onclick="goLanding()" title="На головну" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text)">🏠 Додому</button>
+    <button class="nav-btn" onclick="goLanding()"><i class="ti ti-home"></i></button>
   </div>
   <div id="tool-hero-wrap"></div>
   <div class="tool-inner" id="tool-blocks"></div>
 </div>
 
-<!-- ========== 4. PTSD COVER ========== -->
+<!-- 5. PTSD COVER -->
 <div class="screen" id="ptsd-cover">
-  <div class="cs cs1"></div><div class="cs cs2"></div>
-  <div class="ptsd-cover-topbar">
-    <button class="back-btn" style="color:rgba(255,255,255,.7)" onclick="goHub()"><i class="ti ti-arrow-left"></i></button>
-    <div style="flex:1;font-size:13px;color:rgba(255,255,255,.7)">Мій шлях до безпеки</div>
-    <button class="back-btn" style="color:rgba(255,255,255,.7)" onclick="goLanding()">🏠</button>
+  <div class="pc-shape pc1"></div><div class="pc-shape pc2"></div>
+  <div class="pc-topbar">
+    <button class="nav-btn" style="color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.3);background:transparent" onclick="goHub()"><i class="ti ti-arrow-left"></i> Назад</button>
+    <div style="flex:1"></div>
+    <button class="nav-btn" style="color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.3);background:transparent" onclick="goLanding()"><i class="ti ti-home"></i></button>
   </div>
-  <div class="cover-content">
-    <span class="cover-icon">🌊</span>
-    <div class="cover-badge-dark"><i class="ti ti-shield-heart"></i> Психологічний кабінет</div>
-    <h1 class="cover-title-dark">Мій шлях<br>до <span>безпеки</span></h1>
-    <p class="cover-sub-dark">Інструмент самодослідження та стабілізації для людей, які пережили травматичний досвід</p>
-    <div class="cover-note-dark">
+  <div class="pc-content">
+    <span style="font-size:3.5rem;display:block;margin-bottom:1.25rem">🌊</span>
+    <div class="pc-badge"><i class="ti ti-shield-heart"></i> Психологічний кабінет</div>
+    <h1 class="pc-title">Мій шлях<br>до <span>безпеки</span></h1>
+    <p class="pc-sub">Інструмент самодослідження та стабілізації для людей, які пережили травматичний досвід</p>
+    <div class="pc-note">
       <p><strong>Перш ніж почати:</strong></p>
       <p>Цей інструмент — доповнення до терапії. Ти маєш право зупинитися в будь-який момент.</p>
       <p><strong>Якщо стане важко</strong> — натисни кнопку «Моя безпека» на наступній сторінці.</p>
     </div>
-    <div class="cover-btns">
-      <button class="cover-btn-main" onclick="showTool('ptsd')"><i class="ti ti-arrow-right"></i> Перейти до інструменту</button>
-      <button class="cover-btn-ghost" onclick="goHub()">Назад</button>
+    <div class="pc-btns">
+      <button class="pc-btn-main" onclick="showTool('ptsd')"><i class="ti ti-arrow-right"></i> Перейти до інструменту</button>
+      <button class="pc-btn-ghost" onclick="goHub()">Назад</button>
     </div>
   </div>
 </div>
 
-<!-- ========== 5. MODULE ========== -->
+<!-- 6. MODULE -->
 <div class="screen" id="module">
   <div class="topbar">
-    <button onclick="moduleBack()" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text);flex-shrink:0"><i class="ti ti-arrow-left"></i> Назад</button>
-    <div class="tb-info">
-      <div class="tb-title" id="mod-title"></div>
-      <div class="tb-sub" id="mod-sub"></div>
+    <button class="nav-btn" onclick="moduleBack()"><i class="ti ti-arrow-left"></i> Назад</button>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="mod-title"></div>
+      <div style="font-size:11px;color:var(--muted)" id="mod-sub"></div>
     </div>
     <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
       <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
       <span class="prog-pct" id="prog-pct">0%</span>
     </div>
-    <button onclick="goLanding()" style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--text);flex-shrink:0">🏠</button>
+    <button class="nav-btn" onclick="goLanding()"><i class="ti ti-home"></i></button>
   </div>
   <div class="module-inner" id="module-inner"></div>
 </div>
 
-<div class="save-bar" id="module-save-bar" style="display:none">
+<!-- SAVE BAR (outside screens) -->
+<div class="save-bar" id="module-save-bar">
   <button class="s-btn" onclick="moduleBack()">← Назад</button>
   <button class="s-btn primary" id="save-btn" onclick="savePDF()">⬇ Зберегти PDF</button>
   <button class="s-btn" onclick="copyAnswers()">⧉ Копіювати</button>
@@ -473,6 +465,7 @@ textarea:focus{outline:none;background:var(--white)}
 
 <script>
 
+
 // ===== STATE =====
 let currentTool = null;
 let currentModuleId = null;
@@ -480,30 +473,125 @@ let currentModuleMeta = null;
 let anketaVersion = 'a';
 const timers = {};
 
-// ===== NAVIGATION =====
-let _prevScreen = null;
+// ===== SCREENS =====
 function showScreen(id){
   const prev = document.querySelector('.screen.active');
   const next = document.getElementById(id);
   if(!next || (prev && prev.id === id)) return;
-
-  if(prev){
-    prev.classList.add('slide-out');
-    prev.classList.remove('active');
-    setTimeout(()=>{ prev.classList.remove('slide-out'); }, 280);
-  }
-
+  if(prev){ prev.classList.add('slide-out'); prev.classList.remove('active'); setTimeout(()=>prev.classList.remove('slide-out'), 280); }
   next.scrollTop = 0;
   next.classList.add('active');
-  _prevScreen = prev ? prev.id : null;
-
-  // Show save-bar only on module screen
-  const saveBar = document.getElementById('module-save-bar');
-  if(saveBar) saveBar.style.display = (id === 'module') ? 'flex' : 'none';
+  const sb = document.getElementById('module-save-bar');
+  if(sb) sb.style.display = (id === 'module') ? 'flex' : 'none';
 }
-// goHub defined in NAVIGATION OVERRIDES
-// showTool defined in NAVIGATION OVERRIDES below
-// moduleBack defined in NAVIGATION OVERRIDES
+
+function goLanding(){ showScreen('landing'); }
+function goHub(){ showScreen('hub'); }
+
+function showTool(id){
+  currentTool = id;
+
+  if(id === 'anketa'){ showScreen('vselect'); return; }
+  if(id === 'ptsd-cover'){ showScreen('ptsd-cover'); return; }
+
+  const titleEl = document.getElementById('tool-title');
+  const subEl = document.getElementById('tool-sub');
+  const heroWrap = document.getElementById('tool-hero-wrap');
+  const blocksWrap = document.getElementById('tool-blocks');
+  if(!titleEl||!subEl||!heroWrap||!blocksWrap) return;
+
+  const existSafe = document.getElementById('ptsd-safety-wrap');
+  if(existSafe) existSafe.remove();
+  heroWrap.innerHTML = '';
+  blocksWrap.innerHTML = '';
+
+  if(id === 'anxiety'){
+    titleEl.textContent = 'Тривожність — самодослідження';
+    subEl.textContent = 'Оберіть блок, який потрібен зараз';
+    buildToolHero('🌊','Тривожність — самодослідження','Обери блок, який потрібен прямо зараз','linear-gradient(135deg,#EBF2FC,#E3F5EF)','var(--navy-d)','var(--muted)');
+    buildAnxietyBlocks();
+    window._toolhomeFrom = 'hub';
+  }
+  if(id === 'ptsd'){
+    titleEl.textContent = 'Мій шлях до безпеки';
+    subEl.textContent = 'Оберіть блок, який потрібен зараз';
+    buildToolHero('🛡️','Мій шлях до безпеки','Оберіть блок, який потрібен прямо зараз','linear-gradient(135deg,#4A6E8A,#5A8C7E)','white','rgba(255,255,255,.7)');
+    const safetyWrap = document.createElement('div');
+    safetyWrap.id = 'ptsd-safety-wrap';
+    safetyWrap.style.cssText = 'max-width:680px;margin:0 auto;padding:0 1rem';
+    const safetyBtnEl = document.createElement('button');
+    safetyBtnEl.className = 'safety-btn';
+    safetyBtnEl.style.width = '100%';
+    safetyBtnEl.innerHTML = '<i class="ti ti-shield-heart" style="font-size:20px"></i><span><div style="font-size:14px;font-weight:700">🆘 Моя безпека</div><div style="font-size:11px;opacity:.8">Якщо стало важко — починай тут</div></span><span style="font-size:10px;background:rgba(255,255,255,.2);padding:2px 8px;border-radius:10px">Завжди доступно</span>';
+    safetyBtnEl.onclick = () => openModule('ptsd','safety');
+    safetyWrap.appendChild(safetyBtnEl);
+    blocksWrap.parentNode.insertBefore(safetyWrap, blocksWrap);
+    buildPtsdBlocks();
+    window._toolhomeFrom = 'hub';
+  }
+  if(id === 'grief'){
+    titleEl.textContent = 'Простір горя';
+    subEl.textContent = 'Безпечний простір для проживання втрати';
+    buildToolHero('🕊️','Простір горя','Горе не лікується — воно проживається. Тут є місце для твого.','linear-gradient(135deg,#EDF1F4,#EDEAFC)','var(--purple-d)','var(--muted)');
+    buildGenericBlocks(griefBlocks, 'grief');
+    window._toolhomeFrom = 'hub';
+  }
+  if(id === 'resources'){
+    titleEl.textContent = 'Моя карта ресурсів';
+    subEl.textContent = 'Знайди те, що тримає';
+    buildToolHero('🗺️','Моя карта ресурсів','Внутрішні та зовнішні ресурси — те, що допомагає триматися','linear-gradient(135deg,#EBF2FC,#E3F5EC)','var(--navy-d)','var(--muted)');
+    buildGenericBlocks(resourceBlocks, 'resources');
+    window._toolhomeFrom = 'hub';
+  }
+  if(id === 'partner'){
+    titleEl.textContent = 'Я поруч';
+    subEl.textContent = 'Для партнерів ветеранів та військових';
+    buildToolHero('💙','Я поруч','Для тих, хто поруч з ветераном — про себе, про нас, про підтримку','linear-gradient(135deg,#EBF2FC,#EDEAFC)','var(--navy-d)','var(--muted)');
+    buildGenericBlocks(partnerBlocks, 'partner');
+    window._toolhomeFrom = 'hub';
+  }
+  showScreen('toolhome');
+}
+
+function buildToolHero(icon,title,sub,bg,titleColor,subColor){
+  const wrap = document.getElementById('tool-hero-wrap');
+  if(!wrap) return;
+  const hero = document.createElement('div');
+  hero.className = 'tool-hero';
+  hero.style.background = bg;
+  hero.innerHTML = '<span class="th-icon">'+icon+'</span><div class="th-title" style="color:'+titleColor+'">'+title+'</div><div class="th-sub" style="color:'+subColor+'">'+sub+'</div>';
+  wrap.appendChild(hero);
+}
+
+function selectAnketaVersion(v){
+  anketaVersion = v;
+  const titleEl = document.getElementById('tool-title');
+  const subEl = document.getElementById('tool-sub');
+  const heroWrap = document.getElementById('tool-hero-wrap');
+  const blocksWrap = document.getElementById('tool-blocks');
+  const existSafe = document.getElementById('ptsd-safety-wrap');
+  if(existSafe) existSafe.remove();
+  if(heroWrap) heroWrap.innerHTML = '';
+  if(blocksWrap) blocksWrap.innerHTML = '';
+  if(titleEl) titleEl.textContent = 'Терапевтична анкета самопізнання';
+  const labels = {a:'🌸 Підлітки',b:'🌿 Дорослі',c:'🛡️ Ветерани'};
+  if(subEl) subEl.textContent = labels[v];
+  buildToolHero('📓','Терапевтична анкета самопізнання','Обери блок, який потрібен прямо зараз','linear-gradient(135deg,#EEEDFE,#E1F5EE)','var(--purple-d)','var(--muted)');
+  setAnketaVersion(v);
+  window._toolhomeFrom = 'vselect';
+  showScreen('toolhome');
+}
+
+function toolhomeBack(){
+  const from = window._toolhomeFrom || 'hub';
+  showScreen(from);
+  window._toolhomeFrom = null;
+}
+
+function moduleBack(){
+  showScreen('toolhome');
+}
+
 
 // ===== HELPERS =====
 function fld(label,ph='',tall=false){
@@ -750,12 +838,14 @@ const anketaBlocks={
 function setAnketaVersion(v){
   anketaVersion=v;
   document.querySelectorAll('.vtab').forEach(t=>t.className='vtab');
-  const idx={'a':0,'b':1,'c':2}[v];
+  const vIdx={'a':0,'b':1,'c':2}[v];
   const tabs=document.querySelectorAll('.vtab');
-  if(tabs[idx]) tabs[idx].classList.add('v'+v);
+  if(tabs[vIdx]) tabs[vIdx].classList.add('v'+v);
   const toolSub=document.getElementById('tool-sub');
   if(toolSub) toolSub.textContent={a:'🌸 Підлітки',b:'🌿 Дорослі',c:'🛡️ Ветерани'}[v];
-  const wrap=document.getElementById('tool-blocks');wrap.innerHTML='';
+  const wrap=document.getElementById('tool-blocks');
+  if(!wrap) return;
+  wrap.innerHTML='';
   const grouped={};
   anketaBlocks[v].forEach(b=>{if(!grouped[b.tag])grouped[b.tag]=[];grouped[b.tag].push(b)});
   Object.entries(grouped).forEach(([tag,items])=>{
@@ -767,15 +857,7 @@ function setAnketaVersion(v){
 }
 
 // ANXIETY BLOCKS
-const anxietyBlockDefs=[
-  {id:'assess',icon:'📊',color:'#4A7FC1',bg:'#EBF2FC',title:'📊 Оцінка стану',desc:'Як сильна тривога, коли і як проявляється',tag:'Зрозуміти',sub:'Діагностика актуальної тривоги'},
-  {id:'body-ax',icon:'🫀',color:'#7B6FBF',bg:'#EDEAFC',title:'Тривога в тілі',desc:'Тілесні симптоми та сигнали нервової системи',tag:'Зрозуміти',sub:'Соматичні прояви тривоги'},
-  {id:'thoughts',icon:'🧠',color:'#C85A3A',bg:'#FAECE7',title:'Думки та переконання',desc:'КБТ-протокол: зловити й переосмислити думку',tag:'Зрозуміти',sub:'КБТ-робота з тривожними думками'},
-  {id:'breathing',icon:'🌬️',color:'#3A9E7E',bg:'#E3F5EF',title:'🌬️ Дихання',desc:'Три техніки з таймером',tag:'Впоратись',sub:'Дихальні техніки з таймером'},
-  {id:'grounding',icon:'⚓',color:'#2A8B8B',bg:'#E0F5F5',title:'Заземлення',desc:'Техніки повернення до тут і зараз',tag:'Впоратись',sub:'Повернення до теперішнього моменту'},
-  {id:'coping',icon:'🧰',color:'#C8892A',bg:'#FDF1DC',title:'Мій арсенал',desc:'Копінг-стратегії та кризовий план',tag:'Впоратись',sub:'Стратегії та особистий кризовий план'},
-  {id:'tracker',icon:'📈',color:'#4A7FC1',bg:'#EBF2FC',title:'Трекер тривоги',desc:'Щоденний моніторинг та рефлексія',tag:'Відстежити',sub:'Трекер та аналіз патернів'},
-];
+
 
 function buildAnxietyBlocks(){
   const wrap=document.getElementById('tool-blocks');wrap.innerHTML='';
@@ -789,16 +871,6 @@ function buildAnxietyBlocks(){
 }
 
 // PTSD BLOCKS
-const ptsdBlockDefs=[
-  {id:'state',icon:'📊',color:'#2C4A6E',bg:'#EBF0F8',title:'Де я зараз',desc:'Оцінка стану та симптомів',tag:'Крок 1 — Зрозуміти',sub:'Діагностика актуального стану'},
-  {id:'reaction',icon:'⚡',color:'#5A6E7C',bg:'#EDF1F4',title:'Моя реакція на травму',desc:'Бий, біжи, завмри — нейронаука простими словами',tag:'Крок 1 — Зрозуміти',sub:'Психоосвіта про реакції нервової системи'},
-  {id:'body-pt',icon:'🫀',color:'#4A7C6E',bg:'#E3F0EC',title:'Моє тіло пам\'ятає',desc:'Тілесні симптоми та тригери',tag:'Крок 2 — Стабілізуватися',sub:'Соматичний мапінг',warn:true},
-  {id:'techniques',icon:'⚓',color:'#3A8B5C',bg:'#E3F5EC',title:'Техніки стабілізації',desc:'Заземлення, дихання, безпечне місце, контейнер',tag:'Крок 2 — Стабілізуватися',sub:'Практики для нервової системи'},
-  {id:'triggers',icon:'🗺️',color:'#C8892A',bg:'#FDF1DC',title:'Мої тригери',desc:'Картографування — що запускає реакцію',tag:'Крок 3 — Досліджувати',sub:'Картографування тригерів',warn:true},
-  {id:'resources',icon:'🌱',color:'#7C5A4A',bg:'#F5EDE8',title:'Мої ресурси',desc:'Що залишилося незмінним. Кризовий план.',tag:'Крок 3 — Досліджувати',sub:'Ресурси та кризовий план'},
-  {id:'letter',icon:'✉️',color:'#9E4A6E',bg:'#F5E8EE',title:'Лист від себе до себе',desc:'До події, після події, і в майбутнє',tag:'Крок 4 — Інтегрувати',sub:'Ритуал інтеграції та завершення'},
-];
-
 function buildPtsdBlocks(){
   const wrap=document.getElementById('tool-blocks');wrap.innerHTML='';
   const grouped={};ptsdBlockDefs.forEach(b=>{if(!grouped[b.tag])grouped[b.tag]=[];grouped[b.tag].push(b)});
@@ -810,7 +882,60 @@ function buildPtsdBlocks(){
   });
 }
 
+
+// ANXIETY BLOCKS
+const anxietyBlockDefs=[
+  {id:'assess',icon:'📊',color:'#4A7FC1',bg:'#EBF2FC',title:'📊 Оцінка стану',desc:'Як сильна тривога, коли і як проявляється',tag:'Зрозуміти',sub:'Діагностика актуальної тривоги'},
+  {id:'body-ax',icon:'🫀',color:'#7B6FBF',bg:'#EDEAFC',title:'Тривога в тілі',desc:'Тілесні симптоми та сигнали нервової системи',tag:'Зрозуміти',sub:'Соматичні прояви тривоги'},
+  {id:'thoughts',icon:'🧠',color:'#C85A3A',bg:'#FAECE7',title:'Думки та переконання',desc:'КБТ-протокол: зловити й переосмислити думку',tag:'Зрозуміти',sub:'КБТ-робота з тривожними думками'},
+  {id:'breathing',icon:'🌬️',color:'#3A9E7E',bg:'#E3F5EF',title:'🌬️ Дихання',desc:'Три техніки з таймером',tag:'Впоратись',sub:'Дихальні техніки з таймером'},
+  {id:'grounding',icon:'⚓',color:'#2A8B8B',bg:'#E0F5F5',title:'Заземлення',desc:'Техніки повернення до тут і зараз',tag:'Впоратись',sub:'Повернення до теперішнього моменту'},
+  {id:'coping',icon:'🧰',color:'#C8892A',bg:'#FDF1DC',title:'Мій арсенал',desc:'Копінг-стратегії та кризовий план',tag:'Впоратись',sub:'Стратегії та особистий кризовий план'},
+  {id:'tracker',icon:'📈',color:'#4A7FC1',bg:'#EBF2FC',title:'Трекер тривоги',desc:'Щоденний моніторинг та рефлексія',tag:'Відстежити',sub:'Трекер та аналіз патернів'},
+];
+
+// PTSD BLOCKS
+const resourcesMapBlockDefs=[
+  {id:'rm-now',icon:'📊',color:'#4A7C6E',bg:'#E3F0EC',title:'Де я зараз',desc:'Мʼякий вхід — стан та рівень ресурсу',tag:'Початок'},
+  {id:'rm-inner',icon:'💎',color:'#7F77DD',bg:'#EEEDFE',title:'Внутрішні ресурси',desc:'Мої якості, цінності, спогади, тілесні ресурси',tag:'Дослідження'},
+  {id:'rm-outer',icon:'🌍',color:'#1D9E75',bg:'#E1F5EE',title:'Зовнішні ресурси',desc:'Люди, місця, діяльність, краса навколо',tag:'Дослідження'},
+  {id:'rm-crisis',icon:'⚓',color:'#C8892A',bg:'#FDF1DC',title:'Ресурси для важких моментів',desc:'Якірні дії — що робити коли зовсім важко',tag:'Практика'},
+  {id:'rm-map',icon:'🗺️',color:'#4A7FC1',bg:'#EBF2FC',title:'Моя карта ресурсів',desc:'Підсумок — все моє в одному місці',tag:'Підсумок'},
+];
+
+const iAmNearBlockDefs=[
+  {id:'ian-now',icon:'📊',color:'#9E4A6E',bg:'#F5E8EE',title:'Де я зараз',desc:'Мій стан — теж важливий',tag:'Початок'},
+  {id:'ian-feelings',icon:'💜',color:'#9E4A6E',bg:'#F5E8EE',title:'Мої почуття',desc:'Те, що важко назвати вголос',tag:'Почуття'},
+  {id:'ian-changes',icon:'🔄',color:'#5A6E7C',bg:'#EDF1F4',title:'Що змінилося',desc:'У ньому/ній, у мені, між нами',tag:'Усвідомлення'},
+  {id:'ian-coping',icon:'🛠️',color:'#3A8B5C',bg:'#E3F5EC',title:'Як я справляюся',desc:'Мої стратегії, ресурси, межі',tag:'Стратегії'},
+  {id:'ian-selfcare',icon:'🌸',color:'#C85A8A',bg:'#FAEBF2',title:'Турбота про себе',desc:'Я теж маю право на підтримку',tag:'Турбота'},
+  {id:'ian-contact',icon:'🤝',color:'#4A7FC1',bg:'#EBF2FC',title:'Наш контакт',desc:'Як ми зараз — і як хочемо',tag:'Стосунки'},
+  {id:'ian-help',icon:'🆘',color:'#C85A3A',bg:'#FAECE7',title:'Коли потрібна допомога',desc:'Сигнали та ресурси підтримки',tag:'Підтримка'},
+];
+
+const griefBlockDefs=[
+  {id:'gr-now',icon:'🕊️',color:'#5A6E7C',bg:'#EDF1F4',title:'Де я зараз',desc:'Мʼякий вхід у простір горя',tag:'Початок'},
+  {id:'gr-loss',icon:'💙',color:'#4A6E8A',bg:'#EBF0F8',title:'Моя втрата',desc:'Не опис події — а опис того, що я втратила',tag:'Усвідомлення'},
+  {id:'gr-feelings',icon:'🌊',color:'#5A6E7C',bg:'#EDF1F4',title:'Мої почуття',desc:'Весь спектр — без оцінок',tag:'Почуття'},
+  {id:'gr-practices',icon:'⚓',color:'#3A8B5C',bg:'#E3F5EC',title:'Практики присутності',desc:'Для моментів коли захлестує',tag:'Практика',warn:true},
+  {id:'gr-art',icon:'🎨',color:'#9E4A6E',bg:'#F5E8EE',title:'Арт-терапевтичні практики',desc:'Малюнок горя, лист, метафора, колаж',tag:'Творчість'},
+  {id:'gr-memory',icon:'🕯️',color:'#C8892A',bg:'#FDF1DC',title:'Памʼять і звʼязок',desc:'Нова форма присутності',tag:'Інтеграція'},
+  {id:'gr-selfcare',icon:'🌱',color:'#3A8B5C',bg:'#E3F5EC',title:'Турбота про себе в горі',desc:'Маленькі кроки без тиску',tag:'Турбота'},
+  {id:'gr-resource',icon:'💪',color:'#4A7C6E',bg:'#E3F0EC',title:'Мій ресурс',desc:'Що тримає. Хто поруч.',tag:'Ресурс'},
+];
+
+const ptsdBlockDefs=[
+  {id:'state',icon:'📊',color:'#2C4A6E',bg:'#EBF0F8',title:'Де я зараз',desc:'Оцінка стану та симптомів',tag:'Крок 1 — Зрозуміти',sub:'Діагностика актуального стану'},
+  {id:'reaction',icon:'⚡',color:'#5A6E7C',bg:'#EDF1F4',title:'Моя реакція на травму',desc:'Бий, біжи, завмри — нейронаука простими словами',tag:'Крок 1 — Зрозуміти',sub:'Психоосвіта про реакції нервової системи'},
+  {id:'body-pt',icon:'🫀',color:'#4A7C6E',bg:'#E3F0EC',title:'Моє тіло пам\'ятає',desc:'Тілесні симптоми та тригери',tag:'Крок 2 — Стабілізуватися',sub:'Соматичний мапінг',warn:true},
+  {id:'techniques',icon:'⚓',color:'#3A8B5C',bg:'#E3F5EC',title:'Техніки стабілізації',desc:'Заземлення, дихання, безпечне місце, контейнер',tag:'Крок 2 — Стабілізуватися',sub:'Практики для нервової системи'},
+  {id:'triggers',icon:'🗺️',color:'#C8892A',bg:'#FDF1DC',title:'Мої тригери',desc:'Картографування — що запускає реакцію',tag:'Крок 3 — Досліджувати',sub:'Картографування тригерів',warn:true},
+  {id:'resources',icon:'🌱',color:'#7C5A4A',bg:'#F5EDE8',title:'Мої ресурси',desc:'Що залишилося незмінним. Кризовий план.',tag:'Крок 3 — Досліджувати',sub:'Ресурси та кризовий план'},
+  {id:'letter',icon:'✉️',color:'#9E4A6E',bg:'#F5E8EE',title:'Лист від себе до себе',desc:'До події, після події, і в майбутнє',tag:'Крок 4 — Інтегрувати',sub:'Ритуал інтеграції та завершення'},
+];
+
 // ===== ALL MODULES =====
+
 const allModules={
   anketa:{
     'a-intro':{title:'Привіт! Це — я',sub:'Знайомство та очікування',icon:'😊',color:'#7F77DD',bg:'#EEEDFE',build:(w,m)=>{w.appendChild(fld('Мене звуть (або я хочу, щоб мене називали):','Напиши тут...'));w.appendChild(fld('Коли мені добре — я схожа/схожий на:','Образ, метафора...'));w.appendChild(fld('Коли мені важко — я схожа/схожий на:',''));w.appendChild(scl('Мій рівень зарядки сьогодні:','Порожньо','Повний заряд',m.color));w.appendChild(fld('Пісня, яка зараз крутиться в голові:',''));w.appendChild(fld('Якщо моє життя — серіал, воно зараз у якому жанрі?',''));w.appendChild(hlBox(m.bg,['Я прийшла/прийшов сюди, тому що...','Я боюся, що тут...','Я сподіваюся, що через місяць...']))}},
@@ -851,8 +976,296 @@ const allModules={
     triggers:{title:'Мої тригери',sub:'Картографування реакцій',icon:'🗺️',color:'#C8892A',bg:'#FDF1DC',build:(w,m)=>{w.appendChild(readiness(m.color));w.appendChild(stopBox('Цей блок — про картографування, не про занурення в подію. Якщо відчуваєш сильне збудження — зупинись і перейди до «Техніки стабілізації».'));w.appendChild(infoBlock('amber','🗺️ Що таке тригер','Тригер — це будь-що, що нагадує нервовій системі про небезпечну подію і запускає реакцію захисту. Це не слабкість — це гіперпильність, яка колись рятувала тебе.'));w.appendChild(plls('Мої тригери:',['Гучні звуки / вибухи','Певні місця','Темрява','Натовп','Новини','Певні запахи','Дати або річниці','Схожі обличчя або голоси','Фізичний контакт','Певні слова або фрази','Відчуття безвиході','Самотність'],m.color));w.appendChild(fld('Що відбувається в мені коли спрацьовує тригер?','Тіло, думки, емоції, поведінка...',true));w.appendChild(fld('Як я зазвичай реагую?'));w.appendChild(iTitle('Моя стратегія повернення',m.color));w.appendChild(fld('Що допомагає мені повернутися після тригеру?','',true));w.appendChild(fld('Хто або що допомагає мені заспокоїтися?'))}},
     resources:{title:'Мої ресурси',sub:'Що тримає. Кризовий план.',icon:'🌱',color:'#7C5A4A',bg:'#F5EDE8',build:(w,m)=>{w.appendChild(infoBlock('warm','🌱 Ресурси — це те, що тримає','Навіть у найважчі моменти щось залишається незмінним. Знайти це — значить знайти опору.'));w.appendChild(fld('Що залишилося незмінним у мені — попри все, що сталося?','',true));w.appendChild(fld('Три моменти, коли я проявила/проявив силу або витривалість:','',true));w.appendChild(fld('Люди, яким я довіряю:'));w.appendChild(fld('Що дає мені хоч трохи радості або спокою?'));w.appendChild(fld('Заради кого або чого я продовжую?'));w.appendChild(iTitle('Мій кризовий план',m.color));w.appendChild(hlBox(m.bg,['Ознаки, що мені потрібна допомога:','Крок 1 — що я роблю першим:','Крок 2 — якщо не допомогло:','Людина, якій я телефоную:','Місце, де мені стає безпечніше:']))}},
     letter:{title:'Лист від себе до себе',sub:'Ритуал інтеграції та завершення',icon:'✉️',color:'#9E4A6E',bg:'#F5E8EE',build:(w,m)=>{w.appendChild(infoBlock('warm','✉️ Лист — ритуал інтеграції','Написати лист собі — це спосіб зустрітися з різними частинами свого досвіду. Не потрібно розповідати про саму подію. Пиши те, що відчуваєш.'));w.appendChild(iTitle('Лист собі — до події',m.color));w.appendChild(nt('Що б ти хотіла/хотів сказати собі — тій/тому, якою/яким була/був до того, що сталося?',m.color));w.appendChild(fld('Дорога/Дорогий я до події...','',true));w.appendChild(iTitle('Лист собі — після події',m.color));w.appendChild(nt('Що важливо сказати собі тій/тому, яка/який пережила/пережив це?',m.color));w.appendChild(fld('Дорога/Дорогий я після події...','',true));w.appendChild(iTitle('Лист собі — в майбутнє',m.color));w.appendChild(nt('Яким ти бачиш своє відновлення? Що хочеш для себе через рік?',m.color));w.appendChild(fld('Дорога/Дорогий майбутній я...','',true));w.appendChild(fld('Що змінилося після того, як ти написала/написав ці листи?'))}},
-  }
+  },
 };
+
+// ===== NEW TOOLS =====
+
+// RESOURCE MAP blocks
+const resourceBlocks = [
+  {id:'res-state',icon:'🔋',color:'#4A7FC1',bg:'#EBF2FC',title:'Де я зараз',desc:'Рівень ресурсу, що забирає і що дає енергію',tag:'Вхід',sub:'Оцінка актуального стану'},
+  {id:'res-inner',icon:'💎',color:'#7F77DD',bg:'#EEEDFE',title:'Мої внутрішні ресурси',desc:'Сильні якості, цінності, спогади-ресурси, тіло',tag:'Всередині',sub:'Те, що є в мені'},
+  {id:'res-outer',icon:'🌍',color:'#1D9E75',bg:'#E1F5EE',title:'Мої зовнішні ресурси',desc:'Люди, місця, діяльність, природа, мистецтво',tag:'Навколо',sub:'Те, що є навколо мене'},
+  {id:'res-crisis',icon:'⚡',color:'#C8892A',bg:'#FDF1DC',title:'Ресурси для кризових моментів',desc:'Швидкі техніки, якірні речі, перші кроки',tag:'Кризовий план',sub:'Що робити коли зовсім важко'},
+  {id:'res-map',icon:'🗺️',color:'#3A8B5C',bg:'#E3F5EC',title:'Моя карта ресурсів',desc:'Підсумок — вся карта в одному місці',tag:'Підсумок',sub:'Моя особиста карта опори'},
+];
+
+// PARTNER blocks
+const partnerBlocks = [
+  {id:'par-state',icon:'💙',color:'#4A7FC1',bg:'#EBF2FC',title:'Де я зараз',desc:'Мій стан, рівень ресурсу, що зараз найважче',tag:'Вхід',sub:'Оцінка власного стану'},
+  {id:'par-feelings',icon:'🌊',color:'#7B6FBF',bg:'#EDEAFC',title:'Мої почуття',desc:'Те, що важко назвати вголос — весь спектр',tag:'Почуття',sub:'Нормалізація складних емоцій'},
+  {id:'par-changes',icon:'🔄',color:'#5A6E7C',bg:'#EDF1F4',title:'Що змінилося',desc:'У ньому/ній, у мені, між нами',tag:'Зміни',sub:'Спостереження без оцінок'},
+  {id:'par-coping',icon:'🧰',color:'#C8892A',bg:'#FDF1DC',title:'Як я справляюся',desc:'Мої стратегії, ресурси, межі',tag:'Стратегії',sub:'Що допомагає, що шкодить'},
+  {id:'par-self',icon:'🌱',color:'#1D9E75',bg:'#E1F5EE',title:'Турбота про себе',desc:'Я теж маю право на підтримку',tag:'Самотурбота',sub:'Мої потреби і мій простір'},
+  {id:'par-contact',icon:'🤝',color:'#9E4A6E',bg:'#F5E8EE',title:'Наш контакт',desc:'Як ми спілкуємося, що зближує і що віддаляє',tag:'Стосунки',sub:"Відновлення звʼязку"},
+  {id:'par-help',icon:'🆘',color:'#C85A3A',bg:'#FAECE7',title:'Коли потрібна допомога',desc:'Сигнали що мені або нам потрібна підтримка фахівця',tag:'Підтримка',sub:'Коли звертатися по допомогу'},
+];
+
+// GRIEF blocks
+const griefBlocks = [
+  {id:'gr-state',icon:'🌫️',color:'#5A6E7C',bg:'#EDF1F4',title:'Де я зараз',desc:'Мʼякий вхід. Метафора мого горя.',tag:'Вхід',sub:'Де я зараз у своєму горі',warn:true},
+  {id:'gr-loss',icon:'💔',color:'#9E4A6E',bg:'#F5E8EE',title:'Моя втрата',desc:'Ким/чим була ця людина або ситуація для мене',tag:'Втрата',sub:'Що я втратила разом з нею',warn:true},
+  {id:'gr-feelings',icon:'🎭',color:'#7B6FBF',bg:'#EDEAFC',title:'Мої почуття',desc:'Весь спектр — смуток, злість, провина, любов',tag:'Почуття',sub:'Нормалізація всіх емоцій горя'},
+  {id:'gr-practice',icon:'🫀',color:'#4A7C6E',bg:'#E3F0EC',title:'Практики присутності',desc:'Тілесні вправи і дихання для важких моментів',tag:'Практики',sub:'Стабілізація тіла і нервової системи'},
+  {id:'gr-art',icon:'🎨',color:'#C8892A',bg:'#FDF1DC',title:'Арт-терапевтичні практики',desc:'Малюнок, лист, метафора, колаж спогадів',tag:'Арт-терапія',sub:'Творче проживання горя'},
+  {id:'gr-memory',icon:'✨',color:'#7F77DD',bg:'#EEEDFE',title:'Памʼять і звʼязок',desc:'Нова форма звʼязку. Що я несу від цієї людини.',tag:'Памʼять',sub:'Продовжені звʼязки'},
+  {id:'gr-care',icon:'🌱',color:'#1D9E75',bg:'#E1F5EE',title:'Турбота про себе в горі',desc:'Що допомагає тілу і душі саме зараз',tag:'Самотурбота',sub:'Маленькі кроки без тиску'},
+  {id:'gr-resource',icon:'☀️',color:'#C8892A',bg:'#FDF1DC',title:'Мій ресурс',desc:'Що тримає. Хто поруч. Що дає хоч краплю тепла.',tag:'Ресурс',sub:'Опора в горі'},
+];
+
+// ===== RESOURCE MAP MODULES =====
+const resourceModules = {
+  'res-state': {title:'Де я зараз',sub:'Оцінка актуального стану',icon:'🔋',color:'#4A7FC1',bg:'#EBF2FC',
+    build:(w,m)=>{
+      w.appendChild(nt('Ресурс — це не завжди енергія і натхнення. Іноді ресурс — це просто здатність триматися.',m.color));
+      w.appendChild(scl('Мій рівень ресурсу прямо зараз:','Порожньо','Повний',m.color));
+      w.appendChild(fld('Що зараз найбільше забирає мою енергію?','',true));
+      w.appendChild(fld('Що хоч трохи дає сили або полегшення?',''));
+      w.appendChild(fld('Якщо мій стан — це погода, то зараз це...','Метафора, образ...'));
+      w.appendChild(hlBox(m.bg,['Я хочу знайти більше ресурсу, тому що...','Після цієї роботи я хочу відчувати...']));
+    }},
+  'res-inner': {title:'Мої внутрішні ресурси',sub:'Те, що є в мені',icon:'💎',color:'#7F77DD',bg:'#EEEDFE',
+    build:(w,m)=>{
+      w.appendChild(iTitle('Мої сильні якості',m.color));
+      w.appendChild(nt('Не обовʼязково "позитивне" — будь-яка якість, яка допомагала тобі виживати, адаптуватися, рухатися далі.',m.color));
+      w.appendChild(fld('Мої три найсильніші якості:','Витривалість, турботливість, вміння слухати...'));
+      w.appendChild(fld('Якість, яку я в собі не цінувала, але яка мені допомагала:',''));
+      w.appendChild(iTitle('Мої цінності',m.color));
+      w.appendChild(plls('Що для мене найважливіше в житті?',['Сімʼя','Свобода','Любов','Розвиток','Чесність','Турбота','Спокій','Творчість','Справедливість','Близькість','Здоровʼя','Сенс'],m.color));
+      w.appendChild(fld('Коли я живу відповідно до своїх цінностей — це виглядає як...',''));
+      w.appendChild(iTitle('Спогади-ресурси',m.color));
+      w.appendChild(fld('Момент коли я почувалася живою, сильною або собою:','Де це було, що відбувалося, що я відчувала...'));
+      w.appendChild(fld('Людина з мого минулого, яка вірила в мене:',''));
+      w.appendChild(iTitle('Тілесні ресурси',m.color));
+      w.appendChild(plls('Що добре моєму тілу?',['Рух','Сон','Тепло','Дотик','Їжа яку люблю','Природа','Вода','Танець','Спорт','Масаж','Відпочинок','Спокій'],m.color));
+      w.appendChild(fld('Відчуття в тілі, яке я впізнаю як «добре»:',''));
+    }},
+  'res-outer': {title:'Мої зовнішні ресурси',sub:'Те, що є навколо мене',icon:'🌍',color:'#1D9E75',bg:'#E1F5EE',
+    build:(w,m)=>{
+      w.appendChild(iTitle('Люди',m.color));
+      w.appendChild(fld('Людина, поруч з якою я почуваюся собою:',''));
+      w.appendChild(fld('Людина, яка мене надихає або підтримує:',''));
+      w.appendChild(fld('Спільнота або група, де мені добре:',''));
+      w.appendChild(iTitle('Місця',m.color));
+      w.appendChild(fld('Місце де мені фізично добре і спокійно:',''));
+      w.appendChild(fld('Місце де я відчуваю себе живою:',''));
+      w.appendChild(iTitle('Діяльність',m.color));
+      w.appendChild(plls('Що дає мені відчуття потоку або задоволення?',['Читання','Музика','Готування','Творчість','Садівництво','Прогулянки','Кіно','Спілкування','Навчання','Волонтерство','Медитація','Рукоділля'],m.color));
+      w.appendChild(fld('Діяльність, після якої я почуваюся наповненою:',''));
+      w.appendChild(iTitle('Природа, краса, мистецтво',m.color));
+      w.appendChild(fld('Що з краси світу мене торкає або відновлює?','Пісня, картина, захід сонця, запах...'));
+      w.appendChild(hlBox(m.bg,['Мій найбільший зовнішній ресурс прямо зараз:']));
+    }},
+  'res-crisis': {title:'Ресурси для кризових моментів',sub:'Що робити коли зовсім важко',icon:'⚡',color:'#C8892A',bg:'#FDF1DC',
+    build:(w,m)=>{
+      w.appendChild(nt('Цей блок заповнюється коли є сили — щоб був готовий коли сил немає.',m.color));
+      w.appendChild(iTitle('Швидкі техніки',m.color));
+      w.appendChild(plls('Що допомагає мені за 5 хвилин?',['Холодна вода на запʼястки','Дихання 4-7-8','Прогулянка','Музика','Дзвінок близькій людині','Заземлення 5-4-3-2-1','Гаряча кава/чай','Фізичний рух','Молитва','Плач','Малювання','Запис думок'],m.color));
+      w.appendChild(fld('Моя техніка яка точно працює:',''));
+      w.appendChild(iTitle('Якірні речі',m.color));
+      w.appendChild(fld('Предмет або відчуття, які повертають мене до себе:',''));
+      w.appendChild(iTitle('Мої перші кроки',m.color));
+      w.appendChild(hlBox(m.bg,[
+        'Крок 1 — перше що я роблю коли накриває:',
+        'Крок 2 — якщо не допомогло:',
+        'Людина, якій я можу зателефонувати:',
+        'Фраза, яку я кажу собі:',
+      ]));
+    }},
+  'res-map': {title:'Моя карта ресурсів',sub:'Вся карта в одному місці',icon:'🗺️',color:'#3A8B5C',bg:'#E3F5EC',
+    build:(w,m)=>{
+      w.appendChild(nt('Це твій підсумок. Перечитай і доповни — або просто подивись наскільки ти вже багата на ресурси.',m.color));
+      w.appendChild(iTitle('Мої три головні внутрішні ресурси',m.color));
+      w.appendChild(fld('1.',''));w.appendChild(fld('2.',''));w.appendChild(fld('3.',''));
+      w.appendChild(iTitle('Мої три головні зовнішні ресурси',m.color));
+      w.appendChild(fld('1.',''));w.appendChild(fld('2.',''));w.appendChild(fld('3.',''));
+      w.appendChild(iTitle('Моє речення-ресурс',m.color));
+      w.appendChild(fld("Коли мені важко, я памʼятаю що...","Закінчи речення своїми словами"));
+      w.appendChild(hlBox(m.bg,[
+        'Мій головний ресурс — той, що завжди зі мною:',
+        'Що я хочу розвивати як ресурс:',
+        'Послання собі на важкий момент:',
+      ]));
+      w.appendChild(scl('Мій рівень ресурсу після цієї роботи:','Дуже важко','Є трохи сил',m.color));
+    }},
+};
+
+// PARTNER MODULES
+const partnerModules = {
+  'par-state': {title:'Де я зараз',sub:'Оцінка власного стану',icon:'💙',color:'#4A7FC1',bg:'#EBF2FC',
+    build:(w,m)=>{
+      w.appendChild(nt('Ця анкета — для тебе. Не про нього/неї. Про тебе.',m.color));
+      w.appendChild(scl('Мій рівень сил прямо зараз:','Порожньо','Є сили',m.color));
+      w.appendChild(fld('Що зараз найважче для мене особисто?',''));
+      w.appendChild(fld('Як давно я питала себе «як я?»',''));
+      w.appendChild(hlBox(m.bg,['Я тут, тому що хочу...','Найбільше я потребую зараз...']));
+    }},
+  'par-feelings': {title:'Мої почуття',sub:'Нормалізація складних емоцій',icon:'🌊',color:'#7B6FBF',bg:'#EDEAFC',
+    build:(w,m)=>{
+      w.appendChild(infoBlock('navy','💜 Всі почуття мають право бути','Поруч з ветераном виникають почуття, про які соромно говорити. Але вони нормальні — і вони потребують простору.'));
+      w.appendChild(plls('Що я відчуваю? (обери все, що впізнаєш)',['Тривога за нього/неї','Страх за майбутнє','Злість','Образа','Провина що мені легше','Самотність','Виснаження','Любов','Ніжність','Безпорадність','Полегшення що повернувся','Розгубленість','Журба за тим яким/якою він/вона був/була','Надія'],m.color));
+      w.appendChild(fld('Почуття, яке найважче визнати:',''));
+      w.appendChild(fld('Почуття, яке хочеться приховати від нього/неї і чому:',''));
+      w.appendChild(hlBox(m.bg,['Якби я могла сказати все що відчуваю — я б сказала:']));
+    }},
+  'par-changes': {title:'Що змінилося',sub:'Спостереження без оцінок',icon:'🔄',color:'#5A6E7C',bg:'#EDF1F4',
+    build:(w,m)=>{
+      w.appendChild(nt('Не правильно чи неправильно. Просто — як є.',m.color));
+      w.appendChild(iTitle('Що змінилося в ньому/ній',m.color));
+      w.appendChild(fld('Що я помічаю в поведінці, настрої, реакціях:',''));
+      w.appendChild(fld('Що зникло з того яким/якою він/вона був/була:',''));
+      w.appendChild(fld("Що зʼявилося нового — і як я до цього ставлюся:",""));
+      w.appendChild(iTitle('Що змінилося в мені',m.color));
+      w.appendChild(fld('Як я змінилася за цей час:',''));
+      w.appendChild(fld('Що я навчилася робити сама:',''));
+      w.appendChild(iTitle('Що змінилося між нами',m.color));
+      w.appendChild(fld('Що стало інакшим у наших стосунках:',''));
+      w.appendChild(fld('Що залишилося незмінним — і це важливо:',''));
+    }},
+  'par-coping': {title:'Як я справляюся',sub:'Що допомагає, що шкодить',icon:'🧰',color:'#C8892A',bg:'#FDF1DC',
+    build:(w,m)=>{
+      w.appendChild(plls('Як я зараз справляюся зі стресом?',['Розмовляю з подругами','Плачу','Ходжу на роботу','Займаюся дітьми','Їм або не їм','Дивлюся серіали','Уникаю думок','Молюся','Звертаюся до фахівця','Займаюся спортом','Веду щоденник','Приймаю все на себе'],m.color));
+      w.appendChild(fld('Стратегія яка реально допомагає:',''));
+      w.appendChild(fld('Стратегія яка шкодить, але важко зупинитися:',''));
+      w.appendChild(iTitle('Мої межі',m.color));
+      w.appendChild(fld('Що я більше не готова терпіти або ігнорувати:',''));
+      w.appendChild(fld('Що мені потрібно від нього/неї — але важко попросити:',''));
+      w.appendChild(hlBox(m.bg,['Моя межа яку важливо захистити:','Як я можу про неї сказати:']));
+    }},
+  'par-self': {title:'Турбота про себе',sub:'Мої потреби і мій простір',icon:'🌱',color:'#1D9E75',bg:'#E1F5EE',
+    build:(w,m)=>{
+      w.appendChild(infoBlock('sage','🌱 Ти не можеш налити з порожнього глечика','Турбота про себе — це не егоїзм. Це умова того, щоб ти могла бути поруч.'));
+      w.appendChild(fld('Що я давно не робила для себе:',''));
+      w.appendChild(fld('Моя потреба яку я найчастіше ігнорую:',''));
+      w.appendChild(plls('Що мені потрібно більше?',['Сон','Самотність','Спілкування','Рух','Тиша','Радість','Творчість','Підтримка','Визнання','Відпочинок','Час з дітьми','Час без дітей'],m.color));
+      w.appendChild(fld('Маленька річ яку я можу зробити для себе цього тижня:',''));
+      w.appendChild(hlBox(m.bg,['Я дозволяю собі...','Я заслуговую на...']));
+    }},
+  'par-contact': {title:'Наш контакт',sub:"Відновлення звʼязку",icon:'🤝',color:'#9E4A6E',bg:'#F5E8EE',
+    build:(w,m)=>{
+      w.appendChild(fld('Як ми спілкуємося зараз — що типово для нас:',''));
+      w.appendChild(fld('Що допомагає нам бути ближче:',''));
+      w.appendChild(fld('Що нас відштовхує або ранить:',''));
+      w.appendChild(fld('Тема про яку ми не можемо говорити — і чому:',''));
+      w.appendChild(iTitle('Що я хочу сказати',m.color));
+      w.appendChild(hlBox(m.bg,[
+        'Якби він/вона міг/могла мене почути, я б сказала:',
+        'Що я хочу щоб він/вона знав/знала про мій досвід:',
+        'Про що я мрію для нас двох:',
+      ]));
+    }},
+  'par-help': {title:'Коли потрібна допомога',sub:'Коли звертатися по підтримку',icon:'🆘',color:'#C85A3A',bg:'#FAECE7',
+    build:(w,m)=>{
+      w.appendChild(infoBlock('amber','🤝 Просити про допомогу — це сміливість','Ні ти, ні він/вона не повинні справлятися з цим самі. Підтримка фахівця — це не слабкість.'));
+      w.appendChild(plls('Я помічаю в собі (сигнали що потрібна допомога):',['Постійна тривога','Безсоння','Відчуття безвиходді','Втрата інтересу до всього','Думки що краще б не було','Агресія на дітей','Фізичні симптоми стресу','Відчуття що я зникаю','Алкоголь або інші способи "вимкнутися"'],m.color));
+      w.appendChild(fld('Що заважає мені звернутися по допомогу:',''));
+      w.appendChild(fld('Що могло б допомогти мені зробити цей крок:',''));
+      w.appendChild(hlBox(m.bg,[
+        'Людина або фахівець, до якого я можу звернутися:',
+        'Мій перший крок:',
+      ]));
+      w.appendChild(infoBlock('sage','📞 Корисні контакти','Телефон довіри: <strong>0-800-500-335</strong> (безкоштовно)<br>Підтримка для сімей ветеранів: <strong>1547</strong>'));
+    }},
+};
+
+// GRIEF MODULES
+const griefModules = {
+  'gr-state': {title:'Де я зараз',sub:"Мʼякий вхід у простір горя",icon:'🌫️',color:'#5A6E7C',bg:'#EDF1F4',
+    build:(w,m)=>{
+      w.appendChild(stopBox('Якщо зараз дуже важко — спочатку перейди до блоку «Практики присутності». Повернись сюди коли будеш готова.'));
+      w.appendChild(nt('Тут немає правильного способу горювати. Є лише твій.',m.color));
+      w.appendChild(scl('Де я зараз на шкалі важкості:','Витримую','Дуже важко',m.color));
+      w.appendChild(fld('Моє горе зараз схоже на...','Метафора, образ, погода, матеріал...'));
+      w.appendChild(fld('Що зараз найважче?',''));
+      w.appendChild(fld('Що допомагає хоч трохи?',''));
+    }},
+  'gr-loss': {title:'Моя втрата',sub:'Що я втратила разом з нею',icon:'💔',color:'#9E4A6E',bg:'#F5E8EE',
+    build:(w,m)=>{
+      w.appendChild(stopBox('Цей блок може бути дуже болісним. Зупинись якщо стає занадто важко.'));
+      w.appendChild(nt('Питання не про подію — а про те ким/чим ця людина або ситуація була для тебе.',m.color));
+      w.appendChild(fld('Ким ця людина (або що ця ситуація) була для мене:',''));
+      w.appendChild(fld('Що я втратила разом з нею:',''));
+      w.appendChild(fld('Що тепер у моєму житті стало інакшим:',''));
+      w.appendChild(fld('Що мені найбільше її бракує:',''));
+      w.appendChild(hlBox(m.bg,['Якби я могла сказати їй щось зараз:']));
+    }},
+  'gr-feelings': {title:'Мої почуття',sub:'Нормалізація всіх емоцій горя',icon:'🎭',color:'#7B6FBF',bg:'#EDEAFC',
+    build:(w,m)=>{
+      w.appendChild(infoBlock('navy','🎭 Горе — це не лише смуток','У горі є злість, провина, полегшення, любов, страх, ніжність. Всі ці почуття нормальні і всі мають право бути.'));
+      w.appendChild(plls('Що я відчуваю? (обери все що є)',['Смуток','Туга','Злість','Провина','Сором','Полегшення','Любов','Ніжність','Страх','Розгубленість','Онімення','Самотність','Невіра','Тривога','Порожнеча','Вдячність'],m.color));
+      w.appendChild(fld('Почуття яке найважче визнати:',''));
+      w.appendChild(fld('Почуття яке здається «неправильним» — але воно є:',''));
+      w.appendChild(fld('Що я хочу сказати своєму горю:',''));
+    }},
+  'gr-practice': {title:'Практики присутності',sub:'Стабілізація тіла і нервової системи',icon:'🫀',color:'#4A7C6E',bg:'#E3F0EC',
+    build:(w,m)=>{
+      w.appendChild(nt('Коли горе захлестує — тіло потребує допомоги першим.',m.color));
+      w.appendChild(iTitle('🌬️ Дихання',m.color));
+      w.appendChild(timerCard('gr-box','📦 Квадратне дихання','Вдих — затримка — видих — затримка, по 4 секунди',['Вдих 4 с','Затримка 4 с','Видих 4 с','Затримка 4 с'],[4,4,4,4],m.color,m.bg));
+      w.appendChild(timerCard('gr-478','💤 Дихання 4-7-8',"Мʼяко заспокоює нервову систему",['Вдих 4 с','Затримка 7 с','Видих 8 с'],[4,7,8],m.color,m.bg));
+      w.appendChild(iTitle('⚓ Заземлення',m.color));
+      w.appendChild(nt("Поклади обидві ноги на підлогу. Поклади руку на серце. Скажи собі своє імʼя і де ти зараз знаходишся.",m.color));
+      w.appendChild(fld('Що я відчуваю в тілі прямо зараз?',''));
+      w.appendChild(fld('Що допомагає моєму тілу коли дуже важко?',''));
+    }},
+  'gr-art': {title:'Арт-терапевтичні практики',sub:'Творче проживання горя',icon:'🎨',color:'#C8892A',bg:'#FDF1DC',
+    build:(w,m)=>{
+      w.appendChild(nt('Творчість дозволяє висловити те, для чого немає слів. Обери одну практику — ту яка відгукується.',m.color));
+      w.appendChild(iTitle('✏️ Малюнок горя',m.color));
+      w.appendChild(nt('Намалюй своє горе — будь-яким способом. Форма, колір, текстура, лінії. Не потрібно вміти малювати. Після малюнку запиши — що ти намалювала і що це означає для тебе.',m.color));
+      w.appendChild(fld('Мій малюнок горя — опиши або намалюй на аркуші і опиши тут що вийшло:','',true));
+      w.appendChild(iTitle('✉️ Лист тому, кого втратила',m.color));
+      w.appendChild(nt('Напиши лист. Скажи все, що хотіла сказати і не встигла. Або те, що хочеш сказати зараз.',m.color));
+      w.appendChild(fld('Мій лист:','Дорога/Дорогий...',true));
+      w.appendChild(iTitle('🖼️ Колаж спогадів',m.color));
+      w.appendChild(fld('Якби ти робила колаж про цю людину або ситуацію — що б ти туди вклала? Опиши образи, кольори, речі, моменти:','',true));
+      w.appendChild(iTitle('🌊 Метафора горя',m.color));
+      w.appendChild(fld('Моє горе — це... (розгорни образ якомога детальніше):','Наприклад: моє горе — це океан, в якому я то пірнаю, то виплигую на поверхню...',true));
+      w.appendChild(iTitle('🪑 Порожній стілець',m.color));
+      w.appendChild(nt('Уяви що ця людина сидить навпроти тебе. Що ти хочеш їй сказати? Що вона б відповіла?',m.color));
+      w.appendChild(fld('Я кажу їй:',''));
+      w.appendChild(fld('Вона б відповіла мені:',''));
+    }},
+  'gr-memory': {title:"Памʼять і звʼязок",sub:"Продовжені звʼязки",icon:'✨',color:'#7F77DD',bg:'#EEEDFE',
+    build:(w,m)=>{
+      w.appendChild(infoBlock('navy','✨ Звʼязок не зникає — він змінює форму','Сучасна терапія горя говорить: не потрібно «відпустити». Можна знайти нову форму звʼязку — і нести людину з собою далі.'));
+      w.appendChild(fld('Що я несу від цієї людини — її якості, слова, цінності:',''));
+      w.appendChild(fld('Що вона б сказала мені зараз якби могла:',''));
+      w.appendChild(fld("Як я можу берегти памʼять про неї:",""));
+      w.appendChild(fld('Що з її спадку я хочу продовжити у своєму житті:',''));
+      w.appendChild(hlBox(m.bg,[
+        'Моя фраза-памʼять — те що я хочу памʼятати завжди:',
+        "Ритуал або дія якою я вшановую цей звʼязок:",
+      ]));
+    }},
+  'gr-care': {title:'Турбота про себе в горі',sub:'Маленькі кроки без тиску',icon:'🌱',color:'#1D9E75',bg:'#E1F5EE',
+    build:(w,m)=>{
+      w.appendChild(nt('У горі немає «треба». Є лише те, що ти можеш. І це — достатньо.',m.color));
+      w.appendChild(plls('Що зараз допомагає моєму тілу?',['Сон коли є змога','Їжа — хоч щось','Вода','Рух — хоч трохи','Тепло','Тиша','Свіже повітря','Дотик','Сльози','Теплий душ','Ковдра'],m.color));
+      w.appendChild(fld('Що мені зараз потрібно більше за все:',''));
+      w.appendChild(fld('Маленька річ яку я можу зробити для себе сьогодні:',''));
+      w.appendChild(fld('Людина якій я можу зателефонувати або написати:',''));
+    }},
+  'gr-resource': {title:'Мій ресурс',sub:'Опора в горі',icon:'☀️',color:'#C8892A',bg:'#FDF1DC',
+    build:(w,m)=>{
+      w.appendChild(nt('Горе і ресурс можуть існувати одночасно. Ресурс не заперечує біль — він допомагає його витримати.',m.color));
+      w.appendChild(fld('Що дає мені хоч краплю тепла або сили:',''));
+      w.appendChild(fld('Хто поруч зі мною в цьому горі:',''));
+      w.appendChild(fld('Що залишається незмінним навіть зараз:',''));
+      w.appendChild(hlBox(m.bg,[
+        'Фраза або образ, який допомагає мені триматися:',
+        'Те, заради чого я продовжую:',
+      ]));
+      w.appendChild(scl('Мій рівень ресурсу після цієї роботи:','Дуже важко','Є трохи сил',m.color));
+    }},
+};
+
+// Merge into allModules
+Object.assign(allModules, {
+  resources: resourceModules,
+  partner: partnerModules,
+  grief: griefModules,
+});
 
 // TIMER
 function startTimer(id,steps,times){
@@ -865,6 +1278,7 @@ function startTimer(id,steps,times){
   timers[id]={interval,timeout};
 }
 function resetTimer(id){if(timers[id]){clearInterval(timers[id].interval);clearTimeout(timers[id].timeout);delete timers[id]}if(document.getElementById('td-'+id))document.getElementById('td-'+id).textContent='00:00';if(document.getElementById('ti-'+id))document.getElementById('ti-'+id).textContent='Натисни «Почати» і дихай разом зі мною';if(document.getElementById('tf-'+id))document.getElementById('tf-'+id).style.width='0%';const btn=document.getElementById('tb-'+id);if(btn){btn.textContent='Почати';btn.disabled=false}}
+
 
 function updateProgress(){
   const inner=document.getElementById('module-inner');if(!inner)return;
@@ -897,134 +1311,25 @@ function copyAnswers(){
 }
 
 // ===== NAVIGATION =====
-function goLanding(){ showScreen('landing'); }
-function goHub(){ showScreen('hub'); }
-
-function showTool(id){
-  currentTool = id;
-
-  if(id === 'ptsd-cover'){
-    showScreen('ptsd-cover');
-    return;
-  }
-
-  // Build toolhome content BEFORE showing screen
-  const titleEl = document.getElementById('tool-title');
-  const subEl = document.getElementById('tool-sub');
-  const heroWrap = document.getElementById('tool-hero-wrap');
-  const blocksWrap = document.getElementById('tool-blocks');
-
-  if(!titleEl || !subEl || !heroWrap || !blocksWrap) return;
-
-  // Remove any previously injected safety wrap
+function buildGenericBlocks(blocks, tool){
+  const wrap = document.getElementById('tool-blocks');
+  wrap.innerHTML = '';
   const existSafe = document.getElementById('ptsd-safety-wrap');
   if(existSafe) existSafe.remove();
-
-  blocksWrap.innerHTML = '';
-  heroWrap.innerHTML = '';
-
-  if(id === 'anketa'){
-    // Go to version selection screen instead
-    showScreen('vselect');
-    return;
-  }
-
-  if(id === 'anxiety'){
-    titleEl.textContent = 'Тривожність — самодослідження';
-    subEl.textContent = 'Оберіть блок, який потрібен зараз';
-    buildToolHero('🌊','Тривожність — самодослідження','Обери блок, який потрібен прямо зараз','linear-gradient(135deg,#EBF2FC,#E3F5EF)','var(--navy-d)','var(--muted)');
-    buildAnxietyBlocks();
-    window._toolhomeFrom = 'hub';
-  }
-
-  if(id === 'ptsd'){
-    titleEl.textContent = 'Мій шлях до безпеки';
-    subEl.textContent = 'Оберіть блок, який потрібен зараз';
-    buildToolHero('🛡️','Мій шлях до безпеки','Оберіть блок, який потрібен прямо зараз','linear-gradient(135deg,#4A6E8A,#5A8C7E)','white','rgba(255,255,255,.7)');
-    // Safety button
-    const safetyWrap = document.createElement('div');
-    safetyWrap.id = 'ptsd-safety-wrap';
-    safetyWrap.style.cssText = 'max-width:680px;margin:0 auto;padding:0 1rem';
-    const safetyBtnEl = document.createElement('button');
-    safetyBtnEl.className = 'safety-btn';
-    safetyBtnEl.style.width = '100%';
-    safetyBtnEl.innerHTML = '<i class="ti ti-shield-heart" style="font-size:20px"></i><span><div style="font-size:14px;font-weight:700">🆘 Моя безпека</div><div style="font-size:11px;opacity:.8">Якщо стало важко — починай тут</div></span><span style="font-size:10px;background:rgba(255,255,255,.2);padding:2px 8px;border-radius:10px">Завжди доступно</span>';
-    safetyBtnEl.onclick = () => openModule('ptsd','safety');
-    safetyWrap.appendChild(safetyBtnEl);
-    blocksWrap.parentNode.insertBefore(safetyWrap, blocksWrap);
-    buildPtsdBlocks();
-    window._toolhomeFrom = 'hub';
-  }
-
-  showScreen('toolhome');
+  const grouped = {};
+  blocks.forEach(b => { if(!grouped[b.tag]) grouped[b.tag]=[]; grouped[b.tag].push(b); });
+  Object.entries(grouped).forEach(([tag, items]) => {
+    const lbl = document.createElement('div');
+    lbl.className = 'section-label';
+    lbl.textContent = tag;
+    wrap.appendChild(lbl);
+    const grid = document.createElement('div');
+    grid.className = 'block-grid';
+    items.forEach(b => grid.appendChild(makeBlockCard(tool, b.id, b.icon, b.color, b.bg, b.title, b.desc, b.tag, b.warn||false)));
+    wrap.appendChild(grid);
+  });
 }
 
-function buildToolHero(icon,title,sub,bg,titleColor,subColor,hasTabs=false){
-  const wrap = document.getElementById('tool-hero-wrap');
-  if(!wrap) return;
-  const hero = document.createElement('div');
-  hero.className = 'tool-hero';
-  hero.style.background = bg;
-  const iconEl = document.createElement('span');
-  iconEl.className = 'th-icon';
-  iconEl.textContent = icon;
-  const titleEl = document.createElement('div');
-  titleEl.className = 'th-title';
-  titleEl.style.color = titleColor;
-  titleEl.textContent = title;
-  const subEl = document.createElement('div');
-  subEl.className = 'th-sub';
-  subEl.style.color = subColor;
-  subEl.textContent = sub;
-  hero.appendChild(iconEl);
-  hero.appendChild(titleEl);
-  hero.appendChild(subEl);
-  if(hasTabs){
-    const tabs = document.createElement('div');
-    tabs.className = 'vtabs';
-    [{v:'a',label:'🌸 Підлітки'},{v:'b',label:'🌿 Дорослі'},{v:'c',label:'🛡️ Ветерани'}].forEach(t=>{
-      const btn = document.createElement('button');
-      btn.className = 'vtab' + (t.v==='a' ? ' va' : '');
-      btn.textContent = t.label;
-      btn.onclick = () => setAnketaVersion(t.v);
-      tabs.appendChild(btn);
-    });
-    hero.appendChild(tabs);
-  }
-  wrap.appendChild(hero);
-}
-
-function moduleBack(){
-  showScreen('toolhome');
-}
-
-function selectAnketaVersion(v){
-  anketaVersion = v;
-  // Build toolhome for anketa with selected version
-  const titleEl = document.getElementById('tool-title');
-  const subEl = document.getElementById('tool-sub');
-  const heroWrap = document.getElementById('tool-hero-wrap');
-  const blocksWrap = document.getElementById('tool-blocks');
-  const existSafe = document.getElementById('ptsd-safety-wrap');
-  if(existSafe) existSafe.remove();
-  if(titleEl) titleEl.textContent = 'Терапевтична анкета самопізнання';
-  const labels = {a:'🌸 Підлітки',b:'🌿 Дорослі',c:'🛡️ Ветерани'};
-  if(subEl) subEl.textContent = labels[v];
-  if(heroWrap) heroWrap.innerHTML = '';
-  if(blocksWrap) blocksWrap.innerHTML = '';
-  buildToolHero('📓','Терапевтична анкета самопізнання','Обери блок, який потрібен прямо зараз','linear-gradient(135deg,#EEEDFE,#E1F5EE)','var(--purple-d)','var(--muted)');
-  setAnketaVersion(v);
-
-  showScreen('toolhome');
-  // Track that we came from vselect
-  window._toolhomeFrom = 'vselect';
-}
-
-function toolhomeBack(){
-  const from = window._toolhomeFrom || 'hub';
-  showScreen(from);
-  window._toolhomeFrom = null;
-}
 </script>
 </body>
 </html>
