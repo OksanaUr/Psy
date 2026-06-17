@@ -192,6 +192,27 @@ textarea:focus{outline:none;background:var(--white)}
 
 /* SAVE BAR */
 .save-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1.5px solid var(--border);padding:12px 1rem;align-items:center;gap:8px;z-index:1000;flex-wrap:wrap;box-shadow:0 -4px 20px rgba(0,0,0,.07);display:none}
+
+/* CLIENT MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;display:flex;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)}
+.modal-overlay.hidden{display:none}
+.modal-box{background:white;border-radius:var(--rl);padding:2rem;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal-title{font-size:1.1rem;font-weight:800;color:var(--purple-d);margin-bottom:.5rem}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem;line-height:1.6}
+.modal-input{width:100%;border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px;font-size:15px;font-family:inherit;color:var(--text);background:#FAFAFA;margin-bottom:1rem;outline:none;transition:border-color .15s}
+.modal-input:focus{border-color:var(--purple);background:white}
+.modal-btn{width:100%;padding:14px;border-radius:50px;border:none;font-size:15px;font-weight:700;cursor:pointer;background:var(--purple);color:white;transition:all .2s}
+.modal-btn:hover{background:var(--purple-d)}
+.modal-note{font-size:11px;color:var(--muted);text-align:center;margin-top:.75rem;line-height:1.5}
+
+/* CLIENT BAR */
+.client-bar{background:var(--purple-l);border-bottom:1px solid rgba(127,119,221,.2);padding:8px 1rem;display:flex;align-items:center;gap:10px;font-size:13px}
+.client-name{font-weight:700;color:var(--purple-d);flex:1}
+.client-change{font-size:11px;color:var(--purple);cursor:pointer;text-decoration:underline;background:none;border:none;padding:0;font-family:inherit}
+
+/* REPORT BTN */
+.report-btn{display:flex;align-items:center;gap:8px;background:var(--purple);color:white;border:none;border-radius:50px;padding:10px 20px;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 2px 10px rgba(127,119,221,.3)}
+.report-btn:hover{background:var(--purple-d);transform:translateY(-1px)}
 .s-btn{padding:10px 16px;border-radius:50px;border:1.5px solid var(--border);font-size:13px;font-weight:700;cursor:pointer;background:var(--white);color:var(--text);transition:all .15s;display:flex;align-items:center;gap:6px}
 .s-btn.primary{color:white;border-color:transparent}
 .s-btn:hover{opacity:.85}
@@ -227,6 +248,12 @@ textarea:focus{outline:none;background:var(--white)}
   <div class="hub-topbar">
     <button class="nav-btn" onclick="goLanding()"><i class="ti ti-home"></i> Додому</button>
     <div class="hub-topbar-title" style="text-align:center">Психологічний кабінет</div>
+  </div>
+  <div class="client-bar" id="client-bar">
+    <span>👤</span>
+    <span class="client-name" id="client-bar-name">Завантаження...</span>
+    <button class="client-change" onclick="changeClient()">змінити</button>
+    <button class="report-btn" onclick="generateReport()">📄 Підготувати звіт</button>
   </div>
   <div class="hub-hero">
     <span class="hub-icon">🗂️</span>
@@ -362,7 +389,11 @@ textarea:focus{outline:none;background:var(--white)}
       </div>
     </div>
 
-    <p style="text-align:center;font-size:11px;color:var(--muted);margin-top:2.5rem;line-height:1.8">© Оксана Урожай · Психолог, 2026<br><em>Тривога — це лише шторм у твоїй голові. Але ти — цілий океан, здатний його витримати.</em></p>
+    <div style="text-align:center;margin-top:2.5rem">
+      <button onclick="generateReport()" style="display:inline-flex;align-items:center;gap:8px;background:var(--purple);color:white;border:none;border-radius:50px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 2px 12px rgba(127,119,221,.3);margin-bottom:1rem">📄 Підготувати звіт для спеціаліста</button>
+      <p style="font-size:11px;color:var(--muted);line-height:1.8">© Оксана Урожай · Психолог, 2026<br><em>Тривога — це лише шторм у твоїй голові. Але ти — цілий океан, здатний його витримати.</em></p>
+      <button onclick="clearClientData()" style="margin-top:.75rem;background:none;border:none;font-size:11px;color:#ccc;cursor:pointer;text-decoration:underline">Очистити всі мої відповіді</button>
+    </div>
   </div>
 </div>
 
@@ -408,6 +439,10 @@ textarea:focus{outline:none;background:var(--white)}
       <div style="font-size:11px;color:var(--muted)" id="tool-sub"></div>
     </div>
     <button class="nav-btn" onclick="goLanding()"><i class="ti ti-home"></i></button>
+  </div>
+  <div class="client-bar" style="font-size:12px">
+    <span>👤</span>
+    <span class="client-name" id="tool-client-name" style="font-size:12px"></span>
   </div>
   <div id="tool-hero-wrap"></div>
   <div class="tool-inner" id="tool-blocks"></div>
@@ -456,6 +491,17 @@ textarea:focus{outline:none;background:var(--white)}
 </div>
 
 <!-- SAVE BAR (outside screens) -->
+<!-- CLIENT NAME MODAL -->
+<div class="modal-overlay hidden" id="client-modal">
+  <div class="modal-box">
+    <div class="modal-title">👋 Вітаємо!</div>
+    <p class="modal-sub">Введіть своє ім'я або код — щоб ваші відповіді зберігалися і ви могли надіслати їх спеціалісту.</p>
+    <input class="modal-input" id="client-name-input" type="text" placeholder="Наприклад: Марія або М-01" maxlength="30">
+    <button class="modal-btn" onclick="startSession()">Почати роботу</button>
+    <p class="modal-note">Всі відповіді зберігаються лише на вашому пристрої.<br>Нікуди не передаються без вашого відома.</p>
+  </div>
+</div>
+
 <div class="save-bar" id="module-save-bar">
   <button class="s-btn" onclick="moduleBack()">← Назад</button>
   <button class="s-btn primary" id="save-btn" onclick="savePDF()">⬇ Зберегти PDF</button>
@@ -464,6 +510,189 @@ textarea:focus{outline:none;background:var(--white)}
 </div>
 
 <script>
+
+
+// ===== CLIENT SESSION =====
+const SESSION_KEY = 'psy_cabinet_session';
+
+function getSession(){
+  try { return JSON.parse(localStorage.getItem(SESSION_KEY)) || {}; }
+  catch(e){ return {}; }
+}
+
+function saveSession(data){
+  try { localStorage.setItem(SESSION_KEY, JSON.stringify(data)); }
+  catch(e){ console.warn('Storage unavailable'); }
+}
+
+function getClientName(){
+  return getSession().clientName || '';
+}
+
+function initClientSystem(){
+  const name = getClientName();
+  if(!name){
+    document.getElementById('client-modal').classList.remove('hidden');
+    // Focus input
+    setTimeout(()=>{ const inp = document.getElementById('client-name-input'); if(inp) inp.focus(); }, 300);
+  } else {
+    updateClientBars(name);
+  }
+}
+
+function startSession(){
+  const inp = document.getElementById('client-name-input');
+  const name = inp ? inp.value.trim() : '';
+  if(!name){ inp.style.borderColor='var(--coral)'; inp.placeholder='Будь ласка, введіть імʼя або код'; return; }
+  const session = getSession();
+  session.clientName = name;
+  session.startedAt = session.startedAt || new Date().toISOString();
+  saveSession(session);
+  document.getElementById('client-modal').classList.add('hidden');
+  updateClientBars(name);
+}
+
+function updateClientBars(name){
+  const b1 = document.getElementById('client-bar-name');
+  const b2 = document.getElementById('tool-client-name');
+  if(b1) b1.textContent = name;
+  if(b2) b2.textContent = name;
+}
+
+function changeClient(){
+  if(!confirm('Змінити імʼя клієнта? Збережені відповіді залишаться у памʼяті браузера.')) return;
+  const inp = document.getElementById('client-name-input');
+  if(inp){ inp.value = getClientName(); }
+  document.getElementById('client-modal').classList.remove('hidden');
+}
+
+// Save answer to localStorage
+function saveAnswer(blockId, questionKey, value){
+  const session = getSession();
+  if(!session.answers) session.answers = {};
+  if(!session.answers[blockId]) session.answers[blockId] = {};
+  session.answers[blockId][questionKey] = { value, savedAt: new Date().toISOString() };
+  saveSession(session);
+}
+
+// Load saved answers into current module
+function loadSavedAnswers(moduleId){
+  const session = getSession();
+  if(!session.answers || !session.answers[moduleId]) return;
+  const saved = session.answers[moduleId];
+  const inner = document.getElementById('module-inner');
+  if(!inner) return;
+  
+  const textareas = inner.querySelectorAll('textarea');
+  textareas.forEach((ta, idx) => {
+    const key = 'q_' + idx;
+    if(saved[key]) ta.value = saved[key].value;
+  });
+  updateProgress();
+}
+
+// Auto-save all textareas in current module
+function setupAutoSave(moduleId){
+  const inner = document.getElementById('module-inner');
+  if(!inner) return;
+  const textareas = inner.querySelectorAll('textarea');
+  textareas.forEach((ta, idx) => {
+    const key = 'q_' + idx;
+    ta.addEventListener('input', () => {
+      saveAnswer(moduleId, key, ta.value);
+    });
+  });
+}
+
+// Generate full report
+function generateReport(){
+  const session = getSession();
+  const clientName = session.clientName || 'Клієнт';
+  const answers = session.answers || {};
+  
+  if(Object.keys(answers).length === 0){
+    alert('Поки що немає збережених відповідей. Заповніть хоча б один блок.');
+    return;
+  }
+
+  // Build PDF
+  const accent = '#7F77DD';
+  const date = new Date().toLocaleDateString('uk-UA');
+  const startDate = session.startedAt ? new Date(session.startedAt).toLocaleDateString('uk-UA') : date;
+  
+  let sectionsHtml = '';
+  
+  // Get module names for display
+  const moduleNames = {};
+  ['anketa','anxiety','ptsd','resources','partner','grief'].forEach(tool => {
+    if(allModules[tool]){
+      Object.entries(allModules[tool]).forEach(([id, meta]) => {
+        moduleNames[id] = { title: meta.title, tool };
+      });
+    }
+  });
+  
+  Object.entries(answers).forEach(([moduleId, questions]) => {
+    const meta = moduleNames[moduleId];
+    const title = meta ? meta.title : moduleId;
+    
+    let blockHtml = '';
+    Object.entries(questions).forEach(([key, data]) => {
+      if(!data.value || !data.value.trim()) return;
+      const valHtml = data.value.trim().split('\n').join('<br>');
+      blockHtml += '<div class="qa"><div class="ans">' + valHtml + '</div></div>';
+    });
+    
+    if(!blockHtml) return;
+    sectionsHtml += `<div class="section"><div class="sec-title">${title}</div>${blockHtml}</div>`;
+  });
+
+  if(!sectionsHtml){
+    alert('Немає заповнених відповідей для звіту.');
+    return;
+  }
+
+  const html = `<!DOCTYPE html><html lang="uk"><head><meta charset="UTF-8"><title>Звіт — ${clientName}</title>
+  <style>
+    @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+    body{font-family:Arial,sans-serif;color:#2C2C2C;padding:32px 40px;max-width:700px;margin:0 auto;font-size:13px;line-height:1.7}
+    .header{border-bottom:3px solid ${accent};padding-bottom:16px;margin-bottom:24px}
+    h1{color:${accent};font-size:22px;margin:0 0 6px}
+    .meta{color:#999;font-size:12px}
+    .section{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid #eee}
+    .sec-title{font-size:13px;font-weight:bold;color:${accent};text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;padding:6px 12px;background:#f5f0ff;border-radius:6px}
+    .qa{margin-bottom:12px;padding:12px;background:#fafafa;border-radius:8px;border-left:3px solid ${accent}}
+    .ans{font-size:13px;color:#2C2C2C}
+    .footer{margin-top:32px;font-size:10px;color:#ccc;text-align:center;padding-top:16px;border-top:1px solid #eee}
+    .hint{background:#f0f0f0;border-radius:8px;padding:12px 16px;margin-bottom:24px;font-size:12px;color:#555}
+    @media print{.hint{display:none}}
+  </style></head><body>
+  <div class="hint">💡 Щоб зберегти як PDF: <strong>Ctrl+P</strong> (або Cmd+P) → <strong>«Зберегти як PDF»</strong></div>
+  <div class="header">
+    <h1>📋 Звіт роботи з Психологічним кабінетом</h1>
+    <div class="meta">
+      Клієнт: <strong>${clientName}</strong> &nbsp;·&nbsp;
+      Початок роботи: ${startDate} &nbsp;·&nbsp;
+      Дата звіту: ${date}
+    </div>
+  </div>
+  ${sectionsHtml}
+  <div class="footer">© Оксана Урожай, психолог · Психологічний кабінет · 2026</div>
+  <script>window.onload=function(){window.print()}<\/script>
+  </body></html>`;
+
+  const win = window.open('','_blank');
+  if(!win){ alert('Дозволь pop-up для цього сайту.'); return; }
+  win.document.write(html);
+  win.document.close();
+}
+
+function clearClientData(){
+  if(!confirm('Видалити всі збережені відповіді? Це дію не можна скасувати.')) return;
+  localStorage.removeItem(SESSION_KEY);
+  alert('Відповіді видалено.');
+  location.reload();
+}
 
 
 // ===== STATE =====
@@ -483,6 +712,8 @@ function showScreen(id){
   next.classList.add('active');
   const sb = document.getElementById('module-save-bar');
   if(sb) sb.style.display = (id === 'module') ? 'flex' : 'none';
+  // Init client system when reaching hub
+  if(id === 'hub') initClientSystem();
 }
 
 function goLanding(){ showScreen('landing'); }
@@ -794,7 +1025,14 @@ function openModule(tool, id){
   inner.appendChild(header);
   if(tool==='ptsd'&&id!=='safety'){const sb=document.createElement('div');sb.className='safety-banner';sb.onclick=()=>openModule('ptsd','safety');sb.innerHTML=`<i class="ti ti-shield-heart" style="font-size:20px;color:var(--sage)"></i><span>Якщо стало важко — перейди до блоку «Моя безпека»</span><i class="ti ti-chevron-right" style="color:var(--sage)"></i>`;inner.appendChild(sb)}
   meta.build(inner,meta);
-  showScreen('module');updateProgress();
+  showScreen('module');
+  updateProgress();
+  // Load saved answers and setup autosave
+  setTimeout(()=>{
+    loadSavedAnswers(id);
+    setupAutoSave(id);
+    updateProgress();
+  }, 100);
 }
 
 // ===== BLOCK GRIDS =====
