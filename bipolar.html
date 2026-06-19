@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Мій біполярний — простір самопізнання</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.x/tabler-icons.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --mania:#D85A3A;--mania-l:#FAECE7;
+  --hypo:#C8892A;--hypo-l:#FDF1DC;
+  --mild-up:#D4B106;--mild-up-l:#FBF8DC;
+  --stable:#3A8B5C;--stable-l:#E3F5EC;
+  --mild-down:#4A7FC1;--mild-down-l:#EBF2FC;
+  --depr:#7B6FBF;--depr-l:#EDEAFC;
+  --deep-depr:#5A4A8A;--deep-depr-l:#EEEAF7;
+  --mixed:#9E4A6E;--mixed-l:#F5E8EE;
+  --purple:#7F77DD;--purple-l:#EEEDFE;--purple-d:#3C3489;
+  --navy:#2C4A6E;--navy-l:#EBF0F8;--navy-d:#1A2E45;
+  --amber:#C8892A;--amber-l:#FDF1DC;
+  --sage:#4A7C6E;--sage-l:#E3F0EC;
+  --text:#2C2C2C;--muted:#888;--border:#E0E0E0;
+  --white:#fff;--bg:#F5F7FA;
+  --r:12px;--rl:18px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+.screen{position:fixed;top:0;left:0;right:0;bottom:0;overflow-y:auto;overflow-x:hidden;transform:translateX(100%);transition:transform .25s ease;visibility:hidden;background:var(--bg);z-index:1}
+.screen.active{transform:translateX(0);visibility:visible;z-index:2}
+.screen.slide-out{transform:translateX(-20%);visibility:visible;z-index:1}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* LANDING */
+#landing{background:linear-gradient(160deg,#FAECE7 0%,#EDEAFC 50%,#EBF2FC 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem 1.5rem;overflow:hidden}
+.ls{position:absolute;border-radius:50%;opacity:.1;animation:float 7s ease-in-out infinite}
+.ls1{width:300px;height:300px;background:var(--mania);top:-80px;left:-70px}
+.ls2{width:200px;height:200px;background:var(--depr);bottom:-50px;right:-40px;animation-delay:2s}
+.land-content{position:relative;z-index:1;max-width:480px}
+.land-badge{display:inline-flex;align-items:center;gap:6px;background:white;padding:6px 16px;border-radius:20px;font-size:12px;color:var(--purple-d);font-weight:500;margin-bottom:1.25rem;box-shadow:0 2px 12px rgba(127,119,221,.15);animation:fadeUp .6s ease both}
+.land-title{font-size:clamp(1.8rem,5vw,2.6rem);font-weight:800;color:var(--purple-d);line-height:1.2;margin-bottom:1rem;animation:fadeUp .6s ease .1s both}
+.land-sub{font-size:1rem;color:var(--muted);line-height:1.7;margin-bottom:2rem;animation:fadeUp .6s ease .2s both}
+.land-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 44px;border-radius:50px;border:none;font-size:16px;font-weight:700;cursor:pointer;background:var(--purple);color:white;box-shadow:0 4px 24px rgba(127,119,221,.35);animation:fadeUp .6s ease .3s both;transition:all .2s}
+.land-btn:hover{background:var(--purple-d);transform:translateY(-2px)}
+.land-note{font-size:11px;color:var(--muted);margin-top:1rem;animation:fadeUp .6s ease .4s both}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:100;background:rgba(245,247,250,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:10px 1rem;display:flex;align-items:center;gap:8px}
+.nav-btn{background:none;border:1.5px solid var(--border);border-radius:20px;cursor:pointer;color:var(--text);font-size:13px;font-weight:600;padding:6px 12px;display:flex;align-items:center;gap:4px;transition:all .15s;white-space:nowrap}
+.nav-btn:hover{background:white}
+.prog-bar{width:60px;height:4px;border-radius:2px;background:var(--border);overflow:hidden;flex-shrink:0}
+.prog-fill{height:100%;border-radius:2px;transition:width .4s}
+.prog-pct{font-size:11px;font-weight:600;color:var(--muted);min-width:28px}
+
+/* CLIENT BAR */
+.client-bar{background:var(--purple-l);border-bottom:1px solid rgba(127,119,221,.2);padding:8px 1rem;display:flex;align-items:center;gap:10px;font-size:13px}
+.client-name{font-weight:700;color:var(--purple-d);flex:1}
+.client-change{font-size:11px;color:var(--purple);cursor:pointer;text-decoration:underline;background:none;border:none;padding:0;font-family:inherit}
+.report-btn{display:flex;align-items:center;gap:6px;background:var(--purple);color:white;border:none;border-radius:50px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
+.report-btn:hover{background:var(--purple-d)}
+
+/* HUB */
+#hub{background:var(--bg)}
+.hub-hero{padding:1.75rem 1rem 1.25rem;text-align:center}
+.hub-icon{font-size:2.2rem;display:block;margin-bottom:.5rem}
+.hub-title{font-size:1.2rem;font-weight:800;color:var(--purple-d);margin-bottom:.25rem}
+.hub-sub{font-size:13px;color:var(--muted)}
+.hub-inner{max-width:720px;margin:0 auto;padding:.5rem 1rem 3rem}
+.section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:1.25rem 0 .75rem;padding-left:2px}
+.hub-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+
+.crisis-btn{display:flex;align-items:center;gap:10px;background:var(--mania);color:white;border:none;border-radius:var(--r);padding:12px 16px;margin:.5rem auto;max-width:680px;width:calc(100% - 2rem);cursor:pointer;font-size:14px;font-weight:700;transition:all .15s;box-shadow:0 2px 10px rgba(216,90,58,.3)}
+.crisis-btn:hover{opacity:.9}
+
+.hc{background:var(--white);border-radius:var(--rl);border:1.5px solid var(--border);padding:1.1rem;cursor:pointer;transition:all .2s;box-shadow:0 2px 6px rgba(0,0,0,.04);display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden}
+.hc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.hc:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.hc-icon{font-size:1.6rem}
+.hc-title{font-size:13px;font-weight:700;color:var(--text);line-height:1.3}
+.hc-desc{font-size:11px;color:var(--muted);line-height:1.5}
+.hc-tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;display:inline-block;margin-top:2px}
+
+/* MODULE */
+.module-inner{max-width:680px;margin:0 auto;padding:1.5rem 1rem 7rem}
+.module-header{border-radius:var(--rl);padding:1.25rem 1.5rem;margin-bottom:1rem;display:flex;align-items:center;gap:14px}
+.mh-icon{font-size:2rem;flex-shrink:0}
+.mh-title{font-size:1.1rem;font-weight:800}
+.mh-sub{font-size:13px;color:var(--muted);margin-top:2px}
+.crisis-banner{display:flex;align-items:center;gap:10px;background:var(--mania-l);border:1px solid #F0B0A0;border-radius:var(--r);padding:12px 16px;margin-bottom:1rem;cursor:pointer;transition:all .15s}
+.crisis-banner:hover{background:#fce0d8}
+.crisis-banner span{font-size:13px;font-weight:600;color:var(--mania);flex:1}
+
+/* FIELDS */
+.field-group{margin-top:16px}
+.field-label{display:block;font-size:13px;color:var(--muted);margin-bottom:7px;line-height:1.5;font-weight:500}
+textarea{width:100%;border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px;font-size:14px;font-family:inherit;color:var(--text);background:#FAFAFA;resize:vertical;min-height:72px;line-height:1.7}
+textarea:focus{outline:none;background:white}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.pill{padding:7px 13px;border:1.5px solid var(--border);border-radius:20px;font-size:13px;cursor:pointer;color:var(--muted);background:white;transition:all .15s;user-select:none;font-weight:500}
+.pill:hover{background:var(--bg)}
+.hl-box{border-radius:var(--r);padding:16px;margin-top:14px}
+.hl-label{font-size:13px;color:var(--muted);margin-bottom:8px;font-style:italic;margin-top:10px}
+.inner-title{font-size:13px;font-weight:700;margin-top:20px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.note-block{border-radius:var(--r);padding:14px 16px;font-size:13px;color:var(--muted);font-style:italic;margin-top:14px;line-height:1.6;border-left:3px solid;background:var(--bg)}
+.info-block{border-radius:var(--r);padding:16px;margin:14px 0}
+.info-title{font-size:12px;font-weight:700;margin-bottom:6px}
+.info-text{font-size:13px;color:var(--text);line-height:1.7}
+.phase-card{border-radius:var(--rl);padding:16px;margin-top:14px;border:1.5px solid}
+
+/* SCALE BATTERY */
+.scale-wrap{margin-top:10px}
+.scale-batt{display:flex;align-items:center;gap:12px}
+.scale-val{font-size:1.4rem;font-weight:800;min-width:44px;text-align:center;color:#ccc}
+.scale-hints{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px}
+
+/* TRACKER GRID */
+.tracker-wrap{overflow-x:auto;margin-top:14px;-webkit-overflow-scrolling:touch}
+.tracker-table{border-collapse:collapse;min-width:560px;width:100%}
+.tracker-table th,.tracker-table td{border:1px solid var(--border);text-align:center;padding:0;font-size:11px}
+.tracker-table th{background:var(--bg);font-weight:600;padding:8px 4px;color:var(--text)}
+.tracker-row-label{text-align:left!important;font-size:11px;font-weight:600;padding:8px!important;white-space:nowrap;min-width:120px;position:sticky;left:0;background:white;z-index:2}
+.tracker-row-label.stable{background:var(--stable-l)}
+.t-cell{width:48px;height:38px;cursor:pointer;transition:all .15s;position:relative}
+.t-cell:hover{filter:brightness(0.95)}
+.t-cell.active::after{content:'✓';color:white;font-weight:800;font-size:14px}
+.tracker-meta-row td{padding:6px 4px}
+.tracker-meta-row .tracker-row-label{color:var(--mania);background:#fff}
+.tracker-input{width:36px;border:1px solid var(--border);border-radius:4px;text-align:center;font-size:11px;padding:2px}
+.day-note-toggle{font-size:10px;color:var(--purple);cursor:pointer;text-decoration:underline}
+
+/* CRISIS PLAN */
+.crisis-box{background:var(--mania-l);border:1.5px solid #F0B0A0;border-radius:var(--rl);padding:16px;margin-top:14px}
+.crisis-box-title{font-size:13px;font-weight:800;color:var(--mania);margin-bottom:8px}
+
+/* SAVE BAR */
+.save-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1.5px solid var(--border);padding:12px 1rem;align-items:center;gap:8px;z-index:1000;flex-wrap:wrap;box-shadow:0 -4px 20px rgba(0,0,0,.07);display:none}
+.s-btn{padding:10px 16px;border-radius:50px;border:1.5px solid var(--border);font-size:13px;font-weight:700;cursor:pointer;background:white;color:var(--text);display:flex;align-items:center;gap:6px}
+.s-btn.primary{color:white;border-color:transparent}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;display:flex;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)}
+.modal-overlay.hidden{display:none}
+.modal-box{background:white;border-radius:var(--rl);padding:2rem;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal-title{font-size:1.1rem;font-weight:800;color:var(--purple-d);margin-bottom:.5rem}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem;line-height:1.6}
+.modal-input{width:100%;border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px;font-size:15px;font-family:inherit;background:#FAFAFA;margin-bottom:1rem;outline:none}
+.modal-input:focus{border-color:var(--purple);background:white}
+.modal-btn{width:100%;padding:14px;border-radius:50px;border:none;font-size:15px;font-weight:700;cursor:pointer;background:var(--purple);color:white}
+.modal-note{font-size:11px;color:var(--muted);text-align:center;margin-top:.75rem;line-height:1.5}
+
+@media(max-width:480px){
+  .hub-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- LANDING -->
+<div class="screen active" id="landing">
+  <div class="ls ls1"></div><div class="ls ls2"></div>
+  <div class="land-content">
+    <div class="land-badge"><i class="ti ti-mood-smile"></i> Психологічний кабінет</div>
+    <h1 class="land-title">Мій біполярний</h1>
+    <p class="land-sub">Простір щоб краще розуміти себе, відстежувати стани і мати інструменти під рукою — у будь-якій фазі</p>
+    <button class="land-btn" onclick="goHub()"><i class="ti ti-arrow-right"></i> Почати</button>
+    <p class="land-note">Всі відповіді залишаються лише на вашому пристрої</p>
+  </div>
+</div>
+
+<!-- HUB -->
+<div class="screen" id="hub">
+  <div class="topbar">
+    <button class="nav-btn" onclick="goLanding()"><i class="ti ti-home"></i> Додому</button>
+    <div style="flex:1;text-align:center;font-size:14px;font-weight:700">Мій біполярний</div>
+  </div>
+  <div class="client-bar" id="client-bar">
+    <span>👤</span>
+    <span class="client-name" id="client-bar-name">...</span>
+    <button class="client-change" onclick="changeClient()">змінити</button>
+    <button class="report-btn" onclick="generateReport()">📄 Звіт</button>
+  </div>
+  <div class="hub-hero">
+    <span class="hub-icon">🌗</span>
+    <div class="hub-title">Простір самопізнання</div>
+    <div class="hub-sub">Обери розділ, який потрібен прямо зараз</div>
+  </div>
+
+  <button class="crisis-btn" onclick="openModule('crisis')">
+    <i class="ti ti-alert-triangle" style="font-size:20px"></i>
+    <span><div style="font-size:14px;font-weight:700">🆘 Кризовий план</div><div style="font-size:11px;opacity:.85">Якщо стало важко — починай тут</div></span>
+    <span style="font-size:10px;background:rgba(255,255,255,.2);padding:2px 8px;border-radius:10px">Завжди доступно</span>
+  </button>
+
+  <div class="hub-inner">
+
+    <div class="section-label">📚 Розуміти свій розлад</div>
+    <div class="hub-grid">
+      <div class="hc" onclick="openModule('psy-basics')" style="border-top:3px solid var(--purple)">
+        <span class="hc-icon">💡</span>
+        <div class="hc-title">Що таке БАР</div>
+        <div class="hc-desc">Простими словами — без стигми і складних термінів</div>
+        <span class="hc-tag" style="background:var(--purple-l);color:var(--purple-d)">Психоосвіта</span>
+      </div>
+      <div class="hc" onclick="openModule('psy-phases')" style="border-top:3px solid var(--navy)">
+        <span class="hc-icon">🌗</span>
+        <div class="hc-title">Фази та стани</div>
+        <div class="hc-desc">Манія, гіпоманія, депресія, змішані стани</div>
+        <span class="hc-tag" style="background:var(--navy-l);color:var(--navy)">Психоосвіта</span>
+      </div>
+    </div>
+
+    <div class="section-label">📍 Де я зараз</div>
+    <div class="hub-grid">
+      <div class="hc" onclick="openModule('state-today')" style="border-top:3px solid var(--stable)">
+        <span class="hc-icon">🔍</span>
+        <div class="hc-title">Мій стан сьогодні</div>
+        <div class="hc-desc">Швидка оцінка — сон, енергія, думки, поведінка</div>
+        <span class="hc-tag" style="background:var(--stable-l);color:var(--stable)">Щодня</span>
+      </div>
+    </div>
+
+    <div class="section-label">📊 Трекер настрою</div>
+    <div class="hub-grid">
+      <div class="hc" onclick="openModule('tracker')" style="border-top:3px solid var(--mixed)">
+        <span class="hc-icon">📈</span>
+        <div class="hc-title">Щоденник настрою</div>
+        <div class="hc-desc">Тижнева таблиця — настрій, сон, ліки, нотатки</div>
+        <span class="hc-tag" style="background:var(--mixed-l);color:var(--mixed)">Тижневий звіт</span>
+      </div>
+    </div>
+
+    <div class="section-label">⚡ Робота з фазами</div>
+    <div class="hub-grid">
+      <div class="hc" onclick="openModule('mania')" style="border-top:3px solid var(--mania)">
+        <span class="hc-icon">🔥</span>
+        <div class="hc-title">Коли мене надто багато</div>
+        <div class="hc-desc">Манія та гіпоманія — сигнали, дії, межі</div>
+        <span class="hc-tag" style="background:var(--mania-l);color:var(--mania)">Підвищений стан</span>
+      </div>
+      <div class="hc" onclick="openModule('depression')" style="border-top:3px solid var(--depr)">
+        <span class="hc-icon">🌧️</span>
+        <div class="hc-title">Коли мене надто мало</div>
+        <div class="hc-desc">Депресивна фаза — сигнали, мінімальний план</div>
+        <span class="hc-tag" style="background:var(--depr-l);color:var(--depr)">Знижений стан</span>
+      </div>
+      <div class="hc" onclick="openModule('mixed')" style="border-top:3px solid var(--mixed)">
+        <span class="hc-icon">🌪️</span>
+        <div class="hc-title">Коли все одночасно</div>
+        <div class="hc-desc">Змішані стани — найважча фаза</div>
+        <span class="hc-tag" style="background:var(--mixed-l);color:var(--mixed)">Змішаний стан</span>
+      </div>
+    </div>
+
+    <div class="section-label">🌱 Стабільність та ресурси</div>
+    <div class="hub-grid">
+      <div class="hc" onclick="openModule('resources')" style="border-top:3px solid var(--sage)">
+        <span class="hc-icon">⚓</span>
+        <div class="hc-title">Мої стабілізатори</div>
+        <div class="hc-desc">Режим, люди підтримки, моя команда лікування</div>
+        <span class="hc-tag" style="background:var(--sage-l);color:var(--sage)">Ресурс</span>
+      </div>
+      <div class="hc" onclick="openModule('relations')" style="border-top:3px solid var(--hypo)">
+        <span class="hc-icon">🤝</span>
+        <div class="hc-title">Стосунки та БАР</div>
+        <div class="hc-desc">Як говорити з близькими, як просити підтримку</div>
+        <span class="hc-tag" style="background:var(--hypo-l);color:var(--hypo)">Стосунки</span>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:2.5rem">
+      <button onclick="generateReport()" style="display:inline-flex;align-items:center;gap:8px;background:var(--purple);color:white;border:none;border-radius:50px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 2px 12px rgba(127,119,221,.3);margin-bottom:1rem">📄 Підготувати звіт для спеціаліста</button>
+      <p style="font-size:11px;color:var(--muted);line-height:1.8">© Оксана Урожай · Психолог, 2026</p>
+      <button onclick="clearClientData()" style="margin-top:.75rem;background:none;border:none;font-size:11px;color:#ccc;cursor:pointer;text-decoration:underline">Очистити всі мої відповіді</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODULE -->
+<div class="screen" id="module">
+  <div class="topbar">
+    <button class="nav-btn" onclick="goHub()"><i class="ti ti-arrow-left"></i> Назад</button>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="mod-title"></div>
+      <div style="font-size:11px;color:var(--muted)" id="mod-sub"></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+      <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+      <span class="prog-pct" id="prog-pct">0%</span>
+    </div>
+    <button class="nav-btn" onclick="goLanding()"><i class="ti ti-home"></i></button>
+  </div>
+  <div class="module-inner" id="module-inner"></div>
+</div>
+
+<!-- CLIENT MODAL -->
+<div class="modal-overlay hidden" id="client-modal">
+  <div class="modal-box">
+    <div class="modal-title">👋 Вітаємо!</div>
+    <p class="modal-sub">Введіть своє ім'я або код — щоб ваші відповіді зберігалися і ви могли надіслати їх спеціалісту.</p>
+    <input class="modal-input" id="client-name-input" type="text" placeholder="Наприклад: Марія або М-01" maxlength="30">
+    <button class="modal-btn" onclick="startSession()">Почати роботу</button>
+    <p class="modal-note">Всі відповіді зберігаються лише на вашому пристрої.<br>Нікуди не передаються без вашого відома.</p>
+  </div>
+</div>
+
+<div class="save-bar" id="module-save-bar">
+  <button class="s-btn" onclick="goHub()">← Назад</button>
+  <button class="s-btn primary" id="save-btn" onclick="savePDF()">⬇ Зберегти PDF</button>
+  <button class="s-btn" onclick="copyAnswers()">⧉ Копіювати</button>
+</div>
+
+<script>
+// ===== CLIENT SESSION =====
+const SESSION_KEY = 'bipolar_space_session';
+
+function getSession(){
+  try { return JSON.parse(localStorage.getItem(SESSION_KEY)) || {}; }
+  catch(e){ return {}; }
+}
+function saveSession(data){
+  try { localStorage.setItem(SESSION_KEY, JSON.stringify(data)); }
+  catch(e){ console.warn('Storage unavailable'); }
+}
+function getClientName(){ return getSession().clientName || ''; }
+
+function initClientSystem(){
+  const name = getClientName();
+  if(!name){
+    document.getElementById('client-modal').classList.remove('hidden');
+    setTimeout(()=>{ const inp=document.getElementById('client-name-input'); if(inp) inp.focus(); },300);
+  } else {
+    updateClientBars(name);
+  }
+}
+function startSession(){
+  const inp = document.getElementById('client-name-input');
+  const name = inp ? inp.value.trim() : '';
+  if(!name){ inp.style.borderColor='var(--mania)'; inp.placeholder='Будь ласка, введіть імʼя або код'; return; }
+  const session = getSession();
+  session.clientName = name;
+  session.startedAt = session.startedAt || new Date().toISOString();
+  saveSession(session);
+  document.getElementById('client-modal').classList.add('hidden');
+  updateClientBars(name);
+}
+function updateClientBars(name){
+  const b1 = document.getElementById('client-bar-name');
+  if(b1) b1.textContent = name;
+}
+function changeClient(){
+  if(!confirm('Змінити імʼя клієнта? Збережені відповіді залишаться у памʼяті браузера.')) return;
+  const inp = document.getElementById('client-name-input');
+  if(inp) inp.value = getClientName();
+  document.getElementById('client-modal').classList.remove('hidden');
+}
+function saveAnswer(blockId, questionKey, value){
+  const session = getSession();
+  if(!session.answers) session.answers = {};
+  if(!session.answers[blockId]) session.answers[blockId] = {};
+  session.answers[blockId][questionKey] = { value, savedAt: new Date().toISOString() };
+  saveSession(session);
+}
+function loadSavedAnswers(moduleId){
+  const session = getSession();
+  if(!session.answers || !session.answers[moduleId]) return;
+  const saved = session.answers[moduleId];
+  const inner = document.getElementById('module-inner');
+  if(!inner) return;
+  inner.querySelectorAll('textarea').forEach((ta, idx)=>{
+    const key='q_'+idx;
+    if(saved[key]) ta.value = saved[key].value;
+  });
+  updateProgress();
+}
+function setupAutoSave(moduleId){
+  const inner = document.getElementById('module-inner');
+  if(!inner) return;
+  inner.querySelectorAll('textarea').forEach((ta, idx)=>{
+    const key='q_'+idx;
+    ta.addEventListener('input', ()=>saveAnswer(moduleId, key, ta.value));
+  });
+}
+
+// ===== STATE =====
+let currentModuleId = null;
+let currentModuleMeta = null;
+const timers = {};
+
+// ===== NAVIGATION =====
+function showScreen(id){
+  const prev = document.querySelector('.screen.active');
+  const next = document.getElementById(id);
+  if(!next || (prev && prev.id===id)) return;
+  if(prev){ prev.classList.add('slide-out'); prev.classList.remove('active'); setTimeout(()=>prev.classList.remove('slide-out'),280); }
+  next.scrollTop = 0;
+  next.classList.add('active');
+  const sb = document.getElementById('module-save-bar');
+  if(sb) sb.style.display = (id==='module') ? 'flex' : 'none';
+  if(id==='hub') initClientSystem();
+}
+function goLanding(){ showScreen('landing'); }
+function goHub(){ showScreen('hub'); }
+
+// ===== HELPERS =====
+function fld(label,ph='',tall=false){
+  const d=document.createElement('div');d.className='field-group';
+  const l=document.createElement('label');l.className='field-label';l.textContent=label;d.appendChild(l);
+  const ta=document.createElement('textarea');ta.placeholder=ph;if(tall)ta.style.minHeight='100px';ta.oninput=updateProgress;d.appendChild(ta);return d;
+}
+function scl(label,from,to,color){
+  const d=document.createElement('div');d.className='field-group';
+  const l=document.createElement('label');l.className='field-label';l.textContent=label;d.appendChild(l);
+  const hiddenTA=document.createElement('textarea');hiddenTA.style.cssText='position:absolute;opacity:0;height:0;pointer-events:none';hiddenTA.readOnly=true;d.appendChild(hiddenTA);
+  let selected=0;
+  const wrap=document.createElement('div');wrap.className='scale-wrap';
+  const battWrap=document.createElement('div');battWrap.className='scale-batt';
+  const uid='b'+Math.random().toString(36).slice(2,8);
+  battWrap.innerHTML='<svg viewBox="0 0 220 48" xmlns="http://www.w3.org/2000/svg" style="flex:1;width:100%;height:auto">'+
+    '<rect x="2" y="6" width="204" height="36" rx="8" fill="none" stroke="#C0C0C0" stroke-width="2.5"/>'+
+    '<rect x="206" y="16" width="10" height="16" rx="3" fill="#C0C0C0"/>'+
+    Array.from({length:10},(_,i)=>'<rect class="batt-seg-'+uid+'" data-val="'+(i+1)+'" x="'+(4+i*20)+'" y="8" width="18" height="32" rx="4" fill="#EEEEEE"/>').join('')+
+    '</svg>';
+  const segs=battWrap.querySelectorAll('.batt-seg-'+uid);
+  const valLabel=document.createElement('div');valLabel.className='scale-val';valLabel.textContent='—';
+  function updateBatt(val){
+    selected=val;
+    segs.forEach((seg,i)=>{ seg.setAttribute('fill', i<val?color:'#EEEEEE'); });
+    valLabel.textContent=val+'/10';valLabel.style.color=color;
+    hiddenTA.value = val>0 ? label+': '+val+'/10' : '';
+    updateProgress();
+  }
+  segs.forEach((seg,i)=>{
+    seg.style.cursor='pointer';seg.style.transition='fill .15s';
+    seg.onmouseover=()=>{const hv=i+1;segs.forEach((s,j)=>s.setAttribute('fill',j<hv?color+'88':'#EEEEEE'));};
+    seg.onmouseout=()=>updateBatt(selected);
+    seg.onclick=()=>{const cv=i+1; updateBatt(selected===cv?0:cv);};
+  });
+  battWrap.appendChild(valLabel);wrap.appendChild(battWrap);
+  const hints=document.createElement('div');hints.className='scale-hints';hints.innerHTML='<span>'+from+'</span><span>'+to+'</span>';wrap.appendChild(hints);
+  d.appendChild(wrap);return d;
+}
+function plls(label,opts,color){
+  const d=document.createElement('div');d.className='field-group';
+  const l=document.createElement('label');l.className='field-label';l.textContent=label;d.appendChild(l);
+  const pg=document.createElement('div');pg.className='pills';
+  opts.forEach(o=>{
+    const p=document.createElement('span');p.className='pill';p.textContent=o;
+    p.onclick=()=>{const on=p.dataset.on==='1';p.dataset.on=on?'0':'1';p.style.background=on?'':color+'22';p.style.color=on?'':color;p.style.borderColor=on?'':color;updateProgress();};
+    pg.appendChild(p);
+  });
+  d.appendChild(pg);return d;
+}
+function nt(text,color){const d=document.createElement('div');d.className='note-block';d.style.borderColor=color;d.textContent=text;return d}
+function iTitle(text,color){const d=document.createElement('div');d.className='inner-title';d.style.color=color;d.textContent=text;return d}
+function hlBox(bg,items){
+  const box=document.createElement('div');box.className='hl-box';box.style.background=bg;
+  items.forEach(item=>{const l=document.createElement('div');l.className='hl-label';l.textContent=item;box.appendChild(l);const ta=document.createElement('textarea');ta.oninput=updateProgress;box.appendChild(ta)});
+  return box;
+}
+function infoBlock(color,bg,title,html){
+  const d=document.createElement('div');d.className='info-block';d.style.background=bg;d.style.borderLeft='3px solid '+color;
+  d.innerHTML='<div class="info-title" style="color:'+color+'">'+title+'</div><div class="info-text">'+html+'</div>';return d;
+}
+function phaseCard(color,bg,title,html){
+  const d=document.createElement('div');d.className='phase-card';d.style.background=bg;d.style.borderColor=color;
+  d.innerHTML='<div style="font-size:14px;font-weight:800;color:'+color+';margin-bottom:8px">'+title+'</div><div style="font-size:13px;color:var(--text);line-height:1.7">'+html+'</div>';
+  return d;
+}
+function crisisBanner(){
+  const d=document.createElement('div');d.className='crisis-banner';
+  d.onclick=()=>openModule('crisis');
+  d.innerHTML='<i class="ti ti-alert-triangle" style="font-size:20px;color:var(--mania)"></i><span>Якщо стало важко — перейди до «Кризового плану»</span><i class="ti ti-chevron-right" style="color:var(--mania)"></i>';
+  return d;
+}
+
+// ===== MODULE META =====
+const moduleMeta = {
+  'psy-basics': {title:'Що таке БАР', sub:'Психоосвіта простими словами', icon:'💡', color:'#7F77DD', bg:'#EEEDFE'},
+  'psy-phases': {title:'Фази та стани', sub:'Манія, гіпоманія, депресія, змішані стани', icon:'🌗', color:'#2C4A6E', bg:'#EBF0F8'},
+  'state-today': {title:'Мій стан сьогодні', sub:'Швидка щоденна оцінка', icon:'🔍', color:'#3A8B5C', bg:'#E3F5EC'},
+  'tracker': {title:'Щоденник настрою', sub:'Тижнева таблиця', icon:'📈', color:'#9E4A6E', bg:'#F5E8EE'},
+  'mania': {title:'Коли мене надто багато', sub:'Манія та гіпоманія', icon:'🔥', color:'#D85A3A', bg:'#FAECE7'},
+  'depression': {title:'Коли мене надто мало', sub:'Депресивна фаза', icon:'🌧️', color:'#7B6FBF', bg:'#EDEAFC'},
+  'mixed': {title:'Коли все одночасно', sub:'Змішані стани', icon:'🌪️', color:'#9E4A6E', bg:'#F5E8EE'},
+  'resources': {title:'Мої стабілізатори', sub:'Режим, люди, команда лікування', icon:'⚓', color:'#4A7C6E', bg:'#E3F0EC'},
+  'relations': {title:'Стосунки та БАР', sub:'Комунікація з близькими', icon:'🤝', color:'#C8892A', bg:'#FDF1DC'},
+  'crisis': {title:'Кризовий план', sub:'Якщo стало дуже важко', icon:'🆘', color:'#D85A3A', bg:'#FAECE7'},
+};
+
+function openModule(id){
+  currentModuleId = id;
+  const meta = moduleMeta[id];
+  currentModuleMeta = meta;
+  document.getElementById('mod-title').textContent = meta.title;
+  document.getElementById('mod-sub').textContent = meta.sub;
+  document.getElementById('prog-fill').style.background = meta.color;
+  document.getElementById('save-btn').style.background = meta.color;
+  const inner = document.getElementById('module-inner');
+  inner.innerHTML = '';
+  const header = document.createElement('div');
+  header.className='module-header';header.style.background=meta.bg;
+  header.innerHTML='<span class="mh-icon">'+meta.icon+'</span><div><div class="mh-title" style="color:'+meta.color+'">'+meta.title+'</div><div class="mh-sub">'+meta.sub+'</div></div>';
+  inner.appendChild(header);
+  if(id!=='crisis') inner.appendChild(crisisBanner());
+
+  const builders = {
+    'psy-basics': buildPsyBasics, 'psy-phases': buildPsyPhases,
+    'state-today': buildStateToday, 'tracker': buildTracker,
+    'mania': buildMania, 'depression': buildDepression, 'mixed': buildMixed,
+    'resources': buildResources, 'relations': buildRelations, 'crisis': buildCrisis,
+  };
+  if(builders[id]) builders[id](inner, meta);
+
+  showScreen('module');
+  updateProgress();
+  setTimeout(()=>{ loadSavedAnswers(id); setupAutoSave(id); updateProgress(); }, 100);
+}
+
+// ===== PSY BASICS =====
+function buildPsyBasics(w, m){
+  w.appendChild(infoBlock(m.color, m.bg, '💡 Що таке БАР простими словами',
+    'Біполярний афективний розлад — це особливість роботи мозку, при якій настрій, енергія і активність змінюються набагато сильніше за норму. Не тому, що людина «слабка» або «погано старається» — а тому, що мозок регулює ці процеси інакше.<br><br>Це не «перепади настрою як у всіх». Це фази, які можуть тривати дні, тижні або місяці — і суттєво впливають на життя, стосунки, роботу.'
+  ));
+  w.appendChild(iTitle('Це НЕ означає', m.color));
+  const notList = document.createElement('div');
+  notList.style.cssText='font-size:13px;color:var(--text);line-height:2;margin-top:8px';
+  notList.innerHTML = '❌ Поганий характер<br>❌ Слабка сила волі<br>❌ Примха або драматизація<br>❌ Те, що можна «просто подолати зусиллям»<br>❌ Вирок на все життя без можливості стабільності';
+  w.appendChild(notList);
+
+  w.appendChild(iTitle('Типи БАР — коротко', m.color));
+  w.appendChild(phaseCard('#D85A3A','#FAECE7','БАР І типу',
+    'Є епізоди повної манії (іноді з психотичними симптомами) та епізоди депресії. Манія тут виражена яскраво і може потребувати госпіталізації.'));
+  w.appendChild(phaseCard('#C8892A','#FDF1DC','БАР ІІ типу',
+    'Є епізоди гіпоманії (легша форма підйому) та епізоди депресії — часто більш виражені і тривалі, ніж при І типі.'));
+  w.appendChild(phaseCard('#4A7FC1','#EBF2FC','Циклотимія',
+    'Більш м\'які, але хронічні коливання настрою — не досягають повної манії чи великої депресії, але тривають довго.'));
+
+  w.appendChild(iTitle('Чому це важливо знати', m.color));
+  w.appendChild(nt('Розуміння свого типу і патернів — це не ярлик. Це карта, яка допомагає орієнтуватися і раніше помічати зміни.', m.color));
+  
+  w.appendChild(fld('Що з цього опису відгукується саме мені?', '', true));
+  w.appendChild(fld('Що я хотіла б краще зрозуміти про свій стан?', ''));
+}
+
+// ===== PSY PHASES =====
+function buildPsyPhases(w, m){
+  w.appendChild(nt('Кожна фаза має свої сигнали. Знати їх — означає раніше помічати зміни і діяти, поки ситуація керована.', m.color));
+
+  w.appendChild(phaseCard('#D85A3A','#FAECE7','🔥 Манія',
+    '<strong>Тривалість:</strong> від кількох днів до тижнів<br>'+
+    '<strong>Відчувається як:</strong> надмірна енергія, ейфорія або дратівливість, мало потреби у сні, прискорені думки, грандіозні плани, імпульсивність<br>'+
+    '<strong>Ризики:</strong> необдумані рішення (фінансові, стосункові), ризикована поведінка, конфлікти'));
+
+  w.appendChild(phaseCard('#C8892A','#FDF1DC','☀️ Гіпоманія',
+    '<strong>Тривалість:</strong> кілька днів<br>'+
+    '<strong>Відчувається як:</strong> підвищена енергія і продуктивність, хороший настрій, менше потреби у сні — але без повної втрати контролю<br>'+
+    '<strong>Важливо:</strong> часто відчувається «добре» і її легко не помітити як фазу'));
+
+  w.appendChild(phaseCard('#7B6FBF','#EDEAFC','🌧️ Депресія',
+    '<strong>Тривалість:</strong> від тижнів до місяців<br>'+
+    '<strong>Відчувається як:</strong> втрата енергії та інтересу, важкість у тілі, негативні думки, труднощі з концентрацією, зміни сну і апетиту<br>'+
+    '<strong>Важливо:</strong> це не лінь і не слабкість — мозок буквально працює інакше'));
+
+  w.appendChild(phaseCard('#9E4A6E','#F5E8EE','🌪️ Змішаний стан',
+    '<strong>Відчувається як:</strong> одночасно енергія і відчай, дратівливість разом з сумом, прискорені думки про важкі речі<br>'+
+    '<strong>Чому важко:</strong> поєднання високої енергії з негативними думками підвищує ризики — це одна з найскладніших фаз'));
+
+  w.appendChild(iTitle('Мої спостереження', m.color));
+  w.appendChild(fld('Яку фазу я найкраще впізнаю в собі?', ''));
+  w.appendChild(fld('Яка фаза для мене найскладніша?', ''));
+  w.appendChild(fld('Що зазвичай передує зміні фази (тригери)?', '', true));
+}
+
+// ===== STATE TODAY =====
+function buildStateToday(w, m){
+  w.appendChild(nt('Швидка щоденна перевірка — займає 2-3 хвилини. Допомагає раніше помічати зміни.', m.color));
+  w.appendChild(scl('Мій загальний настрій сьогодні:', 'Дуже знижений', 'Дуже підвищений', m.color));
+  w.appendChild(scl('Мій рівень енергії:', 'Виснаження', 'Надмірна енергія', m.color));
+  
+  w.appendChild(iTitle('Сон', m.color));
+  w.appendChild(fld('Скільки годин я спала цієї ночі?', 'Наприклад: 6 годин'));
+  w.appendChild(plls('Як я спала?', ['Як зазвичай','Менше потреби у сні','Безсоння','Спала забагато','Переривчастий сон'], m.color));
+
+  w.appendChild(iTitle('Думки та мова', m.color));
+  w.appendChild(plls('Що я помічаю?', ['Думки як завжди','Прискорені думки','Думки повільні, важко зосередитись','Говорю швидше ніж зазвичай','Говорю менше ніж зазвичай','Перескакую з теми на тему'], m.color));
+
+  w.appendChild(iTitle('Поведінка', m.color));
+  w.appendChild(plls('Що я помічаю в своїй поведінці?', ['Як зазвичай','Більше імпульсивних рішень','Уникаю людей','Шукаю більше контактів ніж зазвичай','Більше витрачаю грошей','Ризикована поведінка','Важко встати з ліжка'], m.color));
+
+  w.appendChild(fld('Що ще я помічаю в собі сьогодні?', '', true));
+  w.appendChild(hlBox(m.bg, ['Чи потрібно мені сьогодні щось зробити для стабільності?']));
+}
+
+// ===== MANIA =====
+function buildMania(w, m){
+  w.appendChild(infoBlock(m.color, m.bg, '🔥 Коли мене надто багато',
+    'Манія і гіпоманія часто відчуваються приємно на початку — енергія, ідеї, впевненість. Складність у тому, що в цьому стані важко самій оцінити що щось не так.'));
+  
+  w.appendChild(iTitle('Мої ранні сигнали', m.color));
+  w.appendChild(plls('Що я помічаю першим?', ['Менше потреби у сні','Прискорені думки','Більше говорю','Грандіозні плани','Дратівливість','Імпульсивні покупки','Підвищена сексуальна активність','Відчуття що «все можу»','Багато ідей одночасно'], m.color));
+  w.appendChild(fld('Мій особистий найперший сигнал (те що я можу не помічати сама, але близькі бачать):', ''));
+
+  w.appendChild(iTitle('Що допомагає в цій фазі', m.color));
+  w.appendChild(fld('Що мені допомагає сповільнитися?', ''));
+  w.appendChild(fld('Що шкодить — підсилює стан?', ''));
+
+  w.appendChild(crisisBox([
+    'Стоп-сигнали — чого я НЕ роблю в цій фазі (великі покупки, важливі рішення, нові зобовʼязання):',
+    'Хто може сказати мені чесно «здається тобі зараз непросто»:',
+    'Мій план дій коли бачу перші ознаки:',
+  ]));
+}
+
+// ===== DEPRESSION =====
+function buildDepression(w, m){
+  w.appendChild(infoBlock(m.color, m.bg, '🌧️ Коли мене надто мало',
+    'Депресивна фаза забирає енергію навіть для простих речей. Це не лінь — мозок буквально працює інакше. Важливо мати мінімальний план для важких днів.'));
+
+  w.appendChild(iTitle('Мої ранні сигнали', m.color));
+  w.appendChild(plls('Що я помічаю першим?', ['Втома навіть після сну','Втрата інтересу до речей які подобались','Важкість вставати з ліжка','Негативні думки про себе','Труднощі з концентрацією','Зміни апетиту','Уникаю людей','Все здається безглуздим'], m.color));
+  w.appendChild(fld('Мій особистий найперший сигнал депресії:', ''));
+
+  w.appendChild(iTitle('Мінімальний план на важкий день', m.color));
+  w.appendChild(nt('У важкі дні мета — не «продуктивність», а просто пережити день максимально дбайливо до себе.', m.color));
+  w.appendChild(fld('Три найменші речі які я можу зробити навіть у найважчий день:', '1. / 2. / 3.', true));
+  w.appendChild(fld('Що допомагає мені хоч трохи?', ''));
+
+  w.appendChild(crisisBox([
+    'Ознаки що мені потрібна термінова допомога:',
+    'Людина якій я можу написати навіть якщо немає сил говорити:',
+    'Мій план дій коли депресія посилюється:',
+  ]));
+}
+
+// ===== MIXED =====
+function buildMixed(w, m){
+  w.appendChild(infoBlock(m.color, m.bg, '🌪️ Коли все одночасно',
+    'Змішаний стан — коли є енергія і збудження разом з відчаєм і негативними думками. Це одна з найскладніших і найризикованіших фаз, тому що висока енергія поєднується з важкими емоціями.'));
+
+  w.appendChild(iTitle('Як я розпізнаю змішаний стан', m.color));
+  w.appendChild(plls('Що я відчуваю одночасно?', ['Енергія + сум','Дратівливість + відчай','Прискорені думки + негативні думки','Безсоння + виснаження','Неспокій + безнадія','Імпульсивність + думки про шкоду собі'], m.color));
+  w.appendChild(fld('Як виглядає мій змішаний стан особисто?', '', true));
+
+  w.appendChild(infoBlock('#9E4A6E', '#F5E8EE', '⚠️ Чому це найважча фаза',
+    'Поєднання енергії для дії з відчаєм підвищує ризики імпульсивних рішень, включно з ризиком для безпеки. Якщо ти впізнаєш цей стан у собі — це привід звернутися по підтримку раніше, а не пізніше.'));
+
+  w.appendChild(crisisBox([
+    'Що я роблю коли впізнаю в собі змішаний стан:',
+    'Контакт мого психіатра або кризової лінії:',
+    'Людина яка може бути поруч фізично:',
+  ]));
+}
+
+// ===== RESOURCES =====
+function buildResources(w, m){
+  w.appendChild(nt('Стабільність будується з маленьких щоденних опор. Для БАР режим — це не порада, а реальний інструмент стабілізації.', m.color));
+
+  w.appendChild(iTitle('Режим — основа стабільності', m.color));
+  w.appendChild(fld('Мій режим сну (коли лягаю, коли встаю):', ''));
+  w.appendChild(fld('Що допомагає мені дотримуватися режиму?', ''));
+  w.appendChild(plls('Що я роблю регулярно?', ['Прийом ліків за розкладом','Регулярний сон','Фізична активність','Здорове харчування','Уникання алкоголю','Менше кофеїну','Сонячне світло вранці','Соціальний контакт'], m.color));
+
+  w.appendChild(iTitle('Люди підтримки', m.color));
+  w.appendChild(fld('Хто в моєму житті розуміє мій стан?', ''));
+  w.appendChild(fld('Кому я довіряю помітити зміни в мені раніше за себе?', ''));
+
+  w.appendChild(iTitle('Моя команда лікування', m.color));
+  w.appendChild(fld('Мій психіатр (імʼя, контакт):', ''));
+  w.appendChild(fld('Мій психолог/психотерапевт (імʼя, контакт):', ''));
+  w.appendChild(fld('Мої ліки та схема прийому:', '', true));
+
+  w.appendChild(iTitle('Попереджувальні знаки для близьких', m.color));
+  w.appendChild(nt('Те, що близькі можуть помітити раніше за мене саму.', m.color));
+  w.appendChild(hlBox(m.bg, [
+    'Ознаки що насувається манія (для близьких):',
+    'Ознаки що насувається депресія (для близьких):',
+    'Що близькі можуть зробити коли бачать ці ознаки:',
+  ]));
+}
+
+// ===== RELATIONS =====
+function buildRelations(w, m){
+  w.appendChild(nt('БАР впливає не лише на мене, а й на стосунки навколо. Розмова про це — складна, але важлива.', m.color));
+
+  w.appendChild(iTitle('Що я хочу щоб близькі розуміли', m.color));
+  w.appendChild(fld('Що найважче пояснити людям про мій стан?', ''));
+  w.appendChild(fld('Що я хочу щоб близькі знали, але не наважуюсь сказати?', '', true));
+
+  w.appendChild(iTitle('Як просити про підтримку', m.color));
+  w.appendChild(fld('Що конкретно допомагає мені коли важко (а не загальне «будь поруч»)?', ''));
+  w.appendChild(fld('Фраза якою я можу попросити про підтримку:', ''));
+
+  w.appendChild(iTitle('Межі у спілкуванні', m.color));
+  w.appendChild(plls('Що мені НЕ допомагає чути:', ['«Просто думай позитивно»','«У всіх бувають перепади настрою»','«Ти перебільшуєш»','Поради без запиту','Порівняння з іншими','Тиск «візьми себе в руки»'], m.color));
+  w.appendChild(fld('Що мені дійсно допомагає чути:', ''));
+
+  w.appendChild(hlBox(m.bg, [
+    'Як вплинув розлад на мої стосунки — спостереження без оцінки:',
+    'Що я хочу змінити у спілкуванні з близькими:',
+  ]));
+}
+
+// ===== CRISIS =====
+function buildCrisis(w, m){
+  w.appendChild(infoBlock(m.color, m.bg, '🆘 Якщо зараз важко',
+    'Ти тут — і це вже важливий крок. Цей план допоможе зорієнтуватися що робити прямо зараз.'));
+
+  w.appendChild(iTitle('Швидка оцінка', m.color));
+  w.appendChild(plls('Що зараз відбувається?', ['Ознаки манії наростають','Ознаки депресії посилюються','Змішаний стан','Думки про шкоду собі','Втрата контролю над імпульсами','Просто дуже важко'], m.color));
+
+  w.appendChild(crisisBox([
+    'Мій психіатр / кризовий контакт:',
+    'Людина яка може бути поруч прямо зараз:',
+    'Що я роблю прямо зараз, перший крок:',
+  ]));
+
+  w.appendChild(infoBlock('#D85A3A','#FAECE7','📞 Якщо потрібна термінова допомога',
+    'Лінія психологічної підтримки: <strong>1547</strong> (безкоштовно)<br>Служба порятунку: <strong>112</strong><br>Якщо є думки про шкоду собі — зверніться в швидку допомогу або до найближчого психіатричного відділення негайно.'));
+
+  w.appendChild(fld('Що допомагало мені в попередніх кризах?', '', true));
+}
+
+function crisisBox(items){
+  const box=document.createElement('div');box.className='crisis-box';
+  box.innerHTML='<div class="crisis-box-title">🆘 Мій план дій</div>';
+  items.forEach(label=>{
+    const l=document.createElement('div');l.className='hl-label';l.textContent=label;box.appendChild(l);
+    const ta=document.createElement('textarea');ta.oninput=updateProgress;box.appendChild(ta);
+  });
+  return box;
+}
+
+// ===== MOOD TRACKER =====
+const moodLevels = [
+  {id:'mania', label:'Сильно підвищений', color:'#D85A3A', bg:'#FAECE7'},
+  {id:'hypo', label:'Помірно підвищений', color:'#E08A4A', bg:'#FCEEE0'},
+  {id:'mild-up', label:'Злегка підвищений', color:'#D4B106', bg:'#FBF8DC'},
+  {id:'stable', label:'СТАБІЛЬНИЙ', color:'#3A8B5C', bg:'#E3F5EC'},
+  {id:'mild-down', label:'Злегка пригнічений', color:'#5B8FD4', bg:'#E8F1FC'},
+  {id:'depr', label:'Помірно пригнічений', color:'#7B6FBF', bg:'#EDEAFC'},
+  {id:'deep-depr', label:'Сильно пригнічений', color:'#5A4A8A', bg:'#EEEAF7'},
+  {id:'mixed', label:'Змішаний стан', color:'#9E4A6E', bg:'#F5E8EE'},
+];
+
+const dayNames = ['Пн','Вт','Ср','Чт','Пт','Сб','Нд'];
+
+function getWeekDates(){
+  const today = new Date();
+  const day = today.getDay();
+  const diff = day === 0 ? -6 : 1 - day; // Monday as start
+  const monday = new Date(today);
+  monday.setDate(today.getDate() + diff);
+  const dates = [];
+  for(let i=0;i<7;i++){
+    const d = new Date(monday);
+    d.setDate(monday.getDate()+i);
+    dates.push(d);
+  }
+  return dates;
+}
+
+function getTrackerData(){
+  const session = getSession();
+  if(!session.tracker) session.tracker = {};
+  return session.tracker;
+}
+function saveTrackerData(data){
+  const session = getSession();
+  session.tracker = data;
+  saveSession(session);
+}
+function dateKey(d){ return d.toISOString().slice(0,10); }
+
+function buildTracker(w, m){
+  w.appendChild(nt('Відмічай свій стан щодня. Натисни на клітинку у відповідному рядку. Внизу — прийом ліків і години сну.', m.color));
+
+  const weekDates = getWeekDates();
+  const tracker = getTrackerData();
+
+  const wrap = document.createElement('div');
+  wrap.className = 'tracker-wrap';
+  const table = document.createElement('table');
+  table.className = 'tracker-table';
+
+  // Header row
+  const thead = document.createElement('tr');
+  thead.innerHTML = '<th class="tracker-row-label">День</th>' + weekDates.map(d => {
+    const dn = dayNames[d.getDay()===0?6:d.getDay()-1];
+    return '<th>'+dn+'<br>'+d.getDate()+'</th>';
+  }).join('');
+  table.appendChild(thead);
+
+  // Mood level rows
+  moodLevels.forEach(level => {
+    const tr = document.createElement('tr');
+    const labelTd = document.createElement('td');
+    labelTd.className = 'tracker-row-label' + (level.id==='stable' ? ' stable' : '');
+    labelTd.textContent = level.label;
+    tr.appendChild(labelTd);
+
+    weekDates.forEach(d => {
+      const key = dateKey(d);
+      const td = document.createElement('td');
+      td.className = 't-cell';
+      td.style.background = (tracker[key]?.mood === level.id) ? level.color : level.bg;
+      if(tracker[key]?.mood === level.id) td.classList.add('active');
+      td.onclick = () => {
+        const t = getTrackerData();
+        if(!t[key]) t[key] = {};
+        t[key].mood = (t[key].mood === level.id) ? null : level.id;
+        saveTrackerData(t);
+        renderTrackerBody();
+      };
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+
+  // Medication row
+  const medTr = document.createElement('tr');
+  medTr.className = 'tracker-meta-row';
+  const medLabel = document.createElement('td');
+  medLabel.className = 'tracker-row-label';
+  medLabel.textContent = '💊 Прийом ліків';
+  medTr.appendChild(medLabel);
+  weekDates.forEach(d => {
+    const key = dateKey(d);
+    const td = document.createElement('td');
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.style.cssText = 'width:18px;height:18px;cursor:pointer';
+    cb.checked = !!tracker[key]?.meds;
+    cb.onchange = () => {
+      const t = getTrackerData();
+      if(!t[key]) t[key] = {};
+      t[key].meds = cb.checked;
+      saveTrackerData(t);
+    };
+    td.appendChild(cb);
+    medTr.appendChild(td);
+  });
+  table.appendChild(medTr);
+
+  // Sleep hours row
+  const sleepTr = document.createElement('tr');
+  sleepTr.className = 'tracker-meta-row';
+  const sleepLabel = document.createElement('td');
+  sleepLabel.className = 'tracker-row-label';
+  sleepLabel.textContent = '😴 Години сну';
+  sleepTr.appendChild(sleepLabel);
+  weekDates.forEach(d => {
+    const key = dateKey(d);
+    const td = document.createElement('td');
+    const inp = document.createElement('input');
+    inp.className = 'tracker-input';
+    inp.type = 'number';
+    inp.min = 0; inp.max = 24;
+    inp.value = tracker[key]?.sleep || '';
+    inp.placeholder = '–';
+    inp.oninput = () => {
+      const t = getTrackerData();
+      if(!t[key]) t[key] = {};
+      t[key].sleep = inp.value;
+      saveTrackerData(t);
+    };
+    td.appendChild(inp);
+    sleepTr.appendChild(td);
+  });
+  table.appendChild(sleepTr);
+
+  wrap.appendChild(table);
+  w.appendChild(wrap);
+
+  // Legend
+  const legend = document.createElement('div');
+  legend.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;margin-top:14px';
+  moodLevels.forEach(l => {
+    legend.innerHTML += '<div style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted)"><div style="width:12px;height:12px;border-radius:3px;background:'+l.color+'"></div>'+l.label+'</div>';
+  });
+  w.appendChild(legend);
+
+  // Daily notes
+  w.appendChild(iTitle('Нотатки до днів', m.color));
+  const notesWrap = document.createElement('div');
+  notesWrap.id = 'tracker-notes-wrap';
+  weekDates.forEach(d => {
+    const key = dateKey(d);
+    const dn = dayNames[d.getDay()===0?6:d.getDay()-1];
+    const noteBlock = document.createElement('div');
+    noteBlock.style.marginTop = '12px';
+    const lbl = document.createElement('div');
+    lbl.style.cssText = 'font-size:12px;font-weight:600;color:'+m.color+';margin-bottom:4px';
+    lbl.textContent = dn + ', ' + d.getDate() + ' число';
+    const ta = document.createElement('textarea');
+    ta.style.minHeight = '50px';
+    ta.placeholder = 'Що відбувалося цього дня...';
+    ta.value = tracker[key]?.note || '';
+    ta.oninput = () => {
+      const t = getTrackerData();
+      if(!t[key]) t[key] = {};
+      t[key].note = ta.value;
+      saveTrackerData(t);
+    };
+    noteBlock.appendChild(lbl);
+    noteBlock.appendChild(ta);
+    notesWrap.appendChild(noteBlock);
+  });
+  w.appendChild(notesWrap);
+
+  // Week summary + send report button
+  w.appendChild(iTitle('Підсумок тижня', m.color));
+  w.appendChild(fld('Що я помічаю у своїх патернах цього тижня?', '', true));
+  w.appendChild(fld('Що допомагало мені залишатися стабільною?', ''));
+
+  const sendBtn = document.createElement('button');
+  sendBtn.style.cssText = 'width:100%;margin-top:16px;padding:14px;border-radius:50px;border:none;background:'+m.color+';color:white;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px';
+  sendBtn.innerHTML = '📤 Надіслати тижневий звіт настрою';
+  sendBtn.onclick = () => generateWeeklyMoodReport(weekDates);
+  w.appendChild(sendBtn);
+}
+
+function generateWeeklyMoodReport(weekDates){
+  const session = getSession();
+  const clientName = session.clientName || 'Клієнт';
+  const tracker = getTrackerData();
+  const accent = '#9E4A6E';
+  const today = new Date().toLocaleDateString('uk-UA');
+
+  let tableRows = '';
+  moodLevels.forEach(level => {
+    let cells = '';
+    weekDates.forEach(d => {
+      const key = dateKey(d);
+      const active = tracker[key]?.mood === level.id;
+      cells += '<td style="background:'+(active?level.color:level.bg)+';width:38px;height:32px;border:1px solid #ddd;text-align:center;color:white;font-weight:bold">'+(active?'✓':'')+'</td>';
+    });
+    tableRows += '<tr><td style="text-align:left;padding:6px 8px;font-size:11px;font-weight:600;border:1px solid #ddd;white-space:nowrap">'+level.label+'</td>'+cells+'</tr>';
+  });
+
+  let medRow = '<tr><td style="text-align:left;padding:6px 8px;font-size:11px;font-weight:600;border:1px solid #ddd">💊 Ліки</td>';
+  weekDates.forEach(d => {
+    const key = dateKey(d);
+    medRow += '<td style="border:1px solid #ddd;text-align:center;font-size:14px">'+(tracker[key]?.meds ? '✓' : '')+'</td>';
+  });
+  medRow += '</tr>';
+
+  let sleepRow = '<tr><td style="text-align:left;padding:6px 8px;font-size:11px;font-weight:600;border:1px solid #ddd">😴 Сон (год)</td>';
+  weekDates.forEach(d => {
+    const key = dateKey(d);
+    sleepRow += '<td style="border:1px solid #ddd;text-align:center;font-size:12px">'+(tracker[key]?.sleep || '–')+'</td>';
+  });
+  sleepRow += '</tr>';
+
+  const headerRow = '<tr><th style="padding:6px 8px;border:1px solid #ddd;font-size:11px">День</th>'+
+    weekDates.map(d => '<th style="border:1px solid #ddd;font-size:11px;padding:4px">'+dayNames[d.getDay()===0?6:d.getDay()-1]+'<br>'+d.getDate()+'</th>').join('')+'</tr>';
+
+  let notesHtml = '';
+  weekDates.forEach(d => {
+    const key = dateKey(d);
+    const note = tracker[key]?.note;
+    if(note && note.trim()){
+      const dn = dayNames[d.getDay()===0?6:d.getDay()-1];
+      notesHtml += '<div style="margin-bottom:10px;padding:10px;background:#fafafa;border-radius:8px;border-left:3px solid '+accent+'"><strong style="font-size:11px;color:'+accent+'">'+dn+', '+d.getDate()+'</strong><div style="font-size:13px;margin-top:4px">'+note.trim().split('\n').join('<br>')+'</div></div>';
+    }
+  });
+
+  const html = '<!DOCTYPE html><html lang="uk"><head><meta charset="UTF-8"><title>Тижневий звіт настрою — '+clientName+'</title>'+
+  '<style>@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}'+
+  'body{font-family:Arial,sans-serif;color:#2C2C2C;padding:24px 30px;max-width:700px;margin:0 auto;font-size:13px;line-height:1.6}'+
+  'h1{color:'+accent+';font-size:20px;margin:0 0 4px}.meta{color:#999;font-size:12px;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid '+accent+'}'+
+  'table{border-collapse:collapse;width:100%;margin-bottom:20px;font-size:11px}'+
+  '.footer{margin-top:24px;font-size:10px;color:#ccc;text-align:center}'+
+  '.hint{background:#f0f0f0;border-radius:8px;padding:10px 14px;margin-bottom:20px;font-size:12px;color:#555}'+
+  '@media print{.hint{display:none}}</style></head><body>'+
+  '<div class="hint">💡 Щоб зберегти як PDF: Ctrl+P → «Зберегти як PDF»</div>'+
+  '<h1>📊 Тижневий звіт настрою</h1>'+
+  '<div class="meta">Клієнт: <strong>'+clientName+'</strong> · Тиждень: '+weekDates[0].toLocaleDateString('uk-UA')+' — '+weekDates[6].toLocaleDateString('uk-UA')+' · Звіт від '+today+'</div>'+
+  '<table>'+headerRow+tableRows+medRow+sleepRow+'</table>'+
+  (notesHtml ? '<h3 style="color:'+accent+';font-size:14px">Нотатки до днів</h3>'+notesHtml : '')+
+  '<div class="footer">© Оксана Урожай, психолог · Мій біполярний · 2026</div>'+
+  '<script>window.onload=function(){window.print()}<\/script></body></html>';
+
+  const win = window.open('','_blank');
+  if(!win){ alert('Дозволь pop-up для цього сайту.'); return; }
+  win.document.write(html);
+  win.document.close();
+}
+
+function renderTrackerBody(){
+  if(currentModuleId === 'tracker'){
+    openModule('tracker');
+  }
+}
+
+// ===== PROGRESS =====
+function updateProgress(){
+  const inner = document.getElementById('module-inner');
+  if(!inner) return;
+  const tas = inner.querySelectorAll('textarea');
+  const filled = Array.from(tas).filter(t=>t.value.trim().length>2).length;
+  const pct = tas.length ? Math.round(filled/tas.length*100) : 0;
+  const pf = document.getElementById('prog-fill');
+  const pp = document.getElementById('prog-pct');
+  if(pf) pf.style.width = pct+'%';
+  if(pp) pp.textContent = pct+'%';
+}
+
+// ===== SAVE PDF (single module) =====
+function buildAnswersText(){
+  const m = currentModuleMeta;
+  const inner = document.getElementById('module-inner');
+  let text = (m?m.title.toUpperCase():'')+'\nДата: '+new Date().toLocaleDateString('uk-UA')+'\n'+'─'.repeat(50)+'\n\n';
+  inner.querySelectorAll('textarea').forEach(ta=>{
+    if(!ta.value.trim()) return;
+    const fg = ta.closest('.field-group');
+    const lbl = fg ? fg.querySelector('.field-label') : null;
+    const prev = ta.previousElementSibling;
+    const label = lbl ? lbl.textContent : (prev && prev.classList.contains('hl-label') ? prev.textContent : '');
+    if(label) text += label.trim()+'\n';
+    text += ta.value.trim()+'\n\n';
+  });
+  return text;
+}
+
+function savePDF(){
+  const m = currentModuleMeta;
+  const inner = document.getElementById('module-inner');
+  const accent = m ? m.color : '#7F77DD';
+  let fields = '';
+  inner.querySelectorAll('textarea').forEach(ta=>{
+    if(!ta.value.trim()) return;
+    const fg = ta.closest('.field-group');
+    const lbl = fg ? fg.querySelector('.field-label') : null;
+    const prev = ta.previousElementSibling;
+    const label = lbl ? lbl.textContent : (prev && prev.classList.contains('hl-label') ? prev.textContent : '');
+    const valHtml = ta.value.trim().split('\n').join('<br>');
+    fields += '<div class="f">'+(label?'<div class="fl">'+label+'</div>':'')+'<div class="fv">'+valHtml+'</div></div>';
+  });
+  const win = window.open('','_blank');
+  if(!win){ alert('Дозволь pop-up для цього сайту.'); return; }
+  win.document.write('<!DOCTYPE html><html lang="uk"><head><meta charset="UTF-8"><title>'+(m?m.title:'')+'</title>'+
+  '<style>@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}'+
+  'body{font-family:Arial,sans-serif;color:#2C2C2C;padding:32px 40px;max-width:680px;margin:0 auto;font-size:13px;line-height:1.6}'+
+  'h1{color:'+accent+';font-size:20px;margin:0 0 4px}.meta{color:#999;font-size:12px;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid '+accent+'}'+
+  '.f{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #f0f0f0}.fl{font-size:11px;color:#999;margin-bottom:3px}.fv{font-size:13px}'+
+  '.footer{margin-top:32px;font-size:10px;color:#ccc;text-align:center}'+
+  '.hint{background:#f0f0f0;border-radius:8px;padding:12px 16px;margin-bottom:24px;font-size:12px;color:#555}@media print{.hint{display:none}}</style></head><body>'+
+  '<div class="hint">💡 Щоб зберегти як PDF: Ctrl+P → «Зберегти як PDF»</div>'+
+  '<h1>'+(m?m.icon+' '+m.title:'')+'</h1>'+
+  '<div class="meta">© Оксана Урожай · '+new Date().toLocaleDateString('uk-UA')+'</div>'+
+  fields+
+  '<div class="footer">© Оксана Урожай · Мій біполярний</div>'+
+  '<script>window.onload=function(){window.print()}<\/script></body></html>');
+  win.document.close();
+}
+
+function copyAnswers(){
+  const text = buildAnswersText();
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn = document.querySelector('[onclick="copyAnswers()"]');
+    if(btn){ btn.innerHTML='⧉ Скопійовано!'; setTimeout(()=>btn.innerHTML='⧉ Копіювати',3000); }
+  });
+}
+
+// ===== FULL REPORT FOR SPECIALIST =====
+function generateReport(){
+  const session = getSession();
+  const clientName = session.clientName || 'Клієнт';
+  const answers = session.answers || {};
+  const tracker = session.tracker || {};
+
+  if(Object.keys(answers).length === 0 && Object.keys(tracker).length === 0){
+    alert('Поки що немає збережених відповідей. Заповніть хоча б один блок.');
+    return;
+  }
+
+  const accent = '#7F77DD';
+  const date = new Date().toLocaleDateString('uk-UA');
+  const startDate = session.startedAt ? new Date(session.startedAt).toLocaleDateString('uk-UA') : date;
+
+  let sectionsHtml = '';
+  Object.entries(answers).forEach(([moduleId, questions])=>{
+    const meta = moduleMeta[moduleId];
+    const title = meta ? meta.title : moduleId;
+    let blockHtml = '';
+    Object.entries(questions).forEach(([key, data])=>{
+      if(!data.value || !data.value.trim()) return;
+      const valHtml = data.value.trim().split('\n').join('<br>');
+      blockHtml += '<div class="qa"><div class="ans">'+valHtml+'</div></div>';
+    });
+    if(!blockHtml) return;
+    sectionsHtml += '<div class="section"><div class="sec-title">'+title+'</div>'+blockHtml+'</div>';
+  });
+
+  // Add tracker summary if exists
+  if(Object.keys(tracker).length > 0){
+    let trackerRows = '';
+    Object.entries(tracker).sort().forEach(([key, data])=>{
+      if(!data.mood && !data.note) return;
+      const moodLabel = moodLevels.find(l=>l.id===data.mood);
+      const d = new Date(key);
+      trackerRows += '<div class="qa"><div class="ans"><strong>'+d.toLocaleDateString('uk-UA')+'</strong>'+
+        (moodLabel ? ' — '+moodLabel.label : '')+
+        (data.sleep ? ' · сон: '+data.sleep+'год' : '')+
+        (data.meds ? ' · ліки прийнято' : '')+
+        (data.note ? '<br><em>'+data.note+'</em>' : '')+
+        '</div></div>';
+    });
+    if(trackerRows) sectionsHtml += '<div class="section"><div class="sec-title">📊 Трекер настрою</div>'+trackerRows+'</div>';
+  }
+
+  if(!sectionsHtml){
+    alert('Немає заповнених відповідей для звіту.');
+    return;
+  }
+
+  const html = '<!DOCTYPE html><html lang="uk"><head><meta charset="UTF-8"><title>Звіт — '+clientName+'</title>'+
+  '<style>@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}'+
+  'body{font-family:Arial,sans-serif;color:#2C2C2C;padding:32px 40px;max-width:700px;margin:0 auto;font-size:13px;line-height:1.7}'+
+  '.header{border-bottom:3px solid '+accent+';padding-bottom:16px;margin-bottom:24px}'+
+  'h1{color:'+accent+';font-size:22px;margin:0 0 6px}.meta{color:#999;font-size:12px}'+
+  '.section{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid #eee}'+
+  '.sec-title{font-size:13px;font-weight:bold;color:'+accent+';text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;padding:6px 12px;background:#f5f0ff;border-radius:6px}'+
+  '.qa{margin-bottom:12px;padding:12px;background:#fafafa;border-radius:8px;border-left:3px solid '+accent+'}'+
+  '.ans{font-size:13px;color:#2C2C2C}'+
+  '.footer{margin-top:32px;font-size:10px;color:#ccc;text-align:center;padding-top:16px;border-top:1px solid #eee}'+
+  '.hint{background:#f0f0f0;border-radius:8px;padding:12px 16px;margin-bottom:24px;font-size:12px;color:#555}@media print{.hint{display:none}}'+
+  '</style></head><body>'+
+  '<div class="hint">💡 Щоб зберегти як PDF: Ctrl+P → «Зберегти як PDF»</div>'+
+  '<div class="header"><h1>📋 Звіт — Мій біполярний</h1>'+
+  '<div class="meta">Клієнт: <strong>'+clientName+'</strong> · Початок роботи: '+startDate+' · Дата звіту: '+date+'</div></div>'+
+  sectionsHtml+
+  '<div class="footer">© Оксана Урожай, психолог · Мій біполярний · 2026</div>'+
+  '<script>window.onload=function(){window.print()}<\/script></body></html>';
+
+  const win = window.open('','_blank');
+  if(!win){ alert('Дозволь pop-up для цього сайту.'); return; }
+  win.document.write(html);
+  win.document.close();
+}
+
+function clearClientData(){
+  if(!confirm('Видалити всі збережені відповіді? Цю дію не можна скасувати.')) return;
+  localStorage.removeItem(SESSION_KEY);
+  alert('Відповіді видалено.');
+  location.reload();
+}
+</script>
+</body>
+</html>
