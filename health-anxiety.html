@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тіло і тривога — практичний простір</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.x/tabler-icons.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --teal:#1D9E75;--teal-l:#E1F5EE;--teal-d:#085041;
+  --blue:#4A7FC1;--blue-l:#EBF2FC;
+  --coral:#D85A3A;--coral-l:#FAECE7;
+  --amber:#C8892A;--amber-l:#FDF1DC;
+  --purple:#7F77DD;--purple-l:#EEEDFE;--purple-d:#3C3489;
+  --sage:#4A7C6E;--sage-l:#E3F0EC;
+  --slate:#5A6E7C;--slate-l:#EDF1F4;
+  --text:#2C2C2C;--muted:#888;--border:#E0E0E0;
+  --white:#fff;--bg:#F5F7FA;
+  --r:12px;--rl:18px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+.screen{position:fixed;top:0;left:0;right:0;bottom:0;overflow-y:auto;overflow-x:hidden;transform:translateX(100%);transition:transform .25s ease;visibility:hidden;background:var(--bg);z-index:1}
+.screen.active{transform:translateX(0);visibility:visible;z-index:2}
+.screen.slide-out{transform:translateX(-20%);visibility:visible;z-index:1}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+#landing{background:linear-gradient(160deg,#E1F5EE 0%,#EBF2FC 50%,#EEEDFE 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem 1.5rem;overflow:hidden}
+.ls{position:absolute;border-radius:50%;opacity:.1;animation:float 7s ease-in-out infinite}
+.ls1{width:300px;height:300px;background:var(--teal);top:-80px;left:-70px}
+.ls2{width:200px;height:200px;background:var(--blue);bottom:-50px;right:-40px;animation-delay:2s}
+.land-content{position:relative;z-index:1;max-width:480px}
+.land-badge{display:inline-flex;align-items:center;gap:6px;background:white;padding:6px 16px;border-radius:20px;font-size:12px;color:var(--teal-d);font-weight:500;margin-bottom:1.25rem;box-shadow:0 2px 12px rgba(29,158,117,.15);animation:fadeUp .6s ease both}
+.land-title{font-size:clamp(1.8rem,5vw,2.6rem);font-weight:800;color:var(--teal-d);line-height:1.2;margin-bottom:1rem;animation:fadeUp .6s ease .1s both}
+.land-sub{font-size:1rem;color:var(--muted);line-height:1.7;margin-bottom:2rem;animation:fadeUp .6s ease .2s both}
+.land-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 44px;border-radius:50px;border:none;font-size:16px;font-weight:700;cursor:pointer;background:var(--teal);color:white;box-shadow:0 4px 24px rgba(29,158,117,.35);animation:fadeUp .6s ease .3s both;transition:all .2s}
+.land-btn:hover{background:var(--teal-d);transform:translateY(-2px)}
+.land-note{font-size:11px;color:var(--muted);margin-top:1rem;animation:fadeUp .6s ease .4s both}
+
+.topbar{position:sticky;top:0;z-index:100;background:rgba(245,247,250,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:10px 1rem;display:flex;align-items:center;gap:8px}
+.nav-btn{background:none;border:1.5px solid var(--border);border-radius:20px;cursor:pointer;color:var(--text);font-size:13px;font-weight:600;padding:6px 12px;display:flex;align-items:center;gap:4px;transition:all .15s;white-space:nowrap}
+.nav-btn:hover{background:white}
+.prog-bar{width:60px;height:4px;border-radius:2px;background:var(--border);overflow:hidden;flex-shrink:0}
+.prog-fill{height:100%;border-radius:2px;transition:width .4s}
+.prog-pct{font-size:11px;font-weight:600;color:var(--muted);min-width:28px}
+
+.client-bar{background:var(--teal-l);border-bottom:1px solid rgba(29,158,117,.2);padding:8px 1rem;display:flex;align-items:center;gap:10px;font-size:13px}
+.client-name{font-weight:700;color:var(--teal-d);flex:1}
+.client-change{font-size:11px;color:var(--teal);cursor:pointer;text-decoration:underline;background:none;border:none;padding:0;font-family:inherit}
+.report-btn{display:flex;align-items:center;gap:6px;background:var(--teal);color:white;border:none;border-radius:50px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
+.report-btn:hover{background:var(--teal-d)}
+
+#hub{background:var(--bg)}
+.hub-hero{padding:1.75rem 1rem 1.25rem;text-align:center}
+.hub-icon{font-size:2.2rem;display:block;margin-bottom:.5rem}
+.hub-title{font-size:1.2rem;font-weight:800;color:var(--teal-d);margin-bottom:.25rem}
+.hub-sub{font-size:13px;color:var(--muted)}
+.hub-inner{max-width:720px;margin:0 auto;padding:.5rem 1rem 3rem}
+.section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:1.25rem 0 .75rem;padding-left:2px}
+.hub-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+
+.hc{background:var(--white);border-radius:var(--rl);border:1.5px solid var(--border);padding:1.1rem;cursor:pointer;transition:all .2s;box-shadow:0 2px 6px rgba(0,0,0,.04);display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden}
+.hc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.hc:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.hc-icon{font-size:1.6rem}
+.hc-title{font-size:13px;font-weight:700;color:var(--text);line-height:1.3}
+.hc-desc{font-size:11px;color:var(--muted);line-height:1.5}
+.hc-tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;display:inline-block;margin-top:2px}
+
+.module-inner{max-width:680px;margin:0 auto;padding:1.5rem 1rem 7rem}
+.module-header{border-radius:var(--rl);padding:1.25rem 1.5rem;margin-bottom:1rem;display:flex;align-items:center;gap:14px}
+.mh-icon{font-size:2rem;flex-shrink:0}
+.mh-title{font-size:1.1rem;font-weight:800}
+.mh-sub{font-size:13px;color:var(--muted);margin-top:2px}
+
+.field-group{margin-top:16px}
+.field-label{display:block;font-size:13px;color:var(--muted);margin-bottom:7px;line-height:1.5;font-weight:500}
+textarea{width:100%;border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px;font-size:14px;font-family:inherit;color:var(--text);background:#FAFAFA;resize:vertical;min-height:72px;line-height:1.7}
+textarea:focus{outline:none;background:white}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.pill{padding:7px 13px;border:1.5px solid var(--border);border-radius:20px;font-size:13px;cursor:pointer;color:var(--muted);background:white;transition:all .15s;user-select:none;font-weight:500}
+.pill:hover{background:var(--bg)}
+.hl-box{border-radius:var(--r);padding:16px;margin-top:14px}
+.hl-label{font-size:13px;color:var(--muted);margin-bottom:8px;font-style:italic;margin-top:10px}
+.inner-title{font-size:13px;font-weight:700;margin-top:20px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.note-block{border-radius:var(--r);padding:14px 16px;font-size:13px;color:var(--muted);font-style:italic;margin-top:14px;line-height:1.6;border-left:3px solid;background:var(--bg)}
+.info-block{border-radius:var(--r);padding:16px;margin:14px 0}
+.info-title{font-size:12px;font-weight:700;margin-bottom:6px}
+.info-text{font-size:13px;color:var(--text);line-height:1.7}
+
+.scale-wrap{margin-top:10px}
+.scale-batt{display:flex;align-items:center;gap:12px}
+.scale-val{font-size:1.4rem;font-weight:800;min-width:44px;text-align:center;color:#ccc}
+.scale-hints{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px}
+
+.tr-step{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start}
+.tr-num{width:28px;height:28px;border-radius:50%;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tr-lbl{font-size:12px;font-weight:700;margin-bottom:6px}
+
+.timer-card{border-radius:var(--rl);padding:20px;margin-top:12px;text-align:center}
+.timer-display{font-size:2.8rem;font-weight:800;letter-spacing:2px;margin:10px 0;font-variant-numeric:tabular-nums}
+.timer-instruction{font-size:13px;color:var(--muted);margin-bottom:14px;min-height:36px;line-height:1.5}
+.timer-progress{height:5px;border-radius:3px;background:rgba(0,0,0,.1);margin-bottom:14px;overflow:hidden}
+.timer-fill{height:100%;border-radius:3px;transition:width .5s linear}
+.t-btn{padding:10px 20px;border-radius:50px;border:none;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;margin:0 4px}
+.t-btn.primary{color:white}
+.t-btn.secondary{background:white;border:1.5px solid}
+
+.checkin-card{background:white;border:1.5px solid var(--border);border-radius:var(--r);padding:14px;margin-top:10px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.checkin-counter{font-size:1.6rem;font-weight:800;color:var(--coral)}
+.checkin-btn{padding:8px 16px;border-radius:50px;border:none;background:var(--coral);color:white;font-size:13px;font-weight:700;cursor:pointer}
+.checkin-list{margin-top:12px;font-size:12px;color:var(--muted)}
+.checkin-item{padding:6px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between}
+
+.save-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1.5px solid var(--border);padding:12px 1rem;align-items:center;gap:8px;z-index:1000;flex-wrap:wrap;box-shadow:0 -4px 20px rgba(0,0,0,.07);display:none}
+.s-btn{padding:10px 16px;border-radius:50px;border:1.5px solid var(--border);font-size:13px;font-weight:700;cursor:pointer;background:white;color:var(--text);display:flex;align-items:center;gap:6px}
+.s-btn.primary{color:white;border-color:transparent}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;display:flex;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)}
+.modal-overlay.hidden{display:none}
+.modal-box{background:white;border-radius:var(--rl);padding:2rem;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal-title{font-size:1.1rem;font-weight:800;color:var(--teal-d);margin-bottom:.5rem}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem;line-height:1.6}
+.modal-input{width:100%;border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px;font-size:15px;font-family:inherit;background:#FAFAFA;margin-bottom:1rem;outline:none}
+.modal-input:focus{border-color:var(--teal);background:white}
+.modal-btn{width:100%;padding:14px;border-radius:50px;border:none;font-size:15px;font-weight:700;cursor:pointer;background:var(--teal);color:white}
+.modal-note{font-size:11px;color:var(--muted);text-align:center;margin-top:.75rem;line-height:1.5}
+
+.body-svg-wrap{display:flex;justify-content:center;background:#F9F9F9;border-radius:12px;border:1.5px solid var(--border);padding:16px;margin-top:10px}
+.feel-legend{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.feel-pill{display:flex;align-items:center;gap:4px;font-size:12px;cursor:pointer;padding:4px 10px;border-radius:20px;font-weight:500}
+
+@media(max-width:480px){.hub-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="screen active" id="landing">
+  <div class="ls ls1"></div><div class="ls ls2"></div>
+  <div class="land-content">
+    <div class="land-badge"><i class="ti ti-heartbeat"></i> Психологічний кабінет</div>
+    <h1 class="land-title">Тіло і тривога</h1>
+    <p class="land-sub">Практичний простір для роботи з тілесними симптомами, тривогою за здоровʼя та поверненням довіри до свого тіла</p>
+    <button class="land-btn" onclick="goHub()"><i class="ti ti-arrow-right"></i> Почати</button>
+    <p class="land-note">Всі відповіді залишаються лише на вашому пристрої</p>
+  </div>
+</div>
+
+<div class="screen" id="hub">
+  <div class="topbar">
+    <button class="nav-btn" onclick="goLanding()"><i class="ti ti-home"></i> Додому</button>
+    <div style="flex:1;text-align:center;font-size:14px;font-weight:700">Тіло і тривога</div>
+  </div>
+  <div class="client-bar" id="client-bar">
+    <span>👤</span>
+    <span class="client-name" id="client-bar-name">...</span>
+    <button class="client-change" onclick="changeClient()">змінити</button>
+    <button class="report-btn" onclick="generateReport()">📄 Звіт</button>
+  </div>
+  <div class="hub-hero">
+    <span class="hub-icon">🫀</span>
+    <div class="hub-title">Практичні інструменти</div>
+    <div class="hub-sub">Обери блок, який потрібен прямо зараз</div>
+  </div>
+  <div class="hub-inner">
+
+    <div class="section-label">Тіло</div>
+    <div class="hub-grid">
+      <div class="hc" onclick="openModule('body-map')" style="border-top:3px solid var(--teal)">
+        <span class="hc-icon">🫀</span>
+        <div class="hc-title">Карта симптомів</div>
+        <div class="hc-desc">Де і що саме відчуває тіло</div>
+        <span class="hc-tag" style="background:var(--teal-l);color:var(--teal-d)">Соматика</span>
+      </div>
+    </div>
+
+    <div class="section-label">Думки</div>
+    <div class="hub-grid">
+      <div class="hc" onclick="openModule('thought-work')" style="border-top:3px solid var(--coral)">
+        <span class="hc-icon">🧠</span>
+        <div class="hc-title">Робота з тривожною думкою</div>
+        <div class="hc-desc">КБТ-протокол для думок про здоровʼя</div>
+        <span class="hc-tag" style="background:var(--coral-l);color:var(--coral)">КБТ</span>
+      </div>
+    </div>
+
+    <div class="section-label">Поведінка</div>
+    <div class="hub-grid">
+      <div class="hc" onclick="openModule('checking-cycle')" style="border-top:3px solid var(--amber)">
+        <span class="hc-icon">🔄</span>
+        <div class="hc-title">Цикл перевірок</div>
+        <div class="hc-desc">Відстеження пошуку підтвердження і гугління</div>
+        <span class="hc-tag" style="background:var(--amber-l);color:var(--amber)">Трекер</span>
+      </div>
+    </div>
+
+    <div class="section-label">Заспокоєння</div>
+    <div class="hub-grid">
+      <div class="hc" onclick="openModule('calm')" style="border-top:3px solid var(--blue)">
+        <span class="hc-icon">🌬️</span>
+        <div class="hc-title">Дихання та заземлення</div>
+        <div class="hc-desc">Техніки з таймером для гострого моменту</div>
+        <span class="hc-tag" style="background:var(--blue-l);color:var(--blue)">Практики</span>
+      </div>
+    </div>
+
+    <div class="section-label">План</div>
+    <div class="hub-grid">
+      <div class="hc" onclick="openModule('action-plan')" style="border-top:3px solid var(--sage)">
+        <span class="hc-icon">📋</span>
+        <div class="hc-title">Мій план дій</div>
+        <div class="hc-desc">Що робити при симптомі, коли йти до лікаря</div>
+        <span class="hc-tag" style="background:var(--sage-l);color:var(--sage)">Алгоритм</span>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:2.5rem">
+      <button onclick="generateReport()" style="display:inline-flex;align-items:center;gap:8px;background:var(--teal);color:white;border:none;border-radius:50px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 2px 12px rgba(29,158,117,.3);margin-bottom:1rem">📄 Підготувати звіт для спеціаліста</button>
+      <p style="font-size:11px;color:var(--muted);line-height:1.8">© Оксана Урожай · Психолог, 2026</p>
+      <button onclick="clearClientData()" style="margin-top:.75rem;background:none;border:none;font-size:11px;color:#ccc;cursor:pointer;text-decoration:underline">Очистити всі мої відповіді</button>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="module">
+  <div class="topbar">
+    <button class="nav-btn" onclick="goHub()"><i class="ti ti-arrow-left"></i> Назад</button>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="mod-title"></div>
+      <div style="font-size:11px;color:var(--muted)" id="mod-sub"></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+      <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+      <span class="prog-pct" id="prog-pct">0%</span>
+    </div>
+    <button class="nav-btn" onclick="goLanding()"><i class="ti ti-home"></i></button>
+  </div>
+  <div class="module-inner" id="module-inner"></div>
+</div>
+
+<div class="modal-overlay hidden" id="client-modal">
+  <div class="modal-box">
+    <div class="modal-title">👋 Вітаємо!</div>
+    <p class="modal-sub">Введіть своє ім'я або код — щоб ваші відповіді зберігалися і ви могли надіслати їх спеціалісту.</p>
+    <input class="modal-input" id="client-name-input" type="text" placeholder="Наприклад: Марія або М-01" maxlength="30">
+    <button class="modal-btn" onclick="startSession()">Почати роботу</button>
+    <p class="modal-note">Всі відповіді зберігаються лише на вашому пристрої.<br>Нікуди не передаються без вашого відома.</p>
+  </div>
+</div>
+
+<div class="save-bar" id="module-save-bar">
+  <button class="s-btn" onclick="goHub()">← Назад</button>
+  <button class="s-btn primary" id="save-btn" onclick="savePDF()">⬇ Зберегти PDF</button>
+  <button class="s-btn" onclick="copyAnswers()">⧉ Копіювати</button>
+</div>
+
+<script>
+// ===== CLIENT SESSION =====
+const SESSION_KEY = 'health_anxiety_session';
+function getSession(){ try{ return JSON.parse(localStorage.getItem(SESSION_KEY))||{}; }catch(e){ return {}; } }
+function saveSession(d){ try{ localStorage.setItem(SESSION_KEY, JSON.stringify(d)); }catch(e){} }
+function getClientName(){ return getSession().clientName || ''; }
+function initClientSystem(){
+  const name = getClientName();
+  if(!name){ document.getElementById('client-modal').classList.remove('hidden'); setTimeout(()=>{const i=document.getElementById('client-name-input');if(i)i.focus();},300); }
+  else updateClientBars(name);
+}
+function startSession(){
+  const inp=document.getElementById('client-name-input');
+  const name=inp?inp.value.trim():'';
+  if(!name){ inp.style.borderColor='var(--coral)'; inp.placeholder='Будь ласка, введіть імʼя або код'; return; }
+  const s=getSession(); s.clientName=name; s.startedAt=s.startedAt||new Date().toISOString(); saveSession(s);
+  document.getElementById('client-modal').classList.add('hidden');
+  updateClientBars(name);
+}
+function updateClientBars(name){ const b=document.getElementById('client-bar-name'); if(b) b.textContent=name; }
+function changeClient(){
+  if(!confirm('Змінити імʼя клієнта? Збережені відповіді залишаться у памʼяті браузера.')) return;
+  const inp=document.getElementById('client-name-input'); if(inp) inp.value=getClientName();
+  document.getElementById('client-modal').classList.remove('hidden');
+}
+function saveAnswer(blockId,key,value){
+  const s=getSession(); if(!s.answers)s.answers={}; if(!s.answers[blockId])s.answers[blockId]={};
+  s.answers[blockId][key]={value,savedAt:new Date().toISOString()}; saveSession(s);
+}
+function loadSavedAnswers(moduleId){
+  const s=getSession(); if(!s.answers||!s.answers[moduleId])return;
+  const saved=s.answers[moduleId]; const inner=document.getElementById('module-inner'); if(!inner)return;
+  inner.querySelectorAll('textarea').forEach((ta,i)=>{ const k='q_'+i; if(saved[k]) ta.value=saved[k].value; });
+  updateProgress();
+}
+function setupAutoSave(moduleId){
+  const inner=document.getElementById('module-inner'); if(!inner)return;
+  inner.querySelectorAll('textarea').forEach((ta,i)=>{ const k='q_'+i; ta.addEventListener('input',()=>saveAnswer(moduleId,k,ta.value)); });
+}
+
+// ===== STATE =====
+let currentModuleId=null, currentModuleMeta=null;
+const timers={};
+
+// ===== NAVIGATION =====
+function showScreen(id){
+  const prev=document.querySelector('.screen.active'); const next=document.getElementById(id);
+  if(!next||(prev&&prev.id===id))return;
+  if(prev){ prev.classList.add('slide-out'); prev.classList.remove('active'); setTimeout(()=>prev.classList.remove('slide-out'),280); }
+  next.scrollTop=0; next.classList.add('active');
+  const sb=document.getElementById('module-save-bar'); if(sb) sb.style.display=(id==='module')?'flex':'none';
+  if(id==='hub') initClientSystem();
+}
+function goLanding(){ showScreen('landing'); }
+function goHub(){ showScreen('hub'); }
+
+// ===== HELPERS =====
+function fld(label,ph='',tall=false){
+  const d=document.createElement('div');d.className='field-group';
+  const l=document.createElement('label');l.className='field-label';l.textContent=label;d.appendChild(l);
+  const ta=document.createElement('textarea');ta.placeholder=ph;if(tall)ta.style.minHeight='100px';ta.oninput=updateProgress;d.appendChild(ta);return d;
+}
+function scl(label,from,to,color){
+  const d=document.createElement('div');d.className='field-group';
+  const l=document.createElement('label');l.className='field-label';l.textContent=label;d.appendChild(l);
+  const hiddenTA=document.createElement('textarea');hiddenTA.style.cssText='position:absolute;opacity:0;height:0;pointer-events:none';hiddenTA.readOnly=true;d.appendChild(hiddenTA);
+  let selected=0;
+  const wrap=document.createElement('div');wrap.className='scale-wrap';
+  const battWrap=document.createElement('div');battWrap.className='scale-batt';
+  const uid='b'+Math.random().toString(36).slice(2,8);
+  battWrap.innerHTML='<svg viewBox="0 0 220 48" xmlns="http://www.w3.org/2000/svg" style="flex:1;width:100%;height:auto">'+
+    '<rect x="2" y="6" width="204" height="36" rx="8" fill="none" stroke="#C0C0C0" stroke-width="2.5"/>'+
+    '<rect x="206" y="16" width="10" height="16" rx="3" fill="#C0C0C0"/>'+
+    Array.from({length:10},(_,i)=>'<rect class="batt-seg-'+uid+'" data-val="'+(i+1)+'" x="'+(4+i*20)+'" y="8" width="18" height="32" rx="4" fill="#EEEEEE"/>').join('')+
+    '</svg>';
+  const segs=battWrap.querySelectorAll('.batt-seg-'+uid);
+  const valLabel=document.createElement('div');valLabel.className='scale-val';valLabel.textContent='—';
+  function updateBatt(val){
+    selected=val;
+    segs.forEach((seg,i)=>seg.setAttribute('fill', i<val?color:'#EEEEEE'));
+    valLabel.textContent=val+'/10';valLabel.style.color=color;
+    hiddenTA.value=val>0?label+': '+val+'/10':'';
+    updateProgress();
+  }
+  segs.forEach((seg,i)=>{
+    seg.style.cursor='pointer';seg.style.transition='fill .15s';
+    seg.onmouseover=()=>{const hv=i+1;segs.forEach((s,j)=>s.setAttribute('fill',j<hv?color+'88':'#EEEEEE'));};
+    seg.onmouseout=()=>updateBatt(selected);
+    seg.onclick=()=>{const cv=i+1; updateBatt(selected===cv?0:cv);};
+  });
+  battWrap.appendChild(valLabel);wrap.appendChild(battWrap);
+  const hints=document.createElement('div');hints.className='scale-hints';hints.innerHTML='<span>'+from+'</span><span>'+to+'</span>';wrap.appendChild(hints);
+  d.appendChild(wrap);return d;
+}
+function plls(label,opts,color){
+  const d=document.createElement('div');d.className='field-group';
+  const l=document.createElement('label');l.className='field-label';l.textContent=label;d.appendChild(l);
+  const pg=document.createElement('div');pg.className='pills';
+  opts.forEach(o=>{
+    const p=document.createElement('span');p.className='pill';p.textContent=o;
+    p.onclick=()=>{const on=p.dataset.on==='1';p.dataset.on=on?'0':'1';p.style.background=on?'':color+'22';p.style.color=on?'':color;p.style.borderColor=on?'':color;updateProgress();};
+    pg.appendChild(p);
+  });
+  d.appendChild(pg);return d;
+}
+function nt(text,color){const d=document.createElement('div');d.className='note-block';d.style.borderColor=color;d.textContent=text;return d}
+function iTitle(text,color){const d=document.createElement('div');d.className='inner-title';d.style.color=color;d.textContent=text;return d}
+function hlBox(bg,items){
+  const box=document.createElement('div');box.className='hl-box';box.style.background=bg;
+  items.forEach(item=>{const l=document.createElement('div');l.className='hl-label';l.textContent=item;box.appendChild(l);const ta=document.createElement('textarea');ta.oninput=updateProgress;box.appendChild(ta)});
+  return box;
+}
+function infoBlock(color,bg,title,html){
+  const d=document.createElement('div');d.className='info-block';d.style.background=bg;d.style.borderLeft='3px solid '+color;
+  d.innerHTML='<div class="info-title" style="color:'+color+'">'+title+'</div><div class="info-text">'+html+'</div>';return d;
+}
+function timerCard(id,name,desc,steps,times,color,bg){
+  const card=document.createElement('div');card.className='timer-card';card.style.background=bg;card.style.border='1px solid '+color+'44';card.style.marginBottom='12px';
+  const nameEl=document.createElement('div');nameEl.style.cssText='font-size:14px;font-weight:700;margin-bottom:4px;color:'+color;nameEl.textContent=name;card.appendChild(nameEl);
+  const descEl=document.createElement('div');descEl.style.cssText='font-size:12px;color:var(--muted);margin-bottom:10px';descEl.textContent=desc;card.appendChild(descEl);
+  const progWrap=document.createElement('div');progWrap.className='timer-progress';
+  const progFill=document.createElement('div');progFill.className='timer-fill';progFill.id='tf-'+id;progFill.style.background=color;progFill.style.width='0%';
+  progWrap.appendChild(progFill);card.appendChild(progWrap);
+  const dispEl=document.createElement('div');dispEl.className='timer-display';dispEl.id='td-'+id;dispEl.style.color=color;dispEl.textContent='00:00';card.appendChild(dispEl);
+  const instrEl=document.createElement('div');instrEl.className='timer-instruction';instrEl.id='ti-'+id;instrEl.textContent='Натисни «Почати» і дихай разом зі мною';card.appendChild(instrEl);
+  const btnWrap=document.createElement('div');
+  const startBtn=document.createElement('button');startBtn.className='t-btn primary';startBtn.id='tb-'+id;startBtn.style.background=color;startBtn.textContent='Почати';
+  startBtn.onclick=function(){startTimer(id,steps,times);};
+  const resetBtn=document.createElement('button');resetBtn.className='t-btn secondary';resetBtn.style.color=color;resetBtn.style.borderColor=color;resetBtn.textContent='Скинути';
+  resetBtn.onclick=function(){resetTimer(id);};
+  btnWrap.appendChild(startBtn);btnWrap.appendChild(resetBtn);card.appendChild(btnWrap);
+  return card;
+}
+function startTimer(id,steps,times){
+  if(timers[id]){clearInterval(timers[id].interval);clearTimeout(timers[id].timeout)}
+  const btn=document.getElementById('tb-'+id);btn.textContent='Іде...';btn.disabled=true;
+  const total=times.reduce((a,b)=>a+b,0);let si=0,se=0,ge=0;
+  function upd(){
+    const rem=times[si]-se;
+    document.getElementById('td-'+id).textContent=Math.floor(rem/60).toString().padStart(2,'0')+':'+(rem%60).toString().padStart(2,'0');
+    document.getElementById('ti-'+id).textContent=steps[si];
+    document.getElementById('tf-'+id).style.width=(ge/total*100)+'%';
+  }
+  upd();
+  const interval=setInterval(()=>{se++;ge++;if(se>=times[si]){se=0;si=(si+1)%steps.length;}upd();},1000);
+  const timeout=setTimeout(()=>{
+    clearInterval(interval);
+    document.getElementById('ti-'+id).textContent='✅ Чудово! Як ти почуваєшся?';
+    document.getElementById('tf-'+id).style.width='100%';
+    btn.textContent='Ще раз';btn.disabled=false;
+  },total*1000);
+  timers[id]={interval,timeout};
+}
+function resetTimer(id){
+  if(timers[id]){clearInterval(timers[id].interval);clearTimeout(timers[id].timeout);delete timers[id];}
+  if(document.getElementById('td-'+id))document.getElementById('td-'+id).textContent='00:00';
+  if(document.getElementById('ti-'+id))document.getElementById('ti-'+id).textContent='Натисни «Почати» і дихай разом зі мною';
+  if(document.getElementById('tf-'+id))document.getElementById('tf-'+id).style.width='0%';
+  const btn=document.getElementById('tb-'+id);if(btn){btn.textContent='Почати';btn.disabled=false;}
+}
+
+let bodyMapCounter=0;
+function bodyMap(){
+  const uid='bm'+(++bodyMapCounter);
+  const d=document.createElement('div');d.style.cssText='margin-top:16px';
+  const lbl=document.createElement('label');lbl.className='field-label';lbl.textContent='Позначте на схемі де що відчуваєте (оберіть відчуття → натисніть на зону):';d.appendChild(lbl);
+  const feelings=[{id:'anxiety',label:'Тривога',color:'#F4A261'},{id:'tension',label:'Напруга',color:'#E76F51'},{id:'pain',label:'Біль',color:'#C85A3A'},{id:'numb',label:'Оніміння',color:'#8B9BB4'},{id:'calm',label:'Спокій',color:'#57CC99'}];
+  const leg=document.createElement('div');leg.className='feel-legend';
+  feelings.forEach(f=>{
+    const btn=document.createElement('div');btn.className='feel-pill';
+    btn.style.cssText='border:1.5px solid '+f.color+';background:'+f.color+'22;color:#2C2C2C';
+    btn.textContent=f.label;
+    btn.onclick=(()=>{const ff=f;return ()=>setBodyFeeling(uid,ff.id,ff.color,ff.label);})();
+    leg.appendChild(btn);
+  });
+  const clr=document.createElement('div');clr.className='feel-pill';clr.style.cssText='border:1.5px solid #E0E0E0;background:#F5F5F5;color:#888';clr.textContent='✕ Очистити';
+  clr.onclick=()=>clearBodyMap(uid,zones);
+  leg.appendChild(clr);d.appendChild(leg);
+  const ind=document.createElement('div');ind.id=uid+'-indicator';ind.style.cssText='font-size:12px;color:#888;margin-bottom:8px;font-style:italic';ind.textContent='Оберіть відчуття зверху, потім натисніть на зону тіла';d.appendChild(ind);
+  const svgWrap=document.createElement('div');svgWrap.className='body-svg-wrap';
+  const zones=[{id:'head',label:'Голова',p:'M110,20 Q140,10 170,20 Q185,40 180,65 Q170,85 140,88 Q110,85 100,65 Q95,40 110,20 Z'},{id:'neck',label:'Шия',p:'M125,88 L155,88 L158,108 L122,108 Z'},{id:'chest',label:'Груди',p:'M90,108 L190,108 L195,160 L85,160 Z'},{id:'belly',label:'Живіт',p:'M88,160 L192,160 L190,210 L90,210 Z'},{id:'pelvis',label:'Таз',p:'M90,210 L190,210 L185,240 L95,240 Z'},{id:'lsh',label:'Ліве плече',p:'M55,108 L90,108 L88,140 L52,135 Z'},{id:'rsh',label:'Праве плече',p:'M190,108 L225,108 L228,135 L192,140 Z'},{id:'larm',label:'Ліва рука',p:'M40,135 L55,135 L58,195 L38,195 Z'},{id:'rarm',label:'Права рука',p:'M225,135 L240,135 L242,195 L222,195 Z'},{id:'lhand',label:'Ліва кисть',p:'M36,195 L60,195 L58,220 L34,218 Z'},{id:'rhand',label:'Права кисть',p:'M220,195 L244,195 L246,218 L222,220 Z'},{id:'lthigh',label:'Ліве стегно',p:'M90,240 L138,240 L136,300 L88,300 Z'},{id:'rthigh',label:'Праве стегно',p:'M142,240 L190,240 L192,300 L144,300 Z'},{id:'lshin',label:'Ліва гомілка',p:'M88,300 L136,300 L134,360 L86,358 Z'},{id:'rshin',label:'Права гомілка',p:'M144,300 L192,300 L194,358 L146,360 Z'},{id:'lfoot',label:'Ліва стопа',p:'M82,358 L136,358 L134,378 L78,374 Z'},{id:'rfoot',label:'Права стопа',p:'M144,358 L198,358 L202,374 L146,378 Z'}];
+  const svgNS='http://www.w3.org/2000/svg';const svg=document.createElementNS(svgNS,'svg');svg.setAttribute('viewBox','20 0 240 390');svg.setAttribute('width','240');svg.setAttribute('height','370');
+  zones.forEach(z=>{
+    const path=document.createElementNS(svgNS,'path');path.setAttribute('d',z.p);path.setAttribute('fill','#E8EAF0');path.setAttribute('stroke','#C5C8D8');path.setAttribute('stroke-width','1.5');
+    path.style.cursor='pointer';path.style.transition='all 0.2s';path.id=uid+'-'+z.id;path.dataset.feeling='';
+    path.onmouseover=()=>{if(!path.dataset.feeling)path.setAttribute('fill','#D0D4E8')};
+    path.onmouseout=()=>{if(!path.dataset.feeling)path.setAttribute('fill','#E8EAF0')};
+    path.onclick=(()=>{const zz=z;return ()=>{
+      const st=window['_bm_'+uid];if(!st||!st.feeling)return;
+      if(path.dataset.feeling===st.feeling){path.dataset.feeling='';path.setAttribute('fill','#E8EAF0');path.setAttribute('stroke','#C5C8D8');}
+      else{path.dataset.feeling=st.feeling;path.dataset.feelingLabel=st.label;path.setAttribute('fill',st.color);path.setAttribute('stroke',st.color);}
+      updateBodyMapText(uid,zones);updateProgress();
+    };})();
+    const title=document.createElementNS(svgNS,'title');title.textContent=z.label;path.appendChild(title);
+    svg.appendChild(path);
+  });
+  svgWrap.appendChild(svg);d.appendChild(svgWrap);
+  const ta=document.createElement('textarea');ta.id=uid+'-text';ta.style.cssText='margin-top:10px;min-height:56px;background:#F9F9F9;font-size:12px';ta.placeholder='Тут автоматично з\u02bcявиться опис позначок...';ta.readOnly=true;d.appendChild(ta);
+  window['_bm_'+uid]={feeling:null,color:null,label:null};return d;
+}
+function setBodyFeeling(uid,feeling,color,label){
+  window['_bm_'+uid]={feeling,color,label};
+  const ind=document.getElementById(uid+'-indicator');
+  if(ind) ind.innerHTML='<span style="display:inline-flex;align-items:center;gap:6px;background:'+color+'22;padding:3px 10px;border-radius:10px;border:1.5px solid '+color+'"><span style="width:10px;height:10px;border-radius:50%;background:'+color+';display:inline-block"></span>Обрано: <strong>'+label+'</strong> — натисніть на зону</span>';
+}
+function clearBodyMap(uid,zones){
+  if(!zones)return;
+  zones.forEach(z=>{const p=document.getElementById(uid+'-'+z.id);if(p){p.dataset.feeling='';p.setAttribute('fill','#E8EAF0');p.setAttribute('stroke','#C5C8D8');}});
+  const ta=document.getElementById(uid+'-text');if(ta)ta.value='';
+  const ind=document.getElementById(uid+'-indicator');if(ind)ind.textContent='Оберіть відчуття зверху, потім натисніть на зону тіла';
+  window['_bm_'+uid]={feeling:null,color:null,label:null};updateProgress();
+}
+function updateBodyMapText(uid,zones){
+  const groups={};
+  zones.forEach(z=>{const p=document.getElementById(uid+'-'+z.id);if(p&&p.dataset.feeling){const l=p.dataset.feelingLabel||p.dataset.feeling;if(!groups[l])groups[l]=[];groups[l].push(z.label);}});
+  const ta=document.getElementById(uid+'-text');
+  if(ta){ if(!Object.keys(groups).length){ta.value='';return;} ta.value=Object.entries(groups).map(([f,pts])=>f+': '+pts.join(', ')).join('\n'); }
+}
+
+// ===== MODULE META =====
+const moduleMeta = {
+  'body-map': {title:'Карта симптомів', sub:'Де і що саме відчуває тіло', icon:'🫀', color:'#1D9E75', bg:'#E1F5EE'},
+  'thought-work': {title:'Робота з тривожною думкою', sub:'КБТ-протокол для думок про здоровʼя', icon:'🧠', color:'#D85A3A', bg:'#FAECE7'},
+  'checking-cycle': {title:'Цикл перевірок', sub:'Відстеження пошуку підтвердження', icon:'🔄', color:'#C8892A', bg:'#FDF1DC'},
+  'calm': {title:'Дихання та заземлення', sub:'Техніки для гострого моменту', icon:'🌬️', color:'#4A7FC1', bg:'#EBF2FC'},
+  'action-plan': {title:'Мій план дій', sub:'Алгоритм дій при симптомі', icon:'📋', color:'#4A7C6E', bg:'#E3F0EC'},
+};
+
+function openModule(id){
+  currentModuleId=id;
+  const meta=moduleMeta[id];currentModuleMeta=meta;
+  document.getElementById('mod-title').textContent=meta.title;
+  document.getElementById('mod-sub').textContent=meta.sub;
+  document.getElementById('prog-fill').style.background=meta.color;
+  document.getElementById('save-btn').style.background=meta.color;
+  const inner=document.getElementById('module-inner');inner.innerHTML='';
+  const header=document.createElement('div');header.className='module-header';header.style.background=meta.bg;
+  header.innerHTML='<span class="mh-icon">'+meta.icon+'</span><div><div class="mh-title" style="color:'+meta.color+'">'+meta.title+'</div><div class="mh-sub">'+meta.sub+'</div></div>';
+  inner.appendChild(header);
+
+  const builders={'body-map':buildBodyMapModule,'thought-work':buildThoughtWork,'checking-cycle':buildCheckingCycle,'calm':buildCalm,'action-plan':buildActionPlan};
+  if(builders[id]) builders[id](inner,meta);
+
+  showScreen('module');updateProgress();
+  setTimeout(()=>{loadSavedAnswers(id);setupAutoSave(id);updateProgress();},100);
+}
+
+// ===== BODY MAP MODULE =====
+function buildBodyMapModule(w,m){
+  w.appendChild(nt('Тіло часто відчуває тривогу раніше, ніж розум її усвідомлює. Розпізнавати ці сигнали — перший крок.',m.color));
+  w.appendChild(bodyMap());
+  w.appendChild(iTitle('Контекст симптомів',m.color));
+  w.appendChild(fld('Коли симптоми зʼявляються найчастіше? (час доби, ситуації)',''));
+  w.appendChild(fld('Що зазвичай передує появі симптому?','',true));
+  w.appendChild(plls('Що я роблю коли зʼявляється симптом?',['Завмираю і прислухаюся','Шукаю інформацію в інтернеті','Перевіряю пульс/тиск','Кличу когось','Намагаюся відволіктися','Йду до лікаря','Панікую'],m.color));
+  w.appendChild(hlBox(m.bg,['Що тіло намагається мені сказати?']));
+}
+
+// ===== THOUGHT WORK (CBT) =====
+function buildThoughtWork(w,m){
+  w.appendChild(nt('Тривожні думки про здоровʼя часто звучать дуже переконливо. Цей протокол допоможе подивитися на них з відстані.',m.color));
+  w.appendChild(iTitle('Протокол думки — 7 кроків',m.color));
+  const steps=[
+    {n:1,l:'Симптом або ситуація',ph:'Що саме я відчула в тілі? Коли?'},
+    {n:2,l:'Автоматична думка',ph:'«Це точно щось серйозне», «лікарі щось пропустили»...'},
+    {n:3,l:'Емоція та інтенсивність (0–100%)',ph:'Тривога 85%, страх 70%...'},
+    {n:4,l:'Докази ЗА цю думку',ph:'Що підтверджує?'},
+    {n:5,l:'Докази ПРОТИ цієї думки',ph:'Скільки разів подібне вже було і виявилося нічим?'},
+    {n:6,l:'Збалансована думка',ph:'Більш реалістичний погляд на симптом...'},
+    {n:7,l:'Емоція після (0–100%)',ph:'Тривога знизилася до...'},
+  ];
+  steps.forEach(s=>{
+    const row=document.createElement('div');row.className='tr-step';
+    const num=document.createElement('div');num.className='tr-num';num.style.background=m.color+'22';num.style.color=m.color;num.textContent=s.n;
+    const cont=document.createElement('div');cont.style.flex='1';
+    const lbl=document.createElement('div');lbl.className='tr-lbl';lbl.style.color=m.color;lbl.textContent=s.l;
+    const ta=document.createElement('textarea');ta.placeholder=s.ph;ta.oninput=updateProgress;
+    cont.appendChild(lbl);cont.appendChild(ta);row.appendChild(num);row.appendChild(cont);w.appendChild(row);
+  });
+  w.appendChild(iTitle('Думки-пастки які я впізнаю',m.color));
+  w.appendChild(plls('Які пастки я в собі помічаю?',['«Це точно щось серйозне»','«Лікарі щось пропустили»','«Симптом = хвороба»','«Краще перестрахуватися»','«Якщо не перевірю — стане гірше»','«Я маю знати напевно»','Катастрофізація майбутнього'],m.color));
+}
+
+// ===== CHECKING CYCLE =====
+function buildCheckingCycle(w,m){
+  w.appendChild(infoBlock(m.color,m.bg,'🔄 Чому перевірки не допомагають надовго','Гуглити симптоми, перевіряти пульс, питати «це нормально?» — дає миттєве полегшення, але підсилює тривогу в довгостроковій перспективі. Мозок вчиться: «тривога зникає тільки якщо перевірити» — і вимагає перевірки знову і знову.'));
+  
+  w.appendChild(iTitle('Сьогоднішній підрахунок',m.color));
+  const counterWrap=document.createElement('div');counterWrap.className='checkin-card';
+  const counterDisplay=document.createElement('div');
+  counterDisplay.innerHTML='<div style="font-size:12px;color:var(--muted)">Перевірок сьогодні</div><div class="checkin-counter" id="check-counter">0</div>';
+  const addBtn=document.createElement('button');addBtn.className='checkin-btn';addBtn.textContent='+ Записати перевірку';
+  addBtn.onclick=()=>addCheckingEvent(m.color);
+  counterWrap.appendChild(counterDisplay);counterWrap.appendChild(addBtn);
+  w.appendChild(counterWrap);
+
+  const listWrap=document.createElement('div');listWrap.className='checkin-list';listWrap.id='check-list';
+  w.appendChild(listWrap);
+  renderCheckingList();
+
+  w.appendChild(iTitle('Що я перевіряю найчастіше',m.color));
+  w.appendChild(plls('Типи перевірок',['Гуглю симптоми','Перевіряю пульс/тиск','Питаю близьких «це нормально?»','Перечитую результати аналізів','Шукаю інформацію про хворобу','Звертаюся до лікаря без потреби','Перевіряю тіло на симптоми'],m.color));
+  w.appendChild(fld('Що я відчуваю ПЕРЕД перевіркою?',''));
+  w.appendChild(fld('Що я відчуваю ОДРАЗУ ПІСЛЯ перевірки?',''));
+  w.appendChild(fld('Що я відчуваю через 30 хвилин після перевірки?',''));
+  
+  w.appendChild(iTitle('Маленький крок',m.color));
+  w.appendChild(nt('Мета не «перестати перевіряти одразу» — а поступово збільшувати час між імпульсом і дією.',m.color));
+  w.appendChild(fld('Наступного разу коли захочу перевірити — спробую почекати:','Наприклад: 5 хвилин, 15 хвилин...'));
+  w.appendChild(fld('Що я можу зробити замість перевірки в цей час очікування?',''));
+}
+
+function getCheckingData(){
+  const s=getSession();
+  if(!s.checking) s.checking={};
+  const today=new Date().toISOString().slice(0,10);
+  if(!s.checking[today]) s.checking[today]=[];
+  return {all:s.checking, today, list:s.checking[today]};
+}
+function addCheckingEvent(color){
+  const s=getSession();
+  if(!s.checking) s.checking={};
+  const today=new Date().toISOString().slice(0,10);
+  if(!s.checking[today]) s.checking[today]=[];
+  const time=new Date().toLocaleTimeString('uk-UA',{hour:'2-digit',minute:'2-digit'});
+  s.checking[today].push(time);
+  saveSession(s);
+  renderCheckingList();
+}
+function renderCheckingList(){
+  const data=getCheckingData();
+  const counter=document.getElementById('check-counter');
+  if(counter) counter.textContent=data.list.length;
+  const listEl=document.getElementById('check-list');
+  if(!listEl) return;
+  if(data.list.length===0){ listEl.innerHTML='<div style="text-align:center;padding:10px;color:#ccc">Поки немає записів сьогодні</div>'; return; }
+  listEl.innerHTML=data.list.map((t,i)=>'<div class="checkin-item"><span>Перевірка #'+(i+1)+'</span><span>'+t+'</span></div>').join('');
+}
+
+// ===== CALM (breathing + grounding) =====
+function buildCalm(w,m){
+  w.appendChild(nt('Дихання — найшвидший спосіб вплинути на нервову систему, коли тривога за здоровʼя загострюється.',m.color));
+  w.appendChild(timerCard('ha-box','📦 Квадратне дихання','Вдих — затримка — видих — затримка, по 4 секунди',['Вдих 4 с','Затримка 4 с','Видих 4 с','Затримка 4 с'],[4,4,4,4],m.color,m.bg));
+  w.appendChild(timerCard('ha-478','💤 Дихання 4-7-8','Заспокоює нервову систему при сильній тривозі',['Вдих 4 с','Затримка 7 с','Видих 8 с'],[4,7,8],m.color,m.bg));
+
+  w.appendChild(iTitle('Заземлення 5-4-3-2-1',m.color));
+  const g=document.createElement('div');g.style.cssText='background:'+m.bg+';border-radius:var(--r);padding:16px;margin-top:10px';
+  ['👁️ 5 речей, які бачиш:','✋ 4 речі, яких можеш торкнутися:','👂 3 звуки, які чуєш:','👃 2 запахи:','👅 1 смак:'].forEach(s=>{
+    const row=document.createElement('div');row.style.marginBottom='12px';
+    const lbl=document.createElement('div');lbl.style.cssText='font-size:12px;font-weight:600;color:'+m.color+';margin-bottom:4px';lbl.textContent=s;
+    const ta=document.createElement('textarea');ta.style.minHeight='44px';ta.oninput=updateProgress;
+    row.appendChild(lbl);row.appendChild(ta);g.appendChild(row);
+  });
+  w.appendChild(g);
+
+  w.appendChild(iTitle('Тест «це тривога чи реальна загроза?»',m.color));
+  w.appendChild(infoBlock(m.color,m.bg,'Швидка перевірка','Тривожні тілесні симптоми зазвичай: зʼявляються і зникають хвилями, посилюються від уваги до них, не мають чіткої точки локалізації, супроводжуються думками-катастрофами. Якщо це описує твій досвід зараз — велика ймовірність що це тривога, а не екстрена ситуація.'));
+  w.appendChild(fld('Що я помічаю прямо зараз із цього списку?',''));
+}
+
+// ===== ACTION PLAN =====
+function buildActionPlan(w,m){
+  w.appendChild(nt('Чіткий план знижує тривогу самим фактом своєї наявності — не потрібно вирішувати в моменті паніки.',m.color));
+
+  w.appendChild(iTitle('Коли зʼявляється симптом — мій алгоритм',m.color));
+  w.appendChild(hlBox(m.bg,[
+    'Крок 1 — перше що я роблю (наприклад: дихання 4-7-8):',
+    'Крок 2 — якщо тривога не знижується за 10 хвилин:',
+    'Крок 3 — якщо все ще важко:',
+  ]));
+
+  w.appendChild(iTitle('Коли дійсно звернутися до лікаря',m.color));
+  w.appendChild(nt('Реалістичні критерії — узгодь їх зі своїм лікарем заздалегідь, щоб мати чіткий орієнтир, а не вирішувати в тривозі.',m.color));
+  w.appendChild(fld('Симптоми при яких я дійсно йду до лікаря (узгоджено з лікарем):','',true));
+  w.appendChild(fld('Скільки разів на місяць я дозволяю собі плановий профілактичний візит (а не екстрений)?',''));
+
+  w.appendChild(iTitle('Мій список підтримки',m.color));
+  w.appendChild(fld('Людина якій я можу подзвонити коли тривожно:',''));
+  w.appendChild(fld('Мій лікар (контакт для планових питань):',''));
+  w.appendChild(fld('Мій психолог/терапевт:',''));
+
+  w.appendChild(iTitle('Нагадування собі',m.color));
+  w.appendChild(hlBox(m.bg,[
+    'Фраза яку я кажу собі коли тривожно:',
+    'Що я хочу памʼятати про звʼязок тіла і тривоги:',
+  ]));
+}
+
+// ===== PROGRESS =====
+function updateProgress(){
+  const inner=document.getElementById('module-inner');if(!inner)return;
+  const tas=inner.querySelectorAll('textarea');
+  const filled=Array.from(tas).filter(t=>t.value.trim().length>2).length;
+  const pct=tas.length?Math.round(filled/tas.length*100):0;
+  const pf=document.getElementById('prog-fill');const pp=document.getElementById('prog-pct');
+  if(pf)pf.style.width=pct+'%';if(pp)pp.textContent=pct+'%';
+}
+
+// ===== SAVE PDF (single module) =====
+function buildAnswersText(){
+  const m=currentModuleMeta;const inner=document.getElementById('module-inner');
+  let text=(m?m.title.toUpperCase():'')+'\nДата: '+new Date().toLocaleDateString('uk-UA')+'\n'+'─'.repeat(50)+'\n\n';
+  inner.querySelectorAll('textarea').forEach(ta=>{
+    if(!ta.value.trim())return;
+    const fg=ta.closest('.field-group');const lbl=fg?fg.querySelector('.field-label'):null;
+    const prev=ta.previousElementSibling;
+    const label=lbl?lbl.textContent:(prev&&(prev.classList.contains('hl-label')||prev.classList.contains('tr-lbl'))?prev.textContent:'');
+    if(label)text+=label.trim()+'\n';text+=ta.value.trim()+'\n\n';
+  });
+  return text;
+}
+function savePDF(){
+  const m=currentModuleMeta;const inner=document.getElementById('module-inner');const accent=m?m.color:'#1D9E75';
+  let fields='';
+  inner.querySelectorAll('textarea').forEach(ta=>{
+    if(!ta.value.trim())return;
+    const fg=ta.closest('.field-group');const lbl=fg?fg.querySelector('.field-label'):null;
+    const prev=ta.previousElementSibling;
+    const label=lbl?lbl.textContent:(prev&&(prev.classList.contains('hl-label')||prev.classList.contains('tr-lbl'))?prev.textContent:'');
+    const valHtml=ta.value.trim().split('\n').join('<br>');
+    fields+='<div class="f">'+(label?'<div class="fl">'+label+'</div>':'')+'<div class="fv">'+valHtml+'</div></div>';
+  });
+  const win=window.open('','_blank');
+  if(!win){alert('Дозволь pop-up для цього сайту.');return;}
+  win.document.write('<!DOCTYPE html><html lang="uk"><head><meta charset="UTF-8"><title>'+(m?m.title:'')+'</title>'+
+  '<style>@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}'+
+  'body{font-family:Arial,sans-serif;color:#2C2C2C;padding:32px 40px;max-width:680px;margin:0 auto;font-size:13px;line-height:1.6}'+
+  'h1{color:'+accent+';font-size:20px;margin:0 0 4px}.meta{color:#999;font-size:12px;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid '+accent+'}'+
+  '.f{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #f0f0f0}.fl{font-size:11px;color:#999;margin-bottom:3px}.fv{font-size:13px}'+
+  '.footer{margin-top:32px;font-size:10px;color:#ccc;text-align:center}'+
+  '.hint{background:#f0f0f0;border-radius:8px;padding:12px 16px;margin-bottom:24px;font-size:12px;color:#555}@media print{.hint{display:none}}</style></head><body>'+
+  '<div class="hint">💡 Щоб зберегти як PDF: Ctrl+P → «Зберегти як PDF»</div>'+
+  '<h1>'+(m?m.icon+' '+m.title:'')+'</h1>'+
+  '<div class="meta">© Оксана Урожай · '+new Date().toLocaleDateString('uk-UA')+'</div>'+
+  fields+'<div class="footer">© Оксана Урожай · Тіло і тривога</div>'+
+  '<script>window.onload=function(){window.print()}<\/script></body></html>');
+  win.document.close();
+}
+function copyAnswers(){
+  const text=buildAnswersText();
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn=document.querySelector('[onclick="copyAnswers()"]');
+    if(btn){btn.innerHTML='⧉ Скопійовано!';setTimeout(()=>btn.innerHTML='⧉ Копіювати',3000);}
+  });
+}
+
+// ===== FULL REPORT =====
+function generateReport(){
+  const session=getSession();
+  const clientName=session.clientName||'Клієнт';
+  const answers=session.answers||{};
+  const checking=session.checking||{};
+
+  if(Object.keys(answers).length===0 && Object.keys(checking).length===0){
+    alert('Поки що немає збережених відповідей. Заповніть хоча б один блок.');return;
+  }
+
+  const accent='#1D9E75';
+  const date=new Date().toLocaleDateString('uk-UA');
+  const startDate=session.startedAt?new Date(session.startedAt).toLocaleDateString('uk-UA'):date;
+
+  let sectionsHtml='';
+  Object.entries(answers).forEach(([moduleId,questions])=>{
+    const meta=moduleMeta[moduleId];const title=meta?meta.title:moduleId;
+    let blockHtml='';
+    Object.entries(questions).forEach(([key,data])=>{
+      if(!data.value||!data.value.trim())return;
+      const valHtml=data.value.trim().split('\n').join('<br>');
+      blockHtml+='<div class="qa"><div class="ans">'+valHtml+'</div></div>';
+    });
+    if(!blockHtml)return;
+    sectionsHtml+='<div class="section"><div class="sec-title">'+title+'</div>'+blockHtml+'</div>';
+  });
+
+  if(Object.keys(checking).length>0){
+    let checkRows='';
+    Object.entries(checking).sort().forEach(([date2,times])=>{
+      if(!times.length)return;
+      const d=new Date(date2);
+      checkRows+='<div class="qa"><div class="ans"><strong>'+d.toLocaleDateString('uk-UA')+'</strong> — '+times.length+' перевірок ('+times.join(', ')+')</div></div>';
+    });
+    if(checkRows) sectionsHtml+='<div class="section"><div class="sec-title">🔄 Цикл перевірок — історія</div>'+checkRows+'</div>';
+  }
+
+  if(!sectionsHtml){alert('Немає заповнених відповідей для звіту.');return;}
+
+  const html='<!DOCTYPE html><html lang="uk"><head><meta charset="UTF-8"><title>Звіт — '+clientName+'</title>'+
+  '<style>@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}'+
+  'body{font-family:Arial,sans-serif;color:#2C2C2C;padding:32px 40px;max-width:700px;margin:0 auto;font-size:13px;line-height:1.7}'+
+  '.header{border-bottom:3px solid '+accent+';padding-bottom:16px;margin-bottom:24px}'+
+  'h1{color:'+accent+';font-size:22px;margin:0 0 6px}.meta{color:#999;font-size:12px}'+
+  '.section{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid #eee}'+
+  '.sec-title{font-size:13px;font-weight:bold;color:'+accent+';text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;padding:6px 12px;background:#e8f7f0;border-radius:6px}'+
+  '.qa{margin-bottom:12px;padding:12px;background:#fafafa;border-radius:8px;border-left:3px solid '+accent+'}'+
+  '.ans{font-size:13px;color:#2C2C2C}'+
+  '.footer{margin-top:32px;font-size:10px;color:#ccc;text-align:center;padding-top:16px;border-top:1px solid #eee}'+
+  '.hint{background:#f0f0f0;border-radius:8px;padding:12px 16px;margin-bottom:24px;font-size:12px;color:#555}@media print{.hint{display:none}}'+
+  '</style></head><body>'+
+  '<div class="hint">💡 Щоб зберегти як PDF: Ctrl+P → «Зберегти як PDF»</div>'+
+  '<div class="header"><h1>📋 Звіт — Тіло і тривога</h1>'+
+  '<div class="meta">Клієнт: <strong>'+clientName+'</strong> · Початок роботи: '+startDate+' · Дата звіту: '+date+'</div></div>'+
+  sectionsHtml+
+  '<div class="footer">© Оксана Урожай, психолог · Тіло і тривога · 2026</div>'+
+  '<script>window.onload=function(){window.print()}<\/script></body></html>';
+
+  const win=window.open('','_blank');
+  if(!win){alert('Дозволь pop-up для цього сайту.');return;}
+  win.document.write(html);win.document.close();
+}
+
+function clearClientData(){
+  if(!confirm('Видалити всі збережені відповіді? Цю дію не можна скасувати.'))return;
+  localStorage.removeItem(SESSION_KEY);alert('Відповіді видалено.');location.reload();
+}
+</script>
+</body>
+</html>
