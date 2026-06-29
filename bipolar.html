@@ -268,6 +268,46 @@ textarea:focus{outline:none;background:white}
       </div>
     </div>
 
+    <div class="section-label">🧰 Практики стабілізації</div>
+    <div class="hub-grid">
+      <div class="hc" onclick="openModule('pr-stop')" style="border-top:3px solid var(--mania)">
+        <span class="hc-icon">🛑</span>
+        <div class="hc-title">СТОП</div>
+        <div class="hc-desc">Зупинитися перед імпульсивною дією</div>
+        <span class="hc-tag" style="background:var(--mania-l);color:var(--mania)">Манія / гіпоманія</span>
+      </div>
+      <div class="hc" onclick="openModule('pr-tipp')" style="border-top:3px solid var(--depr)">
+        <span class="hc-icon">❄️</span>
+        <div class="hc-title">Швидке заспокоєння</div>
+        <div class="hc-desc">Температура, рух, дихання, розслаблення</div>
+        <span class="hc-tag" style="background:var(--depr-l);color:var(--depr)">Гострий стан</span>
+      </div>
+      <div class="hc" onclick="openModule('pr-breath')" style="border-top:3px solid var(--stable)">
+        <span class="hc-icon">🌬️</span>
+        <div class="hc-title">Дихання</div>
+        <div class="hc-desc">Квадратне і 4-7-8 — з таймером</div>
+        <span class="hc-tag" style="background:var(--stable-l);color:var(--stable)">Будь-яка фаза</span>
+      </div>
+      <div class="hc" onclick="openModule('pr-opposite')" style="border-top:3px solid var(--depr)">
+        <span class="hc-icon">🔄</span>
+        <div class="hc-title">Протилежна дія</div>
+        <div class="hc-desc">Зробити протилежне тому що підказує апатія</div>
+        <span class="hc-tag" style="background:var(--depr-l);color:var(--depr)">Депресія</span>
+      </div>
+      <div class="hc" onclick="openModule('pr-anchor')" style="border-top:3px solid var(--sage)">
+        <span class="hc-icon">🧘</span>
+        <div class="hc-title">Якір уваги</div>
+        <div class="hc-desc">Коротка практика усвідомленості</div>
+        <span class="hc-tag" style="background:var(--sage-l);color:var(--sage)">Стабілізація</span>
+      </div>
+      <div class="hc" onclick="openModule('pr-pros')" style="border-top:3px solid var(--hypo)">
+        <span class="hc-icon">⚖️</span>
+        <div class="hc-title">Плюси і мінуси</div>
+        <div class="hc-desc">Зважити дію перед тим як діяти</div>
+        <span class="hc-tag" style="background:var(--hypo-l);color:var(--hypo)">Манія / імпульси</span>
+      </div>
+    </div>
+
     <div style="text-align:center;margin-top:2.5rem">
       <button onclick="generateReport()" style="display:inline-flex;align-items:center;gap:8px;background:var(--purple);color:white;border:none;border-radius:50px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 2px 12px rgba(127,119,221,.3);margin-bottom:1rem">📄 Підготувати звіт для спеціаліста</button>
       <p style="font-size:11px;color:var(--muted);line-height:1.8">© Оксана Урожай · Психолог, 2026</p>
@@ -485,6 +525,12 @@ const moduleMeta = {
   'mixed': {title:'Коли все одночасно', sub:'Змішані стани', icon:'🌪️', color:'#9E4A6E', bg:'#F5E8EE'},
   'resources': {title:'Мої стабілізатори', sub:'Режим, люди, команда лікування', icon:'⚓', color:'#4A7C6E', bg:'#E3F0EC'},
   'relations': {title:'Стосунки та БАР', sub:'Комунікація з близькими', icon:'🤝', color:'#C8892A', bg:'#FDF1DC'},
+  'pr-stop': {title:'СТОП', sub:'Зупинитися перед імпульсивною дією', icon:'🛑', color:'#D85A3A', bg:'#FAECE7'},
+  'pr-tipp': {title:'Швидке заспокоєння тіла', sub:'Температура, рух, дихання, розслаблення', icon:'❄️', color:'#7B6FBF', bg:'#EDEAFC'},
+  'pr-breath': {title:'Дихання', sub:'Квадратне і 4-7-8 — з таймером', icon:'🌬️', color:'#3A8B5C', bg:'#E3F5EC'},
+  'pr-opposite': {title:'Протилежна дія', sub:'Зробити протилежне тому що підказує апатія', icon:'🔄', color:'#7B6FBF', bg:'#EDEAFC'},
+  'pr-anchor': {title:'Якір уваги', sub:'Коротка практика усвідомленості', icon:'🧘', color:'#4A7C6E', bg:'#E3F0EC'},
+  'pr-pros': {title:'Плюси і мінуси', sub:'Зважити дію перед тим як діяти', icon:'⚖️', color:'#C8892A', bg:'#FDF1DC'},
   'crisis': {title:'Кризовий план', sub:'Якщo стало дуже важко', icon:'🆘', color:'#D85A3A', bg:'#FAECE7'},
 };
 
@@ -509,6 +555,8 @@ function openModule(id){
     'state-today': buildStateToday, 'tracker': buildTracker,
     'mania': buildMania, 'depression': buildDepression, 'mixed': buildMixed,
     'resources': buildResources, 'relations': buildRelations, 'crisis': buildCrisis,
+    'pr-stop': buildPrStop, 'pr-tipp': buildPrTipp, 'pr-breath': buildPrBreath,
+    'pr-opposite': buildPrOpposite, 'pr-anchor': buildPrAnchor, 'pr-pros': buildPrPros,
   };
   if(builders[id]) builders[id](inner, meta);
 
@@ -719,6 +767,138 @@ function buildCrisis(w, m){
     'Лінія психологічної підтримки: <strong>1547</strong> (безкоштовно)<br>Служба порятунку: <strong>112</strong><br>Якщо є думки про шкоду собі — зверніться в швидку допомогу або до найближчого психіатричного відділення негайно.'));
 
   w.appendChild(fld('Що допомагало мені в попередніх кризах?', '', true));
+}
+
+
+// ===== ПРАКТИКИ ДБТ =====
+
+function buildPrStop(w, m){
+  w.appendChild(infoBlock(m.color, m.bg, '🛑 Коли використовувати',
+    'СТОП — найважливіша навичка в маніакальній та гіпоманіакальній фазі. Коли є імпульс щось зробити ЗАРАЗ — перед тим як купити, написати, вирішити, сказати.'));
+  w.appendChild(infoBlock('#C8892A','#FDF1DC','⚡ Чотири кроки СТОП',
+    '<strong>С — Стій.</strong> Буквально завмри. Не дій одразу.<br><br>'+
+    '<strong>Т — Тримай паузу.</strong> Зроби один повільний вдих. Відступи подумки.<br><br>'+
+    '<strong>О — Огляньсь.</strong> Що відбувається всередині? Яка фаза? Що я відчуваю в тілі?<br><br>'+
+    '<strong>П — Продовжуй усвідомлено.</strong> Що буде найкращим кроком зараз? Що я б порадила другу?'));
+  w.appendChild(fld('Що зазвичай є моїм сигналом що потрібен СТОП?', 'Які думки, імпульси, ситуації?'));
+  w.appendChild(plls('Коли мені найважче зупинитися?', ['Хочу написати комусь різке', 'Хочу зробити велику покупку', 'Хочу прийняти важливе рішення', 'Хочу почати новий проєкт', 'Хочу посваритися', 'Хочу відмовитися від лікування'], m.color));
+  w.appendChild(hlBox(m.bg, [
+    'Мій особистий знак що потрібен СТОП:',
+    'Що я кажу собі в цей момент:',
+    'Що допомагає мені витримати паузу:',
+  ]));
+}
+
+function buildPrTipp(w, m){
+  w.appendChild(infoBlock(m.color, m.bg, '❄️ Для гострих моментів',
+    'Ця техніка впливає на тіло напряму — змінює фізіологію за хвилини. Використовуй коли емоція дуже сильна і звичайні техніки не встигають.'));
+  w.appendChild(iTitle('Чотири способи', m.color));
+
+  const steps = [
+    {icon:'🧊', title:'Температура', desc:'Холодна вода на обличчя або зап\u02bcястки — 30 секунд. Активує рефлекс занурення, швидко знижує збудження нервової системи.'},
+    {icon:'🏃', title:'Рух інтенсивний', desc:'10-15 стрибків, швидка ходьба, біг на місці — 2-3 хвилини. Спалює гормони стресу і збудження.'},
+    {icon:'🌬️', title:'Дихання у темпі', desc:'Видих довший за вдих. Вдих 4 секунди, видих 8 секунд. Активує парасимпатичну систему.'},
+    {icon:'💆', title:'Розслаблення м\u02bcязів', desc:'Напруж і відпусти групи м\u02bcязів по черзі — від стоп до обличчя. Знімає фізичне напруження.'},
+  ];
+  steps.forEach(s => {
+    const card = document.createElement('div');
+    card.style.cssText = 'background:white;border-radius:var(--r);padding:14px;margin-top:10px;border:1px solid var(--border)';
+    card.innerHTML = '<div style="font-size:1.4rem;margin-bottom:6px">'+s.icon+'</div>'+
+      '<div style="font-size:13px;font-weight:700;color:'+m.color+';margin-bottom:4px">'+s.title+'</div>'+
+      '<div style="font-size:12px;color:var(--muted);line-height:1.6">'+s.desc+'</div>';
+    w.appendChild(card);
+  });
+
+  w.appendChild(timerCard('bi-tipp','🌬️ Дихання у темпі','Видих вдвічі довший за вдих',['Вдих 4 с','Видих 8 с'],[4,8],m.color,m.bg));
+  w.appendChild(fld('Який із способів допомагає мені найбільше?', ''));
+}
+
+function buildPrBreath(w, m){
+  w.appendChild(nt('Дихання — найшвидший спосіб вплинути на нервову систему. Вже за 2-3 хвилини рівень збудження знижується.', m.color));
+  w.appendChild(timerCard('bi-box','📦 Квадратне дихання','Вдих — затримка — видих — затримка, по 4 секунди. Стабілізує і заземляє.',['Вдих 4 с','Затримка 4 с','Видих 4 с','Затримка 4 с'],[4,4,4,4],m.color,m.bg));
+  w.appendChild(timerCard('bi-478','💤 Дихання 4-7-8','Заспокоює при сильній тривозі або збудженні. Гарно для вечора.',['Вдих 4 с','Затримка 7 с','Видих 8 с'],[4,7,8],m.color,m.bg));
+  w.appendChild(iTitle('Коли яке дихання?', m.color));
+  const table = document.createElement('div');
+  table.style.cssText = 'font-size:13px;line-height:1.9;margin-top:8px;color:var(--text)';
+  table.innerHTML =
+    '🔥 <strong>Манія / збудження</strong> → Квадратне дихання або 4-7-8<br>'+
+    '🌧️ <strong>Депресія / оніміння</strong> → Квадратне дихання — повертає в тіло<br>'+
+    '🌪️ <strong>Змішаний стан / тривога</strong> → 4-7-8 або просто глибокий видих';
+  w.appendChild(table);
+  w.appendChild(fld('Яка техніка мені найбільше підходить і в яких ситуаціях?', ''));
+}
+
+function buildPrOpposite(w, m){
+  w.appendChild(infoBlock(m.color, m.bg, '🔄 Для депресивної фази',
+    'Депресія підказує: лежи, уникай, не роби нічого. Але ця порада підтримує депресію. Протилежна дія — зробити невеликий крок всупереч імпульсу апатії. Не «через силу» і не великий — а саме маленький.'));
+  w.appendChild(iTitle('Приклади протилежної дії', m.color));
+  const examples = document.createElement('div');
+  examples.style.cssText = 'font-size:13px;line-height:2;margin-top:8px;color:var(--text)';
+  examples.innerHTML =
+    '<strong>Хочеться лежати</strong> → встати і пройтися кімнатою<br>'+
+    '<strong>Хочеться уникати людей</strong> → написати одну людині<br>'+
+    '<strong>Хочеться нічого не їсти</strong> → зʼїсти щось маленьке<br>'+
+    '<strong>Хочеться не виходити з дому</strong> → вийти на 5 хвилин<br>'+
+    '<strong>Хочеться відмовитися від терапії</strong> → написати терапевту що важко';
+  w.appendChild(examples);
+  w.appendChild(nt('Мета не «стати щасливою» одразу. Мета — зробити один крок, щоб тіло і мозок отримали сигнал що ти жива і рухаєшся.', m.color));
+  w.appendChild(fld('Яку дію апатія підказує мені найчастіше?', ''));
+  w.appendChild(fld('Яка протилежна дія — найменша і найреальніша для мене?', ''));
+  w.appendChild(hlBox(m.bg, ['Мій особистий список протилежних дій на важкий день:']));
+}
+
+function buildPrAnchor(w, m){
+  w.appendChild(nt('Усвідомленість при БАР — це не медитація і не розслаблення. Це навичка помічати де я зараз — в якій фазі, в якому стані — без оцінки.', m.color));
+  w.appendChild(iTitle('Практика якоря — 3 хвилини', m.color));
+  w.appendChild(timerCard('bi-anchor','🧘 Якір уваги','Просто помічай дихання і тіло — без намагання змінити',['Відчуй стопи на підлозі','Відчуй своє дихання','Помітити думки без злиття','Повернути увагу на дихання'],[15,15,15,15],m.color,m.bg));
+  w.appendChild(iTitle('Проста самоперевірка', m.color));
+  const check = document.createElement('div');
+  check.style.cssText = 'background:'+m.bg+';border-radius:var(--r);padding:14px;margin-top:8px;font-size:13px;line-height:2;color:var(--text)';
+  check.innerHTML =
+    '1️⃣ Де зараз мій настрій на шкалі від -5 (депресія) до +5 (манія)?<br>'+
+    '2️⃣ Скільки я спала останньої ночі?<br>'+
+    '3️⃣ Чи є прискорені думки або сповільненість?<br>'+
+    '4️⃣ Що моє тіло відчуває зараз?';
+  w.appendChild(check);
+  w.appendChild(scl('Мій настрій прямо зараз:', 'Глибока депресія', 'Сильна манія', m.color));
+  w.appendChild(fld('Що я помічаю в собі прямо зараз?', ''));
+}
+
+function buildPrPros(w, m){
+  w.appendChild(infoBlock(m.color, m.bg, '⚖️ Перед важливим рішенням у гіпоманії',
+    'Коли є сильний імпульс щось зробити — нова ідея, рішення, дія — зупинись і зважи. Не щоб заборонити собі, а щоб побачити повну картину.'));
+  w.appendChild(iTitle('Таблиця плюсів і мінусів', m.color));
+
+  const tableWrap = document.createElement('div');
+  tableWrap.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px';
+
+  [
+    {title:'✅ Плюси якщо ЗРОБЛЮ', color:'#3A8B5C', bg:'#E3F5EC'},
+    {title:'❌ Мінуси якщо ЗРОБЛЮ', color:'#D85A3A', bg:'#FAECE7'},
+    {title:'✅ Плюси якщо НЕ ЗРОБЛЮ', color:'#3A8B5C', bg:'#E3F5EC'},
+    {title:'❌ Мінуси якщо НЕ ЗРОБЛЮ', color:'#D85A3A', bg:'#FAECE7'},
+  ].forEach(cell => {
+    const div = document.createElement('div');
+    div.style.cssText = 'background:'+cell.bg+';border-radius:var(--r);padding:12px';
+    const title = document.createElement('div');
+    title.style.cssText = 'font-size:11px;font-weight:700;color:'+cell.color+';margin-bottom:8px';
+    title.textContent = cell.title;
+    const ta = document.createElement('textarea');
+    ta.style.minHeight = '80px';
+    ta.style.background = 'white';
+    ta.oninput = updateProgress;
+    div.appendChild(title);
+    div.appendChild(ta);
+    tableWrap.appendChild(div);
+  });
+  w.appendChild(tableWrap);
+
+  w.appendChild(fld('Яка дія або рішення яке я зараз хочу зробити?', ''));
+  w.appendChild(fld('Якби я була у стабільному стані — я б так само вирішила?', ''));
+  w.appendChild(hlBox(m.bg, [
+    'Мій висновок після зважування:',
+    'Якщо вирішила зробити — через скільки годин/днів повернуся до цього рішення:',
+  ]));
 }
 
 function crisisBox(items){
@@ -1093,21 +1273,53 @@ function generateReport(){
     sectionsHtml += '<div class="section"><div class="sec-title">'+title+'</div>'+blockHtml+'</div>';
   });
 
-  // Add tracker summary if exists
+  // Add tracker summary - ALL weeks grouped by week
   if(Object.keys(tracker).length > 0){
-    let trackerRows = '';
+    // Group dates by week (Monday-Sunday)
+    const weekGroups = {};
     Object.entries(tracker).sort().forEach(([key, data])=>{
-      if(!data.mood && !data.note) return;
-      const moodLabel = moodLevels.find(l=>l.id===data.mood);
       const d = new Date(key);
-      trackerRows += '<div class="qa"><div class="ans"><strong>'+d.toLocaleDateString('uk-UA')+'</strong>'+
-        (moodLabel ? ' — '+moodLabel.label : '')+
-        (data.sleep ? ' · сон: '+data.sleep+'год' : '')+
-        (data.meds ? ' · ліки прийнято' : '')+
-        (data.note ? '<br><em>'+data.note+'</em>' : '')+
-        '</div></div>';
+      const day = d.getDay() === 0 ? 6 : d.getDay()-1;
+      const monday = new Date(d);
+      monday.setDate(d.getDate()-day);
+      const weekKey = monday.toISOString().slice(0,10);
+      if(!weekGroups[weekKey]) weekGroups[weekKey]=[];
+      weekGroups[weekKey].push({key, data, date:d});
     });
-    if(trackerRows) sectionsHtml += '<div class="section"><div class="sec-title">📊 Трекер настрою</div>'+trackerRows+'</div>';
+
+    Object.entries(weekGroups).sort().forEach(([weekStart, days])=>{
+      const wStart = new Date(weekStart);
+      const wEnd = new Date(weekStart);
+      wEnd.setDate(wEnd.getDate()+6);
+      const weekLabel = wStart.toLocaleDateString('uk-UA')+' — '+wEnd.toLocaleDateString('uk-UA');
+      
+      // Build mini mood table for this week
+      let tableHtml = '<table style="border-collapse:collapse;width:100%;font-size:11px;margin-bottom:8px">';
+      tableHtml += '<tr><th style="text-align:left;padding:4px 6px;border:1px solid #eee;background:#f9f9f9">Дата</th>'+
+        '<th style="padding:4px 6px;border:1px solid #eee;background:#f9f9f9">Настрій</th>'+
+        '<th style="padding:4px 6px;border:1px solid #eee;background:#f9f9f9">Сон</th>'+
+        '<th style="padding:4px 6px;border:1px solid #eee;background:#f9f9f9">Ліки</th>'+
+        '<th style="text-align:left;padding:4px 6px;border:1px solid #eee;background:#f9f9f9">Нотатки</th></tr>';
+      
+      const dayNames = ['Пн','Вт','Ср','Чт','Пт','Сб','Нд'];
+      days.forEach(({key, data, date})=>{
+        const moodLabel = moodLevels.find(l=>l.id===data.mood);
+        const moodColor = moodLabel ? moodLabel.color : '#ccc';
+        const dn = dayNames[date.getDay()===0?6:date.getDay()-1];
+        tableHtml += '<tr>'+
+          '<td style="padding:4px 6px;border:1px solid #eee">'+dn+' '+date.getDate()+'</td>'+
+          '<td style="padding:4px 6px;border:1px solid #eee;text-align:center">'+
+            (moodLabel ? '<span style="display:inline-block;background:'+moodColor+';color:white;padding:2px 6px;border-radius:6px;font-size:10px">'+moodLabel.label+'</span>' : '—')+
+          '</td>'+
+          '<td style="padding:4px 6px;border:1px solid #eee;text-align:center">'+(data.sleep||'—')+'</td>'+
+          '<td style="padding:4px 6px;border:1px solid #eee;text-align:center">'+(data.meds?'✓':'')+'</td>'+
+          '<td style="padding:4px 6px;border:1px solid #eee;font-style:italic">'+(data.note||'')+'</td>'+
+          '</tr>';
+      });
+      tableHtml += '</table>';
+      
+      sectionsHtml += '<div class="section"><div class="sec-title">📊 Трекер настрою: '+weekLabel+'</div>'+tableHtml+'</div>';
+    });
   }
 
   if(!sectionsHtml){
