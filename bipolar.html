@@ -925,12 +925,13 @@ const moodLevels = [
 
 const dayNames = ['Пн','Вт','Ср','Чт','Пт','Сб','Нд'];
 
-function getWeekDates(){
+function getWeekDates(weekOffset){
+  if(weekOffset === undefined) weekOffset = 0;
   const today = new Date();
   const day = today.getDay();
-  const diff = day === 0 ? -6 : 1 - day; // Monday as start
+  const diff = day === 0 ? -6 : 1 - day;
   const monday = new Date(today);
-  monday.setDate(today.getDate() + diff);
+  monday.setDate(today.getDate() + diff + (weekOffset * 7));
   const dates = [];
   for(let i=0;i<7;i++){
     const d = new Date(monday);
@@ -952,64 +953,172 @@ function saveTrackerData(data){
 }
 function dateKey(d){ return d.toISOString().slice(0,10); }
 
-function buildTracker(w, m){
-  w.appendChild(nt('Відмічай свій стан щодня. Натисни на клітинку у відповідному рядку. Внизу — прийом ліків і години сну.', m.color));
+function buildTracker(w, m, weekOffset){
+  if(weekOffset === undefined) weekOffset = 0;
+  w.appendChild(nt('Відмічай свій стан щодня. Натисни на клітинку щоб позначити рівень настрою.', m.color));
 
-  const weekDates = getWeekDates();
+  // Week navigation
+  const navWrap = document.createElement('div');
+  navWrap.style.cssText = 'display:flex;align-items:center;justify-content:space-between;margin:10px 0;gap:8px';
+
+  const prevBtn = document.createElement('button');
+  prevBtn.style.cssText = 'padding:8px 16px;border-radius:20px;border:1.5px solid var(--border);background:white;font-size:13px;font-weight:600;cursor:pointer';
+  prevBtn.textContent = '← Попередній';
+  prevBtn.onclick = () => {
+    const inner = document.getElementById('module-inner');
+    inner.innerHTML = '';
+    const header = document.createElement('div');
+    header.className = 'module-header';
+    header.style.background = m.bg;
+    header.innerHTML = '<span class="mh-icon">'+m.icon+'</span><div><div class="mh-title" style="color:'+m.color+'">'+m.title+'</div><div class="mh-sub">'+m.sub+'</div></div>';
+    inner.appendChild(header);
+    buildTracker(inner, m, weekOffset - 1);
+  };
+
+  const weekDates = getWeekDates(weekOffset);
+  const weekLabel = document.createElement('div');
+  weekLabel.style.cssText = 'font-size:13px;font-weight:700;color:'+m.color+';text-align:center;flex:1';
+  weekLabel.textContent = weekDates[0].toLocaleDateString('uk-UA',{day:'numeric',month:'short'}) + ' — ' + weekDates[6].toLocaleDateString('uk-UA',{day:'numeric',month:'short',year:'numeric'});
+  if(weekOffset < 0) weekLabel.textContent += ' (минулий)';
+
+  const nextBtn = document.createElement('button');
+  nextBtn.style.cssText = 'padding:8px 16px;border-radius:20px;border:1.5px solid var(--border);background:white;font-size:13px;font-weight:600;cursor:pointer';
+  nextBtn.textContent = 'Наступний →';
+  nextBtn.disabled = weekOffset >= 0;
+  nextBtn.style.opacity = weekOffset >= 0 ? '0.4' : '1';
+  nextBtn.onclick = () => {
+    const inner = document.getElementById('module-inner');
+    inner.innerHTML = '';
+    const header = document.createElement('div');
+    header.className = 'module-header';
+    header.style.background = m.bg;
+    header.innerHTML = '<span class="mh-icon">'+m.icon+'</span><div><div class="mh-title" style="color:'+m.color+'">'+m.title+'</div><div class="mh-sub">'+m.sub+'</div></div>';
+    inner.appendChild(header);
+    buildTracker(inner, m, weekOffset + 1);
+  };
+
+  navWrap.appendChild(prevBtn);
+  navWrap.appendChild(weekLabel);
+  navWrap.appendChild(nextBtn);
+  w.appendChild(navWrap);
+
   const tracker = getTrackerData();
 
+  // Add CSS for tracker table
+  if(!document.getElementById('tracker-style')){
+    const style = document.createElement('style');
+    style.id = 'tracker-style';
+    style.textContent = `
+      .tr-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:11px}
+      .tr-table th{background:#f5f5f5;padding:8px 4px;text-align:center;border:1px solid #e0e0e0;font-weight:600;font-size:11px}
+      .tr-table td{border:1px solid #e0e0e0;padding:0;text-align:center}
+      .tr-label{text-align:left!important;padding:8px!important;font-size:11px;font-weight:600;white-space:nowrap;min-width:110px;background:white;position:sticky;left:0;z-index:1}
+      .tr-label.is-stable{background:#E3F5EC;color:#3A8B5C}
+      .tr-cell{width:44px;height:36px;cursor:pointer;display:table-cell;vertical-align:middle;transition:all .15s}
+      .tr-cell:hover{filter:brightness(0.9)}
+      .tr-cell.active::after{content:"✓";font-weight:800;font-size:13px;color:white}
+      .tr-meta-label{color:#C8892A;font-weight:700}
+      .tr-cb{width:18px;height:18px;cursor:pointer}
+      .tr-sleep-inp{width:36px;border:1px solid #e0e0e0;border-radius:4px;text-align:center;font-size:11px;padding:2px}
+      .tr-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:8px}
+    `;
+    document.head.appendChild(style);
+  }
+
   const wrap = document.createElement('div');
-  wrap.className = 'tracker-wrap';
+  wrap.className = 'tr-wrap';
+
   const table = document.createElement('table');
-  table.className = 'tracker-table';
+  table.className = 'tr-table';
 
   // Header row
   const thead = document.createElement('tr');
-  thead.innerHTML = '<th class="tracker-row-label">День</th>' + weekDates.map(d => {
-    const dn = dayNames[d.getDay()===0?6:d.getDay()-1];
-    return '<th>'+dn+'<br>'+d.getDate()+'</th>';
-  }).join('');
+  const cornerTh = document.createElement('th');
+  cornerTh.className = 'tr-label';
+  cornerTh.textContent = 'Рівень настрою';
+  thead.appendChild(cornerTh);
+  weekDates.forEach(d => {
+    const th = document.createElement('th');
+    const dn = ['Пн','Вт','Ср','Чт','Пт','Сб','Нд'][d.getDay()===0?6:d.getDay()-1];
+    th.innerHTML = dn + '<br>' + d.getDate();
+    thead.appendChild(th);
+  });
   table.appendChild(thead);
 
   // Mood level rows
   moodLevels.forEach(level => {
     const tr = document.createElement('tr');
+
     const labelTd = document.createElement('td');
-    labelTd.className = 'tracker-row-label' + (level.id==='stable' ? ' stable' : '');
+    labelTd.className = 'tr-label' + (level.id==='stable'?' is-stable':'');
+    labelTd.style.color = level.color;
     labelTd.textContent = level.label;
     tr.appendChild(labelTd);
 
     weekDates.forEach(d => {
       const key = dateKey(d);
       const td = document.createElement('td');
-      td.className = 't-cell';
-      td.style.background = (tracker[key]?.mood === level.id) ? level.color : level.bg;
-      if(tracker[key]?.mood === level.id) td.classList.add('active');
+      td.className = 'tr-cell';
+      const isActive = tracker[key]?.mood === level.id;
+      td.style.background = isActive ? level.color : level.bg;
+      if(isActive) td.classList.add('active');
+
       td.onclick = () => {
         const t = getTrackerData();
         if(!t[key]) t[key] = {};
-        t[key].mood = (t[key].mood === level.id) ? null : level.id;
+        if(t[key].mood === level.id){
+          t[key].mood = null;
+          td.style.background = level.bg;
+          td.classList.remove('active');
+        } else {
+          // Clear other mood cells in this column
+          table.querySelectorAll('tr').forEach(row => {
+            const cells = row.querySelectorAll('.tr-cell');
+            // find the cell in the same column
+          });
+          // Clear active in same column
+          const colIdx = Array.from(tr.cells).indexOf(td);
+          table.querySelectorAll('tr').forEach(row => {
+            const cell = row.cells[colIdx];
+            if(cell && cell.classList.contains('tr-cell') && cell !== td){
+              cell.style.background = '';
+              cell.classList.remove('active');
+              // reset to the level's bg
+            }
+          });
+          // Set this cell's level bg reset for others
+          moodLevels.forEach(lvl => {
+            const sameColCell = table.querySelector('tr[data-level="'+lvl.id+'"] td:nth-child('+(colIdx+1)+')');
+            if(sameColCell && sameColCell !== td){
+              sameColCell.style.background = lvl.bg;
+              sameColCell.classList.remove('active');
+            }
+          });
+          t[key].mood = level.id;
+          td.style.background = level.color;
+          td.classList.add('active');
+        }
         saveTrackerData(t);
-        renderTrackerBody();
       };
       tr.appendChild(td);
     });
+    tr.dataset.level = level.id;
     table.appendChild(tr);
   });
 
   // Medication row
   const medTr = document.createElement('tr');
-  medTr.className = 'tracker-meta-row';
   const medLabel = document.createElement('td');
-  medLabel.className = 'tracker-row-label';
+  medLabel.className = 'tr-label tr-meta-label';
   medLabel.textContent = '💊 Прийом ліків';
   medTr.appendChild(medLabel);
   weekDates.forEach(d => {
     const key = dateKey(d);
     const td = document.createElement('td');
+    td.style.padding = '6px';
     const cb = document.createElement('input');
     cb.type = 'checkbox';
-    cb.style.cssText = 'width:18px;height:18px;cursor:pointer';
+    cb.className = 'tr-cb';
     cb.checked = !!tracker[key]?.meds;
     cb.onchange = () => {
       const t = getTrackerData();
@@ -1024,16 +1133,16 @@ function buildTracker(w, m){
 
   // Sleep hours row
   const sleepTr = document.createElement('tr');
-  sleepTr.className = 'tracker-meta-row';
   const sleepLabel = document.createElement('td');
-  sleepLabel.className = 'tracker-row-label';
+  sleepLabel.className = 'tr-label tr-meta-label';
   sleepLabel.textContent = '😴 Години сну';
   sleepTr.appendChild(sleepLabel);
   weekDates.forEach(d => {
     const key = dateKey(d);
     const td = document.createElement('td');
+    td.style.padding = '4px';
     const inp = document.createElement('input');
-    inp.className = 'tracker-input';
+    inp.className = 'tr-sleep-inp';
     inp.type = 'number';
     inp.min = 0; inp.max = 24;
     inp.value = tracker[key]?.sleep || '';
@@ -1052,23 +1161,25 @@ function buildTracker(w, m){
   wrap.appendChild(table);
   w.appendChild(wrap);
 
-  // Legend
+  // Color legend
   const legend = document.createElement('div');
-  legend.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;margin-top:14px';
+  legend.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;margin-top:12px';
   moodLevels.forEach(l => {
-    legend.innerHTML += '<div style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted)"><div style="width:12px;height:12px;border-radius:3px;background:'+l.color+'"></div>'+l.label+'</div>';
+    const item = document.createElement('div');
+    item.style.cssText = 'display:flex;align-items:center;gap:4px;font-size:11px;color:#888';
+    item.innerHTML = '<div style="width:12px;height:12px;border-radius:3px;background:'+l.color+'"></div>'+l.label;
+    legend.appendChild(item);
   });
   w.appendChild(legend);
 
   // Daily notes
   w.appendChild(iTitle('Нотатки до днів', m.color));
   const notesWrap = document.createElement('div');
-  notesWrap.id = 'tracker-notes-wrap';
   weekDates.forEach(d => {
     const key = dateKey(d);
-    const dn = dayNames[d.getDay()===0?6:d.getDay()-1];
-    const noteBlock = document.createElement('div');
-    noteBlock.style.marginTop = '12px';
+    const dn = ['Пн','Вт','Ср','Чт','Пт','Сб','Нд'][d.getDay()===0?6:d.getDay()-1];
+    const block = document.createElement('div');
+    block.style.marginTop = '12px';
     const lbl = document.createElement('div');
     lbl.style.cssText = 'font-size:12px;font-weight:600;color:'+m.color+';margin-bottom:4px';
     lbl.textContent = dn + ', ' + d.getDate() + ' число';
@@ -1082,23 +1193,25 @@ function buildTracker(w, m){
       t[key].note = ta.value;
       saveTrackerData(t);
     };
-    noteBlock.appendChild(lbl);
-    noteBlock.appendChild(ta);
-    notesWrap.appendChild(noteBlock);
+    block.appendChild(lbl);
+    block.appendChild(ta);
+    notesWrap.appendChild(block);
   });
   w.appendChild(notesWrap);
 
-  // Week summary + send report button
+  // Week summary
   w.appendChild(iTitle('Підсумок тижня', m.color));
   w.appendChild(fld('Що я помічаю у своїх патернах цього тижня?', '', true));
   w.appendChild(fld('Що допомагало мені залишатися стабільною?', ''));
 
+  // Weekly report button
   const sendBtn = document.createElement('button');
   sendBtn.style.cssText = 'width:100%;margin-top:16px;padding:14px;border-radius:50px;border:none;background:'+m.color+';color:white;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px';
   sendBtn.innerHTML = '📤 Надіслати тижневий звіт настрою';
   sendBtn.onclick = () => generateWeeklyMoodReport(weekDates);
   w.appendChild(sendBtn);
 }
+
 
 function generateWeeklyMoodReport(weekDates){
   const session = getSession();
