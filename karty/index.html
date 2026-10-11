@@ -67,6 +67,30 @@ button,select{font:inherit;color:inherit}
 .deck-tile h2{margin:0 0 4px;font-size:21px;font-weight:600}
 .deck-tile p{margin:0;color:var(--muted);font-size:15px}
 .deck-tile .go{margin-top:12px;display:inline-block;color:var(--accent);font-weight:500}
+.sess-btn{margin-left:auto;min-height:36px;padding:6px 14px;white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+.sess-btn .dot,.cbar .dot{width:9px;height:9px;border-radius:5px;background:var(--muted);flex:none}
+.sess-btn.live .dot,.cbar.live .dot{background:#3aa76d;box-shadow:0 0 0 3px rgba(58,167,109,.22)}
+.home-head .sess-btn{margin:18px auto 0}
+.modal{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:16px}
+.modal[hidden]{display:none}
+.modal-box{background:var(--surface);color:var(--text);border-radius:16px;padding:24px;max-width:520px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.modal-box h2{margin:0 0 10px;font-size:20px;font-weight:600}
+.modal-box p{margin:0 0 14px}
+.modal-box .small{font-size:14px;color:var(--muted)}
+.link-row{display:flex;gap:8px;margin:0 0 14px}
+.link-row input{flex:1;min-width:0;border:1px solid var(--line);background:var(--surface-2);color:var(--text);border-radius:10px;padding:8px 10px;font:inherit;font-size:14px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.cbar{display:none;position:sticky;top:env(safe-area-inset-top,0px);z-index:22;background:var(--surface);border-bottom:1px solid var(--line);
+  padding:10px clamp(12px,3vw,28px);align-items:center;gap:10px;flex-wrap:wrap;font-size:15px}
+body.client .cbar{display:flex}
+body:not(.in-deck) #cZoomWrap{display:none}
+.cbar .spacer{flex:1}
+.cbar label{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:14px}
+.cbar input{width:120px;accent-color:var(--accent)}
+.cbar .btn{min-height:34px;padding:5px 12px}
+body.client .panel,body.client .reveal,body.client .sess-btn{display:none !important}
+body.client .deck-tile{pointer-events:none}
+body.client .deck-tile .go{display:none}
 body:not(.in-deck) .panel,body:not(.in-deck) main,body:not(.in-deck) .tray,body:not(.in-deck) .reveal{display:none !important}
 body.in-deck .home{display:none}
 .controls{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:flex-end}
@@ -155,11 +179,15 @@ body.nonum .ov-card .badge{display:none}
 </head>
 <body>
 
+<div class="cbar" id="cbar"><span class="dot"></span><span id="cStatus">Підключення до сесії…</span><span class="spacer"></span>
+  <button class="btn" id="cRetry" hidden>Під’єднатися знову</button>
+  <label id="cZoomWrap">Розмір карток <input type="range" id="czoom" min="70" max="300" step="10" value="150"></label></div>
 <section class="home" id="home">
   <div class="home-head">
     <svg class="mono" viewBox="60 110 90 80" aria-hidden="true"><defs><linearGradient id="hau" gradientUnits="userSpaceOnUse" x1="50" y1="110" x2="150" y2="190"><stop offset="0" stop-color="#e8c66e"/><stop offset=".5" stop-color="#b8892f"/><stop offset="1" stop-color="#e2bb5f"/></linearGradient></defs><g fill="none" stroke="url(#hau)" stroke-linecap="round"><circle cx="88" cy="150" r="33" stroke-width="5"/><path d="M96 116 V154 A20 20 0 0 0 136 154 V116" stroke-width="5"/><path d="M89.5 115 H102.5 M129.5 115 H142.5" stroke-width="2.6"/></g></svg>
     <h1>Метафоричні карти</h1>
-    <p>Оберіть колоду для сесії</p>
+    <p id="homeSub">Оберіть колоду для сесії</p>
+    <button class="btn sess-btn" id="btnSessHome"><span class="dot"></span><span class="lbl">Спільна сесія</span></button>
   </div>
   <div class="deck-list" id="deckList"></div>
 </section>
@@ -169,6 +197,7 @@ body.nonum .ov-card .badge{display:none}
   <div class="topbar">
     <button class="btn home-btn" id="btnHome">← Усі колоди</button>
     <h1 id="deckTitle"></h1>
+    <button class="btn sess-btn" id="btnSess"><span class="dot"></span><span class="lbl">Спільна сесія</span></button>
   </div>
   <div class="controls">
     <div class="group"><span>Картки</span>
@@ -213,6 +242,16 @@ body.nonum .ov-card .badge{display:none}
   <button class="btn primary" id="btnShowPicks" disabled>Показати вибір</button>
 </footer>
 
+</div>
+
+<div class="modal" id="sessModal" hidden role="dialog" aria-modal="true" aria-labelledby="sessTitle">
+  <div class="modal-box">
+    <h2 id="sessTitle">Спільна сесія</h2>
+    <p id="sessStatus">Створюю сесію…</p>
+    <div class="link-row"><input id="sessLink" readonly aria-label="Посилання для клієнта"><button class="btn primary" id="btnCopy">Копіювати</button></div>
+    <p class="small">Надішліть це посилання клієнту чи клієнтці. Людина побачить те саме, що й Ви, і зможе обирати та перетягувати карти. Колоду, схему й налаштування змінюєте лише Ви. Вибір карт передається напряму між браузерами і ніде не зберігається.</p>
+    <div class="modal-actions"><button class="btn" id="btnEnd">Завершити сесію</button><button class="btn primary" id="btnModalClose">Готово</button></div>
+  </div>
 </div>
 
 <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Обрані картки">
@@ -276,7 +315,7 @@ const LAYOUTS = [
 const L = id => LAYOUTS.find(l=>l.id===id);
 
 const $ = s => document.querySelector(s);
-const state = { deck:'vona', view:'open', count:1, layout:'free', order:[], picked:[], ov:null };
+const state = { screen:'home', deck:'vona', view:'open', count:1, layout:'free', order:[], picked:[], ov:null };
 let ovTimer = null;
 const D = () => DECKS[state.deck];
 const img = id => D().imgs[id];
@@ -293,10 +332,10 @@ const limit = () => state.layout==='free' ? state.count : L(state.layout).pos.le
 const limited = () => limit()>0;
 const full = () => limited() && state.picked.length>=limit();
 
-function build(){
+function build(order){
   clearTimeout(ovTimer);
   const N=D().imgs.length;
-  state.order = shuffle([...Array(N).keys()]);
+  state.order = order || shuffle([...Array(N).keys()]);
   state.picked = [];
   const g=$('#grid'); g.className='grid instant'; g.innerHTML=''; g.dataset.deck=state.deck;
   state.order.forEach(id=>{
@@ -306,7 +345,7 @@ function build(){
     b.setAttribute('aria-label','Картка');
     b.innerHTML='<span class="pos"></span><span class="num"></span><span class="inner"><span class="face back"></span><span class="face front"><img alt="" draggable="false"></span></span>';
     b.querySelector('img').src=img(id);
-    b.addEventListener('click',()=>onCard(id,b));
+    b.addEventListener('click',()=>act('card',id));
     g.appendChild(b);
   });
   g.querySelectorAll('.card').forEach((c,i)=>c.querySelector('.pos').textContent=i+1);
@@ -314,7 +353,8 @@ function build(){
   refresh();
 }
 
-function onCard(id,el){
+function onCard(id){
+  const el=document.querySelector('.card[data-id="'+id+'"]'); if(!el) return;
   const at=state.picked.indexOf(id);
   if(state.view==='open'){
     if(at>=0){ state.picked.splice(at,1); }
@@ -339,6 +379,7 @@ function refresh(){
   g.querySelectorAll('.card').forEach(c=>{
     const id=+c.dataset.id, at=state.picked.indexOf(id);
     c.classList.toggle('picked',at>=0);
+    if(state.view==='closed') c.classList.toggle('flipped',at>=0);
     c.querySelector('.num').textContent = at+1;
     c.setAttribute('aria-pressed',at>=0);
   });
@@ -351,10 +392,11 @@ function refresh(){
     const b=document.createElement('button'); b.className='thumb'; b.type='button';
     b.setAttribute('aria-label','Показати обрану картку '+(i+1));
     b.innerHTML='<img alt="">'; b.firstChild.src=img(id);
-    b.addEventListener('click',()=>openSingle(i));
+    b.addEventListener('click',()=>act('single',i));
     t.appendChild(b);
   });
   $('#btnShowPicks').disabled=!n;
+  sync();
 }
 
 /* overlay */
@@ -370,7 +412,7 @@ function openTable(){
 }
 function validOv(id,n){ return id==='grid'||id==='line'||(L(id)&&L(id).pos&&L(id).pos.length===n); }
 function openSingle(i){ const lay=state.ov&&state.ov.layout; state.ov={mode:'single',idx:i,layout:lay,off:state.ov?state.ov.off:{}}; renderOv(); }
-function closeOv(){ state.ov=null; $('#overlay').classList.remove('on'); }
+function closeOv(){ state.ov=null; $('#overlay').classList.remove('on'); sync(); }
 
 function fillOvLayouts(n){
   const s=$('#ovLayout'); s.innerHTML='';
@@ -421,8 +463,8 @@ function renderOv(){
     const prev=document.createElement('button'); prev.className='arrow'; prev.textContent='‹'; prev.setAttribute('aria-label','Попередня'); prev.hidden=p.length<2;
     const next=document.createElement('button'); next.className='arrow'; next.textContent='›'; next.setAttribute('aria-label','Наступна'); next.hidden=p.length<2;
     const im=document.createElement('img'); im.alt=''; im.src=img(p[i]); im.style.borderRadius='12px'; im.style.boxShadow='0 8px 30px rgba(0,0,0,.5)'; im.style.objectFit='contain';
-    prev.onclick=()=>{state.ov.idx=(i-1+p.length)%p.length;renderOv()};
-    next.onclick=()=>{state.ov.idx=(i+1)%p.length;renderOv()};
+    prev.onclick=()=>act('nav',-1);
+    next.onclick=()=>act('nav',1);
     body.append(prev,im,next);
   }
   fitOv();
@@ -451,10 +493,12 @@ function fitOv(){
       c.style.top=(y0+q[1]*(h+gap)+off.y*w)+'px';
     });
     $('#btnRealign').hidden=!moved;
+    sync();
   }else{
     const W=body.clientWidth, H=body.clientHeight;
     const im=body.querySelector('img'); const arrows=n>1?2*(48+24):0;
     im.style.maxWidth=Math.max(100,W-arrows)+'px'; im.style.maxHeight=Math.max(100,H)+'px';
+    sync();
   }
 }
 
@@ -468,33 +512,33 @@ function attachDrag(el,i){
   el.addEventListener('pointermove',e=>{
     if(!start) return;
     const dx=e.clientX-sx, dy=e.clientY-sy;
-    if(!drag && Math.hypot(dx,dy)>6){ drag=true; el.classList.add('dragging'); el.style.zIndex=++zTop; }
-    if(drag){ state.ov.off[i]={x:start.x+dx/geo.w, y:start.y+dy/geo.w}; fitOv(); }
+    if(!drag && Math.hypot(dx,dy)>6){ drag=true; draggingIdx=i; el.classList.add('dragging'); el.style.zIndex=++zTop; }
+    if(drag){ const off={x:start.x+dx/geo.w, y:start.y+dy/geo.w}; state.ov.off[i]=off; fitOv(); if(role==='client') sendDrag(i,off); }
   });
   const end=()=>{
     if(!start) return;
-    const wasDrag=drag; start=null; drag=false; el.classList.remove('dragging');
-    if(!wasDrag && state.picked.length>1) openSingle(i);
+    const wasDrag=drag; start=null; drag=false; draggingIdx=null; el.classList.remove('dragging');
+    if(wasDrag && role==='client') sendDrag(i,state.ov.off[i],true);
+    if(!wasDrag && state.picked.length>1) act('single',i);
   };
   el.addEventListener('pointerup',end);
-  el.addEventListener('pointercancel',()=>{start=null;drag=false;el.classList.remove('dragging');});
-  el.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); if(state.picked.length>1) openSingle(i); } });
+  el.addEventListener('pointercancel',()=>{start=null;drag=false;draggingIdx=null;el.classList.remove('dragging');});
+  el.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); if(state.picked.length>1) act('single',i); } });
 }
 
 window.addEventListener('resize',fitOv);
-$('#btnClose').onclick=closeOv;
-$('#btnBack').onclick=openTable;
-$('#btnRealign').onclick=()=>{ state.ov.off={}; fitOv(); };
-$('#ovLayout').addEventListener('change',e=>{ state.ov.layout=e.target.value; state.ov.off={}; fitOv(); });
-$('#btnShowPicks').onclick=()=>{ state.picked.length===1?openSingle(0):openTable(); };
-$('#overlay').addEventListener('click',e=>{ if(e.target.id==='overlay') closeOv(); });
+$('#btnClose').onclick=()=>act('close');
+$('#btnBack').onclick=()=>act('table');
+$('#btnRealign').onclick=()=>act('realign');
+$('#ovLayout').addEventListener('change',e=>act('ovlayout',e.target.value));
+$('#btnShowPicks').onclick=()=>act('showpicks');
+$('#overlay').addEventListener('click',e=>{ if(e.target.id==='overlay') act('close'); });
 document.addEventListener('keydown',e=>{
-  if(!state.ov) return;
-  if(e.key==='Escape'){ state.ov.mode==='single'&&state.picked.length>1 ? openTable() : closeOv(); }
+  if(!state.ov || !$('#sessModal').hidden) return;
+  if(e.key==='Escape'){ state.ov.mode==='single'&&state.picked.length>1 ? act('table') : act('close'); }
   if(state.ov.mode==='single'&&state.picked.length>1){
-    const p=state.picked.length;
-    if(e.key==='ArrowRight'){state.ov.idx=(state.ov.idx+1)%p;renderOv();}
-    if(e.key==='ArrowLeft'){state.ov.idx=(state.ov.idx-1+p)%p;renderOv();}
+    if(e.key==='ArrowRight') act('nav',1);
+    if(e.key==='ArrowLeft') act('nav',-1);
   }
 });
 
@@ -512,21 +556,22 @@ function seg(sel,attr,fn){
   LAYOUTS.forEach(l=>{ const o=document.createElement('option'); o.value=l.id; o.textContent=l.name; s.appendChild(o); });
   s.addEventListener('change',()=>{ state.layout=s.value; $('#grpCount').hidden = state.layout!=='free'; closeOv(); build(); });
 })();
-function setDeck(d){
-  state.deck=d;
+function setDeck(d,order){
+  state.deck=d; state.screen=d;
   $('#deckTitle').textContent='«'+D().name+'»';
   document.title=D().name+' · Метафоричні карти';
   document.documentElement.style.setProperty('--ar',D().ar);
   document.documentElement.style.setProperty('--cw',D().cw+'px');
   $('#zoom').value=D().cw;
   document.body.classList.add('in-deck');
-  closeOv(); build(); window.scrollTo(0,0);
+  state.ov=null; $('#overlay').classList.remove('on');
+  build(order); window.scrollTo(0,0);
 }
 function showHome(){
-  closeOv(); clearTimeout(ovTimer);
+  state.screen='home'; closeOv(); clearTimeout(ovTimer);
   document.body.classList.remove('in-deck','compact');
   document.title='Метафоричні карти';
-  window.scrollTo(0,0);
+  window.scrollTo(0,0); sync();
 }
 function route(){
   const h=location.hash.slice(1);
@@ -546,16 +591,165 @@ function route(){
     list.appendChild(b);
   });
 })();
-window.addEventListener('hashchange',route);
+
+/* ===== Спільна сесія (PeerJS, пряме з'єднання між браузерами) ===== */
+const QS=new URLSearchParams(location.search);
+const SESS_CODE=QS.get('s');
+let role = SESS_CODE ? 'client' : 'solo';
+let peer=null, conns=[], conn=null, syncT=null, draggingIdx=null, myCode=null, lastSig='', gridKey='';
+const ACTIONS={
+  card:id=>{ if(state.screen!=='home') onCard(id); },
+  single:i=>{ if(i>=0&&i<state.picked.length) openSingle(i); },
+  table:()=>openTable(),
+  close:()=>closeOv(),
+  nav:d=>{ const p=state.picked.length; if(!state.ov||!p) return; state.ov.idx=(state.ov.idx+d+p)%p; renderOv(); },
+  ovlayout:v=>{ if(!state.ov||!validOv(v,state.picked.length)) return; state.ov.layout=v; state.ov.off={}; fitOv(); },
+  realign:()=>{ if(state.ov){ state.ov.off={}; fitOv(); } },
+  drag:(i,off)=>{ if(state.ov&&state.ov.mode==='table'&&off&&isFinite(off.x)&&isFinite(off.y)){ state.ov.off[i]=off; fitOv(); } },
+  showpicks:()=>{ if(!state.picked.length) return; state.picked.length===1?openSingle(0):openTable(); }
+};
+function act(name,...a){
+  if(role==='client'){ send({t:'act',name,a}); return; }
+  ACTIONS[name] && ACTIONS[name](...a);
+}
+function send(m){ try{ if(conn&&conn.open) conn.send(m); }catch(e){} }
+let dragT=null, dragPending=null;
+function sendDrag(i,off,now){
+  dragPending=[i,off];
+  if(now){ clearTimeout(dragT); dragT=null; send({t:'act',name:'drag',a:dragPending}); return; }
+  if(dragT) return;
+  dragT=setTimeout(()=>{ dragT=null; send({t:'act',name:'drag',a:dragPending}); },50);
+}
+function snapshot(){
+  return {screen:state.screen, deck:state.deck, view:state.view, layout:state.layout, count:state.count,
+    order:state.order, picked:state.picked, ov:state.ov, nonum:document.body.classList.contains('nonum')};
+}
+function sync(){
+  if(role!=='host'||!conns.length||syncT) return;
+  syncT=setTimeout(()=>{ syncT=null; const s=snapshot(); conns.forEach(c=>{ try{ c.open&&c.send({t:'state',s}); }catch(e){} }); },40);
+}
+function loadPeer(){
+  if(window.Peer) return Promise.resolve();
+  return new Promise((res,rej)=>{
+    const sc=document.createElement('script');
+    sc.src=QS.get('peerlib')||'https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js';
+    sc.onload=res; sc.onerror=()=>rej(new Error('lib')); document.head.appendChild(sc);
+  });
+}
+function peerOpts(){
+  const h=QS.get('peerhost');
+  return h ? {host:h, port:+(QS.get('peerport')||9000), path:'/', secure:false, debug:0} : {debug:0};
+}
+function randCode(){ const a='abcdefghjkmnpqrstuvwxyz23456789'; let s=''; const r=new Uint32Array(6); crypto.getRandomValues(r); r.forEach(x=>s+=a[x%a.length]); return s; }
+function sessLink(){ const u=new URL(location.href); u.hash=''; u.search=''; u.searchParams.set('s',myCode);
+  ['peerhost','peerport','peerlib'].forEach(k=>{ if(QS.get(k)) u.searchParams.set(k,QS.get(k)); }); return u.toString(); }
+
+/* --- психолог (ведучий) --- */
+function setHostStatus(){
+  const n=conns.length, live=role==='host';
+  document.querySelectorAll('.sess-btn').forEach(b=>{
+    b.classList.toggle('live',live&&n>0);
+    b.querySelector('.lbl').textContent = !live ? 'Спільна сесія' : n ? (n===1?'Сесія: 1 учасник':'Сесія: '+n+' учасники') : 'Сесія: очікування';
+  });
+  if(live) $('#sessStatus').textContent = n ? (n===1?'Підключено 1 учасника. Усе, що відбувається на екрані, людина бачить у себе.':'Підключено учасників: '+n+'.') : 'Сесію створено. Очікуємо, поки людина відкриє посилання…';
+}
+function openSessModal(){ $('#sessModal').hidden=false; if(role!=='host') startHost(); else setHostStatus(); }
+function startHost(){
+  $('#sessStatus').textContent='Створюю сесію…'; $('#sessLink').value=''; $('#btnCopy').disabled=true;
+  loadPeer().then(()=>{
+    myCode=randCode();
+    peer=new Peer('ou-karty-'+myCode, peerOpts());
+    peer.on('open',()=>{ role='host'; $('#sessLink').value=sessLink(); $('#btnCopy').disabled=false; setHostStatus(); });
+    peer.on('connection',c=>{
+      c.on('open',()=>{ conns.push(c); setHostStatus(); try{ c.send({t:'state',s:snapshot()}); }catch(e){} });
+      c.on('data',d=>{ if(!d||typeof d!=='object') return;
+        if(d.t==='act' && Object.prototype.hasOwnProperty.call(ACTIONS,d.name) && Array.isArray(d.a)) ACTIONS[d.name](...d.a);
+        if(d.t==='hello'){ try{ c.send({t:'state',s:snapshot()}); }catch(e){} } });
+      const gone=()=>{ conns=conns.filter(x=>x!==c); setHostStatus(); };
+      c.on('close',gone); c.on('error',gone);
+    });
+    peer.on('disconnected',()=>{ if(peer&&!peer.destroyed) peer.reconnect(); });
+    peer.on('error',e=>{
+      if(e.type==='unavailable-id'){ peer.destroy(); startHost(); return; }
+      if(role!=='host') $('#sessStatus').textContent='Не вдалося створити сесію. Перевірте інтернет і спробуйте ще раз.';
+    });
+  }).catch(()=>{ $('#sessStatus').textContent='Не вдалося завантажити модуль спільної сесії. Перевірте інтернет і спробуйте ще раз.'; });
+}
+function endHost(){
+  conns.forEach(c=>{ try{ c.send({t:'end'}); }catch(e){} });
+  setTimeout(()=>{ try{ peer&&peer.destroy(); }catch(e){} peer=null; conns=[]; role='solo'; setHostStatus(); },200);
+  $('#sessModal').hidden=true;
+}
+$('#btnSess').onclick=openSessModal;
+$('#btnSessHome').onclick=openSessModal;
+$('#btnModalClose').onclick=()=>{ $('#sessModal').hidden=true; };
+$('#btnEnd').onclick=()=>{ if(role==='host') endHost(); else $('#sessModal').hidden=true; };
+$('#sessModal').addEventListener('click',e=>{ if(e.target.id==='sessModal') $('#sessModal').hidden=true; });
+$('#btnCopy').onclick=()=>{
+  const v=$('#sessLink').value; if(!v) return;
+  const done=()=>{ $('#btnCopy').textContent='Скопійовано'; setTimeout(()=>$('#btnCopy').textContent='Копіювати',1600); };
+  (navigator.clipboard ? navigator.clipboard.writeText(v) : Promise.reject()).then(done).catch(()=>{ $('#sessLink').select(); try{ document.execCommand('copy'); done(); }catch(e){} });
+};
+window.addEventListener('beforeunload',()=>{ if(role==='host') conns.forEach(c=>{ try{ c.send({t:'end'}); }catch(e){} }); });
+
+/* --- клієнт --- */
+function cStatus(txt,live,retry){ $('#cStatus').textContent=txt; $('#cbar').classList.toggle('live',!!live); $('#cRetry').hidden=!retry; }
+function applyState(s){
+  if(!s||!DECKS[s.deck]) return;
+  document.body.classList.toggle('nonum',!!s.nonum);
+  if(s.screen==='home'){
+    if(document.body.classList.contains('in-deck')){ state.ov=null; $('#overlay').classList.remove('on'); document.body.classList.remove('in-deck'); window.scrollTo(0,0); }
+    gridKey=''; $('#homeSub').textContent='Очікуємо, поки психолог відкриє колоду…'; return;
+  }
+  state.layout=s.layout; state.count=s.count;
+  const key=s.deck+'|'+s.view+'|'+s.order.join(',');
+  if(key!==gridKey){
+    state.view=s.view; gridKey=key; lastSig='';
+    setDeck(s.deck, s.order);
+    $('#czoom').value=D().cw;
+  }
+  state.picked=s.picked.slice(); refresh();
+  if(!s.ov){ if(state.ov){ state.ov=null; $('#overlay').classList.remove('on'); } lastSig=''; return; }
+  const off={...(s.ov.off||{})};
+  if(draggingIdx!=null && state.ov && state.ov.off) off[draggingIdx]=state.ov.off[draggingIdx];
+  state.ov={...s.ov, off};
+  const sig=[s.ov.mode,s.ov.idx,s.ov.layout,s.picked.join(',')].join('|');
+  if(sig!==lastSig || !$('#overlay').classList.contains('on')){ lastSig=sig; renderOv(); } else fitOv();
+}
+function startClient(){
+  cStatus('Підключення до сесії…',false,false);
+  loadPeer().then(()=>{
+    if(peer){ try{ peer.destroy(); }catch(e){} }
+    peer=new Peer(peerOpts());
+    peer.on('open',()=>{
+      conn=peer.connect('ou-karty-'+SESS_CODE,{reliable:true});
+      conn.on('open',()=>{ cStatus('Спільна сесія · підключено',true,false); send({t:'hello'}); });
+      conn.on('data',d=>{ if(!d) return; if(d.t==='state') applyState(d.s);
+        if(d.t==='end'){ cStatus('Сесію завершено. Дякуємо!',false,false); try{ peer.destroy(); }catch(e){} } });
+      conn.on('close',()=>{ if(!$('#cStatus').textContent.startsWith('Сесію завершено')) cStatus('З’єднання перервалося.',false,true); });
+    });
+    peer.on('error',e=>{
+      if(e.type==='peer-unavailable') cStatus('Сесію не знайдено. Можливо, вона вже завершилася або посилання неповне.',false,true);
+      else cStatus('Не вдалося підключитися. Перевірте інтернет.',false,true);
+    });
+  }).catch(()=>cStatus('Не вдалося завантажити модуль сесії. Перевірте інтернет.',false,true));
+}
+$('#cRetry').onclick=startClient;
+$('#czoom').addEventListener('input',e=>{ document.documentElement.style.setProperty('--cw',e.target.value+'px'); });
+window.addEventListener('hashchange',()=>{ if(role!=='client') route(); });
 $('#btnHome').onclick=()=>{ if(location.hash){ location.hash=''; } else { showHome(); } };
 seg('#segView','v',v=>{ state.view=v; closeOv(); build(); });
-seg('#segNum','x',x=>document.body.classList.toggle('nonum',x==='0'));
+seg('#segNum','x',x=>{ document.body.classList.toggle('nonum',x==='0'); sync(); });
 seg('#segCount','n',n=>{ state.count=+n; closeOv(); build(); });
 $('#btnReset').onclick=()=>{ closeOv(); build(); };
 $('#zoom').addEventListener('input',e=>document.documentElement.style.setProperty('--cw',e.target.value+'px'));
 $('#btnHide').onclick=()=>document.body.classList.add('compact');
 $('#btnShow').onclick=()=>document.body.classList.remove('compact');
-route();
+if(role==='client'){
+  document.body.classList.add('client');
+  $('#homeSub').textContent='Очікуємо, поки психолог відкриє колоду…';
+  showHome(); startClient();
+}else route();
 </script>
 </body>
 </html>
