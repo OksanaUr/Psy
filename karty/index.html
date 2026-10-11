@@ -36,12 +36,39 @@ button,select{font:inherit;color:inherit}
 /* panel */
 .panel{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);
   border-bottom:1px solid var(--line);padding:0 clamp(12px,3vw,28px) 12px}
-.decks{display:flex;gap:4px;align-items:flex-end;border-bottom:1px solid var(--line);margin:0 calc(-1*clamp(12px,3vw,28px)) 12px;
-  padding:10px clamp(12px,3vw,28px) 0;overflow-x:auto}
-.decks h1{font-size:18px;font-weight:600;margin:0 18px 9px 0;letter-spacing:.01em;white-space:nowrap}
-.decks button{border:1px solid transparent;border-bottom:0;background:transparent;padding:8px 16px 9px;border-radius:10px 10px 0 0;
-  cursor:pointer;color:var(--muted);white-space:nowrap;margin-bottom:-1px}
-.decks button[aria-selected="true"]{background:var(--bg);border-color:var(--line);color:var(--text);font-weight:500}
+.topbar{display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line);margin:0 calc(-1*clamp(12px,3vw,28px)) 12px;
+  padding:10px clamp(12px,3vw,28px)}
+.topbar h1{font-size:18px;font-weight:600;margin:0;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.btn.home-btn{min-height:36px;padding:6px 12px;white-space:nowrap}
+
+/* title page */
+.home{min-height:100%;display:flex;flex-direction:column;align-items:center;padding:clamp(28px,6vh,72px) clamp(16px,4vw,40px) 40px}
+.home-head{text-align:center;margin-bottom:clamp(24px,5vh,48px)}
+.home-head .mono{width:46px;height:46px;margin:0 auto 14px;display:block}
+.home-head h1{font-size:clamp(26px,4vw,36px);font-weight:600;margin:0 0 6px;letter-spacing:.01em}
+.home-head p{margin:0;color:var(--muted);font-size:17px}
+.deck-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:clamp(16px,3vw,28px);width:100%;max-width:820px}
+.deck-tile{border:1px solid var(--line);background:var(--surface);border-radius:18px;padding:26px 22px 22px;cursor:pointer;text-align:left;
+  display:flex;flex-direction:column;gap:20px;transition:transform .2s,box-shadow .2s}
+.deck-tile:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.14)}
+.deck-tile:focus-visible{outline:3px solid var(--pick);outline-offset:3px}
+.fan{position:relative;height:200px}
+.fan img,.fan .fback{position:absolute;left:50%;bottom:6px;border-radius:9px;box-shadow:0 6px 18px rgba(0,0,0,.3);object-fit:cover;transform-origin:50% 100%;transition:transform .3s}
+.fan.land{height:170px}
+.fan.land img{width:54%;aspect-ratio:7/5}
+.fan.port img,.fan.port .fback{height:180px;aspect-ratio:2/3}
+.fan .c0{transform:translateX(-50%) rotate(-12deg) translateX(-28%)}
+.fan .c1{transform:translateX(-50%) rotate(0deg)}
+.fan .c2{transform:translateX(-50%) rotate(12deg) translateX(28%)}
+.deck-tile:hover .fan .c0{transform:translateX(-50%) rotate(-16deg) translateX(-36%)}
+.deck-tile:hover .fan .c2{transform:translateX(-50%) rotate(16deg) translateX(36%)}
+.fan .fback{background:#1b2140 url("img/back-svitlo.svg") center/100% 100% no-repeat}
+.fan.land .fback{display:none}
+.deck-tile h2{margin:0 0 4px;font-size:21px;font-weight:600}
+.deck-tile p{margin:0;color:var(--muted);font-size:15px}
+.deck-tile .go{margin-top:12px;display:inline-block;color:var(--accent);font-weight:500}
+body:not(.in-deck) .panel,body:not(.in-deck) main,body:not(.in-deck) .tray,body:not(.in-deck) .reveal{display:none !important}
+body.in-deck .home{display:none}
 .controls{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:flex-end}
 .group{display:flex;flex-direction:column;gap:5px}
 .group>span{font-size:13px;color:var(--muted)}
@@ -50,7 +77,7 @@ button,select{font:inherit;color:inherit}
 .seg button{border:0;background:transparent;padding:7px 14px;border-radius:8px;cursor:pointer;min-height:36px}
 .seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:500}
 select.sel{border:1px solid var(--line);background:var(--surface-2);border-radius:10px;padding:8px 12px;min-height:42px;cursor:pointer}
-.seg button:focus-visible,.btn:focus-visible,.card:focus-visible,.thumb:focus-visible,input:focus-visible,select:focus-visible,.decks button:focus-visible,.ov-card:focus-visible{outline:3px solid var(--pick);outline-offset:2px}
+.seg button:focus-visible,.btn:focus-visible,.card:focus-visible,.thumb:focus-visible,input:focus-visible,select:focus-visible,.ov-card:focus-visible{outline:3px solid var(--pick);outline-offset:2px}
 .zoom input{width:140px;accent-color:var(--accent)}
 .btn{border:1px solid var(--line);background:var(--surface);padding:8px 16px;border-radius:10px;cursor:pointer;min-height:40px}
 .btn:hover{background:var(--surface-2)}
@@ -122,18 +149,27 @@ body.nonum .ov-card .badge{display:none}
   color:#fff;font-size:22px;cursor:pointer}
 .arrow:hover{background:rgba(255,255,255,.22)}
 .arrow[hidden]{display:none}
-@media (max-width:640px){.ov-body.single img{max-width:calc(100vw - 32px)}.arrow{display:none}.decks h1{display:none}}
+@media (max-width:640px){.ov-body.single img{max-width:calc(100vw - 32px)}.arrow{display:none}}
 @media (prefers-reduced-motion: reduce){.inner{transition:none}.card{transition:none}}
 </style>
 </head>
 <body>
 
-<header class="panel" id="panel">
-  <nav class="decks" role="tablist" aria-label="Колода">
+<section class="home" id="home">
+  <div class="home-head">
+    <svg class="mono" viewBox="60 110 90 80" aria-hidden="true"><defs><linearGradient id="hau" gradientUnits="userSpaceOnUse" x1="50" y1="110" x2="150" y2="190"><stop offset="0" stop-color="#e8c66e"/><stop offset=".5" stop-color="#b8892f"/><stop offset="1" stop-color="#e2bb5f"/></linearGradient></defs><g fill="none" stroke="url(#hau)" stroke-linecap="round"><circle cx="88" cy="150" r="33" stroke-width="5"/><path d="M96 116 V154 A20 20 0 0 0 136 154 V116" stroke-width="5"/><path d="M89.5 115 H102.5 M129.5 115 H142.5" stroke-width="2.6"/></g></svg>
     <h1>Метафоричні карти</h1>
-    <button role="tab" data-deck="vona" aria-selected="true">«Вона»</button>
-    <button role="tab" data-deck="svitlo" aria-selected="false">«Світло крізь тріщини»</button>
-  </nav>
+    <p>Оберіть колоду для сесії</p>
+  </div>
+  <div class="deck-list" id="deckList"></div>
+</section>
+
+<div id="app">
+<header class="panel" id="panel">
+  <div class="topbar">
+    <button class="btn home-btn" id="btnHome">← Усі колоди</button>
+    <h1 id="deckTitle"></h1>
+  </div>
   <div class="controls">
     <div class="group"><span>Картки</span>
       <div class="seg" id="segView">
@@ -177,6 +213,8 @@ body.nonum .ov-card .badge{display:none}
   <button class="btn primary" id="btnShowPicks" disabled>Показати вибір</button>
 </footer>
 
+</div>
+
 <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Обрані картки">
   <div class="ov-bar">
     <h2 id="ovTitle">Обрані картки</h2>
@@ -215,8 +253,8 @@ function placeholder(card){
 }
 
 const DECKS = {
-  vona:  {imgs:VONA_IMGS, ar:'7/5', arNum:5/7, cw:170},
-  svitlo:{imgs:SVITLO_CARDS.map(c=>c.img||placeholder(c)), ar:'2/3', arNum:1.5, cw:130}
+  vona:  {name:'Креатив-1', hash:'kreatyv-1', desc:VONA_IMGS.length+' карт · горизонтальні', imgs:VONA_IMGS, ar:'7/5', arNum:5/7, cw:170, fan:'land'},
+  svitlo:{name:'Світло крізь тріщини', hash:'svitlo', desc:SVITLO_CARDS.length+' карти · Грані, Шви, Двері, Містки', imgs:SVITLO_CARDS.map(c=>c.img||placeholder(c)), ar:'2/3', arNum:1.5, cw:130, fan:'port'}
 };
 
 /* Схеми розкладу: координати в «клітинках» (ширина/висота карти + проміжок), у порядку вибору карт */
@@ -476,13 +514,40 @@ function seg(sel,attr,fn){
 })();
 function setDeck(d){
   state.deck=d;
-  document.querySelectorAll('.decks button').forEach(b=>b.setAttribute('aria-selected',b.dataset.deck===d));
+  $('#deckTitle').textContent='«'+D().name+'»';
+  document.title=D().name+' · Метафоричні карти';
   document.documentElement.style.setProperty('--ar',D().ar);
   document.documentElement.style.setProperty('--cw',D().cw+'px');
   $('#zoom').value=D().cw;
-  closeOv(); build();
+  document.body.classList.add('in-deck');
+  closeOv(); build(); window.scrollTo(0,0);
 }
-document.querySelector('.decks').addEventListener('click',e=>{ const b=e.target.closest('button'); if(b) setDeck(b.dataset.deck); });
+function showHome(){
+  closeOv(); clearTimeout(ovTimer);
+  document.body.classList.remove('in-deck','compact');
+  document.title='Метафоричні карти';
+  window.scrollTo(0,0);
+}
+function route(){
+  const h=location.hash.slice(1);
+  const d=Object.keys(DECKS).find(k=>DECKS[k].hash===h);
+  d ? setDeck(d) : showHome();
+}
+(function(){
+  const list=$('#deckList');
+  Object.entries(DECKS).forEach(([k,dk])=>{
+    const b=document.createElement('button'); b.className='deck-tile'; b.type='button';
+    const pick=shuffle([...dk.imgs.keys()]).slice(0,3);
+    const fan=dk.fan==='port'
+      ? `<img class="c0" alt="" src="${dk.imgs[pick[0]]}"><img class="c2" alt="" src="${dk.imgs[pick[1]]}"><span class="fback c1"></span>`
+      : `<img class="c0" alt="" src="${dk.imgs[pick[0]]}"><img class="c2" alt="" src="${dk.imgs[pick[1]]}"><img class="c1" alt="" src="${dk.imgs[pick[2]]}">`;
+    b.innerHTML=`<div class="fan ${dk.fan}">${fan}</div><div><h2>«${dk.name}»</h2><p>${dk.desc}</p><span class="go">Відкрити колоду →</span></div>`;
+    b.addEventListener('click',()=>{ location.hash=dk.hash; });
+    list.appendChild(b);
+  });
+})();
+window.addEventListener('hashchange',route);
+$('#btnHome').onclick=()=>{ if(location.hash){ location.hash=''; } else { showHome(); } };
 seg('#segView','v',v=>{ state.view=v; closeOv(); build(); });
 seg('#segNum','x',x=>document.body.classList.toggle('nonum',x==='0'));
 seg('#segCount','n',n=>{ state.count=+n; closeOv(); build(); });
@@ -490,7 +555,7 @@ $('#btnReset').onclick=()=>{ closeOv(); build(); };
 $('#zoom').addEventListener('input',e=>document.documentElement.style.setProperty('--cw',e.target.value+'px'));
 $('#btnHide').onclick=()=>document.body.classList.add('compact');
 $('#btnShow').onclick=()=>document.body.classList.remove('compact');
-setDeck('vona');
+route();
 </script>
 </body>
 </html>
