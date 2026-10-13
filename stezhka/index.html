@@ -50,6 +50,8 @@ section{margin-top:24px}
 .sunb{position:absolute;right:26px;top:70px;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle,#FFF4D6,#F9DFA6 60%,rgba(249,223,166,0));pointer-events:none}
 .hero .top{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .hero h1{color:#0B3A4C}
+.topr{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.resetb{background:rgba(255,255,255,.45);border:1.5px solid rgba(11,58,76,.2);color:#0B3A4C;padding:5px 12px;font-size:13px;font-weight:700}
 .badge{background:rgba(255,255,255,.7);border-radius:999px;padding:6px 12px;font-family:Unbounded,sans-serif;font-weight:600;font-size:14px;white-space:nowrap}
 .hero .sub{position:relative;z-index:1;margin:10px 0 0;max-width:28ch;font-size:15px;color:#0B3A4C}
 
@@ -184,7 +186,7 @@ details summary{cursor:pointer;font-weight:700;color:var(--pine)}
 .hidden{display:none!important}
 .toast{position:fixed;z-index:40;left:50%;top:calc(18px + env(safe-area-inset-top,0px));transform:translateX(-50%);background:#0B3A4C;color:#F2FBFE;padding:10px 18px;border-radius:999px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s;max-width:90vw;text-align:center}
 .toast.show{opacity:1}
-#pipVideo{position:fixed;width:2px;height:2px;opacity:.01;left:0;bottom:0;pointer-events:none}
+#pipVideo{position:absolute;z-index:5;top:calc(14px + env(safe-area-inset-top,0px));right:14px;width:112px;height:63px;border-radius:12px;border:1.5px solid rgba(255,255,255,.45);object-fit:cover;cursor:pointer;background:#2E9FC9}
 @media (prefers-reduced-motion:reduce){.card,#dive .water{transition:none}.wv,.wv2,.wv3{animation:none}}
 </style>
 </head>
@@ -205,7 +207,7 @@ details summary{cursor:pointer;font-weight:700;color:var(--pine)}
     </svg>
     <div class="top">
       <h1>Стежка<br>читання</h1>
-      <div class="badge" id="score">0 балів</div>
+      <div class="topr"><div class="badge" id="score">0 балів</div><button class="resetb" id="resetAll" aria-label="Скинути бали, мушлі й думки">↺ Скинути</button></div>
     </div>
     <p class="sub">Пірнайте в текст ненадовго. Кожне занурення і кожне повернення — мушля на березі.</p>
     <div class="tlayer" id="tlayer"></div>
@@ -265,7 +267,6 @@ details summary{cursor:pointer;font-weight:700;color:var(--pine)}
     <p>Якщо Ви випали, стежка не обривається: повернення дає бали. Після двох повних занурень поспіль стежка запропонує піти глибше, після випадіння — трохи мілкіше.</p>
     <p>Кожна мушля наближає новий скарб берега: морську зірку, краба, пляшку з посланням, замок, вітрильник, маяк, дельфіна і перлину. Скарби з'являються просто на головному пляжі.</p>
     <p class="muted">Занурення +10, повернення +5, думка +3, золота карта +5, відпочинок +2, новий скарб +20.</p>
-    <button class="soft small" id="resetAll">Почати берег заново</button>
   </details>
 </div>
 
@@ -277,6 +278,7 @@ details summary{cursor:pointer;font-weight:700;color:var(--pine)}
     <g class="wv2"><path d="M0 0 H600 V18 Q550 34 500 18 T400 18 T300 18 T200 18 T100 18 T0 18Z" fill="rgba(255,255,255,.18)"/></g>
   </svg>
   <canvas id="bubbles" aria-hidden="true"></canvas>
+  <video id="pipVideo" muted playsinline autoplay aria-label="Міні-таймер. Торкніться, щоб винести поверх вікон"></video>
   <div class="inner">
     <div class="bookname" id="diveBook"></div>
     <div class="center">
@@ -390,7 +392,6 @@ details summary{cursor:pointer;font-weight:700;color:var(--pine)}
   </div>
 </div>
 
-<video id="pipVideo" muted playsinline></video>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
@@ -562,7 +563,7 @@ function startSprint(min,resumeLeft){
   curMin=min;total=min*60;const left=resumeLeft!=null?resumeLeft:total;
   endAt=Date.now()+left*1000;running=true;
   $("diveBook").textContent=S.book;$("gMax").textContent=min+" хв";$("phase").textContent="занурення";
-  show("dive");startAnim();update();clearInterval(tick);tick=setInterval(update,500);
+  show("dive");if(hasDocPip)vid.style.display="none";else preparePip();startAnim();update();clearInterval(tick);tick=setInterval(update,500);
 }
 function update(){
   const left=(endAt-Date.now())/1000;const p=Math.min(1,Math.max(0,1-left/total));depthP=p;
@@ -602,35 +603,54 @@ function drawPip(left,p,label){
     c.font="600 24px Manrope, sans-serif";c.globalAlpha=.85;c.fillText((label||S.book||"Занурення").slice(0,34),W/2,52);c.globalAlpha=1;
     c.fillStyle="rgba(255,255,255,.2)";c.fillRect(40,215,W-80,10);c.fillStyle="#FFF6E3";c.fillRect(40,215,(W-80)*p,10)}
 }
-async function openPip(){
-  if(pipOn){closePip();return}
-  // 1) Document PiP (Chrome / Edge на комп'ютері)
-  if("documentPictureInPicture" in window){
-    try{
-      pipWin=await documentPictureInPicture.requestWindow({width:280,height:170});
-      const d=pipWin.document;
-      d.head.innerHTML='<meta charset="utf-8"><style>body{margin:0;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;color:#EAF7F3;font-family:Manrope,system-ui,sans-serif}#t{font-size:54px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}#l{font-size:13px;opacity:.85;max-width:90%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.b{width:80%;height:6px;background:rgba(255,255,255,.2);border-radius:6px;overflow:hidden}#f{height:100%;background:#FFF6E3;width:0}button{margin-top:6px;font:inherit;font-size:13px;font-weight:700;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);color:#fff;border-radius:999px;padding:5px 12px;cursor:pointer}</style>';
-      d.body.innerHTML='<div id="l"></div><div id="t">0:00</div><div class="b"><div id="f"></div></div><button id="x">Я випала</button>';
-      d.getElementById("x").onclick=()=>{fell();window.focus()};
-      pipWin.addEventListener("pagehide",()=>{pipWin=null;setPip(false)});
-      setPip(true);update();return;
-    }catch(e){pipWin=null}
-  }
-  // 2) Відео PiP (Safari, iPhone, інші браузери)
+const hasDocPip="documentPictureInPicture" in window;
+function preparePip(){
+  if(pipCanvas)return true;
   try{
     pipCanvas=document.createElement("canvas");pipCanvas.width=480;pipCanvas.height=270;pipCtx=pipCanvas.getContext("2d");
-    drawPip((endAt-Date.now())/1000,depthP);
-    vid.srcObject=pipCanvas.captureStream(4);await vid.play();
-    if(document.pictureInPictureEnabled&&vid.requestPictureInPicture){await vid.requestPictureInPicture()}
-    else if(vid.webkitSupportsPresentationMode&&vid.webkitSupportsPresentationMode("picture-in-picture")){vid.webkitSetPresentationMode("picture-in-picture")}
-    else throw new Error("no pip");
-    setPip(true);
-  }catch(e){pipCanvas=null;vid.srcObject=null;toast("Тут таймер поверх вікон недоступний. Спробуйте версію-програмку в браузері.")}
+    if(!pipCanvas.captureStream){pipCanvas=null;return false}
+    drawPip(Math.max(0,(endAt-Date.now())/1000),depthP);
+    vid.srcObject=pipCanvas.captureStream(10);
+    const pr=vid.play();if(pr&&pr.catch)pr.catch(()=>{});
+    return true;
+  }catch(e){pipCanvas=null;return false}
 }
-vid.addEventListener("leavepictureinpicture",()=>{pipCanvas=null;vid.srcObject=null;setPip(false)});
-vid.addEventListener("webkitpresentationmodechanged",()=>{if(vid.webkitPresentationMode!=="picture-in-picture"&&pipOn&&!pipWin){pipCanvas=null;setPip(false)}});
-function closePip(){try{if(pipWin)pipWin.close();if(document.pictureInPictureElement)document.exitPictureInPicture();if(vid.webkitPresentationMode==="picture-in-picture")vid.webkitSetPresentationMode("inline")}catch(e){}pipWin=null;pipCanvas=null;setPip(false)}
-function setPip(on){pipOn=on;$("pipBtn").setAttribute("aria-pressed",on);$("pipBtn").textContent=on?"Таймер поверх вікон увімк.":"Поверх вікон";if(on)toast("Таймер видно поверх вікон. Можна читати в іншому застосунку")}
+function pipFail(reason){setPip(false);toast("Safari не відкрив таймер поверх вікон"+(reason?" ("+reason+")":"")+". Спробуйте Split View: «Стежка» поруч із книжкою.")}
+async function openDocPip(){
+  try{
+    pipWin=await documentPictureInPicture.requestWindow({width:280,height:170});
+    const d=pipWin.document;
+    d.head.innerHTML='<meta charset="utf-8"><style>body{margin:0;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;color:#F2FBFE;font-family:Manrope,system-ui,sans-serif}#t{font-size:54px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}#l{font-size:13px;opacity:.85;max-width:90%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.b{width:80%;height:6px;background:rgba(255,255,255,.2);border-radius:6px;overflow:hidden}#f{height:100%;background:#FFF6E3;width:0}button{margin-top:6px;font:inherit;font-size:13px;font-weight:700;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);color:#fff;border-radius:999px;padding:5px 12px;cursor:pointer}</style>';
+    d.body.innerHTML='<div id="l"></div><div id="t">0:00</div><div class="b"><div id="f"></div></div><button id="x">Я випала</button>';
+    d.getElementById("x").onclick=()=>{fell();window.focus()};
+    pipWin.addEventListener("pagehide",()=>{pipWin=null;setPip(false)});
+    setPip(true);update();
+  }catch(e){pipWin=null;pipFail(e&&e.name)}
+}
+// ВАЖЛИВО для Safari: жодного await до запиту PiP, інакше жест користувача «згорає»
+function openPip(){
+  if(pipOn){closePip();return}
+  if(hasDocPip){openDocPip();return}
+  if(!preparePip()){pipFail("немає відеопотоку");return}
+  drawPip(Math.max(0,(endAt-Date.now())/1000),depthP);
+  try{
+    if(typeof vid.webkitSupportsPresentationMode==="function"&&vid.webkitSupportsPresentationMode("picture-in-picture")){
+      vid.webkitSetPresentationMode("picture-in-picture");
+      setTimeout(()=>{if(vid.webkitPresentationMode!=="picture-in-picture"&&!document.pictureInPictureElement)pipFail("режим не ввімкнувся")},1800);
+      return;
+    }
+    if(document.pictureInPictureEnabled&&vid.requestPictureInPicture){
+      vid.requestPictureInPicture().then(()=>setPip(true)).catch(e=>pipFail(e&&e.name));return;
+    }
+    pipFail("браузер не підтримує");
+  }catch(e){pipFail(e&&e.name)}
+}
+vid.addEventListener("click",openPip);
+vid.addEventListener("enterpictureinpicture",()=>setPip(true));
+vid.addEventListener("leavepictureinpicture",()=>setPip(false));
+vid.addEventListener("webkitpresentationmodechanged",()=>{const on=vid.webkitPresentationMode==="picture-in-picture";if(on!==pipOn&&!pipWin)setPip(on)});
+function closePip(){try{if(pipWin)pipWin.close();if(document.pictureInPictureElement)document.exitPictureInPicture();if(vid.webkitPresentationMode==="picture-in-picture")vid.webkitSetPresentationMode("inline")}catch(e){}pipWin=null;setPip(false)}
+function setPip(on){if(pipOn===on)return;pipOn=on;$("pipBtn").setAttribute("aria-pressed",on);$("pipBtn").textContent=on?"Таймер поверх вікон увімк.":"Поверх вікон";if(on)toast("Таймер видно поверх вікон. Можна читати в іншому застосунку")}
 
 // ---------- reward ----------
 let gold=false;
