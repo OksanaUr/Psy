@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Стежка читання</title>
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#1F6F6B">
+<meta name="theme-color" content="#2E9FC9">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Стежка">
@@ -16,14 +16,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Manrope:wght@400;600;700&display=swap&subset=cyrillic" rel="stylesheet">
 <style>
 :root{
-  --paper:#E9EEE6; --card:#F7F9F4; --pine:#23413A; --ink:#1D2621; --muted:#5C6B63;
-  --sun:#F2C14E; --coral:#E9806E; --sand:#D8C9A3; --line:#CBD5C8;
+  --paper:#EAF6FB; --card:#F8FDFF; --pine:#0E5F7C; --ink:#12313C; --muted:#5A7A86;
+  --sun:#F3C98B; --coral:#F29C9C; --sand:#F2E6CC; --line:#CFE6EF; --aqua:#3FC1C9; --azure:#4AA8E0;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#15201C;--card:#1F2D28;--pine:#A3D2BF;--ink:#E7EEE9;--muted:#98A9A0;--sand:#6C6146;--line:#31443C}}
-:root[data-theme="dark"]{--paper:#15201C;--card:#1F2D28;--pine:#A3D2BF;--ink:#E7EEE9;--muted:#98A9A0;--sand:#6C6146;--line:#31443C}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#0D2230;--card:#13303F;--pine:#9EDCF0;--ink:#E6F5FA;--muted:#8FB0BD;--sand:#5B5240;--line:#1F4456}}
+:root[data-theme="dark"]{--paper:#0D2230;--card:#13303F;--pine:#9EDCF0;--ink:#E6F5FA;--muted:#8FB0BD;--sand:#5B5240;--line:#1F4456}
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:Manrope,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.5;min-height:100%}
@@ -41,26 +41,72 @@ textarea{min-height:90px;resize:vertical}
 section{margin-top:24px}
 
 /* hero: shoreline */
-.hero{position:relative;border-radius:26px;overflow:hidden;background:linear-gradient(180deg,#BFE6DA 0%,#6FC3B2 55%,#2E8A80 100%);color:#0D2E33;padding:22px 20px 20px;margin-top:6px}
-.hero .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-.hero h1{color:#0D2E33}
-.badge{background:rgba(255,255,255,.55);border-radius:999px;padding:6px 12px;font-family:Unbounded,sans-serif;font-weight:600;font-size:14px;white-space:nowrap}
-.hero .sub{margin:10px 0 16px;max-width:30ch;font-size:15px;color:#123b3f}
-.waves{position:absolute;left:0;right:0;bottom:0;height:60px;pointer-events:none}
-.hero .today{position:relative;display:flex;gap:16px;font-size:14px;color:#08262a;font-weight:600}
-.hero .today b{font-family:Unbounded,sans-serif;font-size:22px;display:block;font-weight:600}
+.hero{position:relative;border-radius:28px;overflow:hidden;background:linear-gradient(180deg,#D9F1FB 0%,#A9DDF3 38%,#4FB6DE 39%,#2E9FC9 62%,#37B9B6 78%,#F2E6CC 79%,#EAD9B4 100%);color:#0B3A4C;padding:22px 20px 120px;margin-top:6px}
+.hero .sea{position:absolute;left:0;right:0;bottom:0;height:62%;pointer-events:none}
+.wv{animation:drift 9s linear infinite}
+.wv2{animation:drift 14s linear infinite reverse}
+.wv3{animation:drift 6s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(-200px)}}
+.sunb{position:absolute;right:26px;top:70px;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle,#FFF4D6,#F9DFA6 60%,rgba(249,223,166,0));pointer-events:none}
+.hero .top{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.hero h1{color:#0B3A4C}
+.badge{background:rgba(255,255,255,.7);border-radius:999px;padding:6px 12px;font-family:Unbounded,sans-serif;font-weight:600;font-size:14px;white-space:nowrap}
+.hero .sub{position:relative;z-index:1;margin:10px 0 0;max-width:28ch;font-size:15px;color:#0B3A4C}
+
+.today{display:flex;gap:10px;margin-top:10px}
+.today div{flex:1;background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:8px 12px;font-size:12px;color:var(--muted);font-weight:600;line-height:1.25}
+.today b{font-family:Unbounded,sans-serif;font-size:20px;display:block;font-weight:600;color:var(--pine)}
+.tlayer{position:absolute;inset:0;z-index:1;pointer-events:none}
+.tr{position:absolute;display:block;pointer-events:auto}
+.tr svg{width:100%;height:100%;display:block;overflow:visible}
+.tr.starfish{left:7%;bottom:10px;width:36px;height:36px;transform:rotate(-14deg)}
+.tr.crab{left:64%;bottom:6px;width:42px;height:36px;animation:crab 7s ease-in-out infinite}
+.tr.bottle{left:36%;bottom:12px;width:40px;height:30px;cursor:pointer;transform:rotate(-12deg)}
+.tr.castle{left:17%;bottom:6px;width:54px;height:52px}
+.tr.boat{left:12%;top:calc(39% - 34px);width:40px;height:40px;animation:bob 5s ease-in-out infinite}
+.tr.lighthouse{right:3%;bottom:6px;width:38px;height:104px}
+.tr.dolphin{left:55%;top:50%;width:52px;height:40px;opacity:0;animation:jump 11s ease-in-out infinite}
+.tr.pearl{left:48%;bottom:6px;width:38px;height:32px}
+@keyframes crab{0%,100%{transform:translateX(0)}45%{transform:translateX(26px)}55%{transform:translateX(26px)}}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(3px) rotate(2deg)}}
+@keyframes jump{0%,70%{opacity:0;transform:translate(0,20px) rotate(20deg)}75%{opacity:1;transform:translate(14px,-18px) rotate(-10deg)}82%{opacity:1;transform:translate(34px,-4px) rotate(-40deg)}88%,100%{opacity:0;transform:translate(46px,22px) rotate(-60deg)}}
+@keyframes beam{0%,100%{opacity:.15}50%{opacity:.85}}
+.beam{animation:beam 3s ease-in-out infinite}
+.hero.evening{background:linear-gradient(180deg,#F9D9C8 0%,#F4B7A6 22%,#C8A9D8 38%,#5B8FC9 39%,#3E7FB8 62%,#3E9FB2 78%,#EBD7B4 79%,#E2CBA1 100%)}
+.hero.evening .sunb{top:110px;background:radial-gradient(circle,#FFE6C2,#F7B58A 60%,rgba(247,181,138,0))}
+.treas{background:var(--card);border:1.5px solid var(--line);border-radius:22px;padding:16px}
+.trhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.tbar{height:10px;border-radius:10px;background:var(--line);overflow:hidden;margin-top:12px}
+.tbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--aqua),var(--azure));border-radius:10px;transition:width .8s}
+.tgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.tslot{aspect-ratio:1;border-radius:16px;background:var(--paper);border:1.5px dashed var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11px;color:var(--muted);padding:6px;cursor:default}
+.tslot.on{border-style:solid;border-color:var(--aqua);background:color-mix(in srgb,var(--aqua) 10%,var(--card));cursor:pointer;color:var(--ink)}
+.tslot svg{width:62%;height:56%}
+.tslot .lock{font-family:Unbounded,sans-serif;font-size:18px;color:var(--line)}
+.eve{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:14px;cursor:pointer}
+#treasure{position:fixed;inset:0;z-index:50;background:radial-gradient(circle at 50% 40%,#E9FAFF,#9FD9EE 60%,#4AA8E0);display:flex;align-items:center;justify-content:center;overflow:hidden;padding:24px}
+#treasure .tc{position:relative;z-index:2;background:rgba(255,255,255,.88);border-radius:28px;padding:26px 22px;max-width:380px;width:100%;text-align:center;color:#0B3A4C}
+#treasure .big{width:120px;height:120px;margin:0 auto 10px;animation:pop .7s cubic-bezier(.2,1.6,.4,1)}
+#treasure .big svg{width:100%;height:100%}
+#treasure .tt{font-family:Unbounded,sans-serif;font-weight:600;font-size:22px;margin:4px 0 8px}
+#treasure .tx{font-size:15px;color:#2C5A69;margin-bottom:18px}
+#treasure .kick{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#2E9FC9;font-weight:700}
+@keyframes pop{from{transform:scale(.2) rotate(-20deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.conf{position:absolute;top:-30px;width:18px;height:16px;z-index:1;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+@media (prefers-reduced-motion:reduce){.tr,.big,.conf,.beam{animation:none!important}.tr.dolphin{opacity:1}}
 
 /* depth picker */
 .depths{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:end;height:110px;margin-top:6px}
 .depth{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;background:none;padding:0;border-radius:0;color:var(--ink);font-weight:600;font-size:13px;height:100%}
 .depth i{display:block;width:100%;border-radius:10px 10px 4px 4px;background:var(--line);transition:background .2s}
-.depth[aria-pressed="true"] i{background:linear-gradient(180deg,#6FC3B2,#174E55)}
+.depth[aria-pressed="true"] i{background:linear-gradient(180deg,#9FE3EA,#3FC1C9 40%,#1E7FB0)}
 .depth[aria-pressed="true"]{color:var(--pine)}
 .suggest{margin-top:10px}
 .go{display:block;width:100%;margin-top:18px;background:var(--pine);color:var(--paper);font-family:Unbounded,sans-serif;font-weight:600;font-size:19px;padding:18px}
 
 /* path */
-.pathsvg{width:100%;height:auto;display:block}
+.pathsvg{width:100%;height:auto;display:block;background:linear-gradient(180deg,var(--sand),color-mix(in srgb,var(--sand) 70%,var(--paper)));border-radius:20px}
 .legend{display:flex;gap:14px;font-size:13px;color:var(--muted);margin-top:6px;flex-wrap:wrap;align-items:center}
 .legend span{display:inline-flex;gap:6px;align-items:center}
 .dot{width:12px;height:12px;border-radius:50%;display:inline-block}
@@ -75,7 +121,8 @@ details summary{cursor:pointer;font-weight:700;color:var(--pine)}
 .small{font-size:14px;padding:8px 14px}
 
 /* DIVE overlay */
-#dive{position:fixed;inset:0;z-index:20;color:#EAF7F3;display:flex;flex-direction:column;overflow:hidden;background:#1F6F6B}
+#dive{position:fixed;inset:0;z-index:20;color:#F2FBFE;display:flex;flex-direction:column;overflow:hidden;background:#2E9FC9}
+#dive .surfwave{position:absolute;left:0;top:0;width:100%;height:70px;pointer-events:none;transition:opacity 2s}
 #dive .water{position:absolute;inset:0;transition:background 1.5s linear}
 #bubbles{position:absolute;inset:0;width:100%;height:100%}
 #dive .inner{position:relative;flex:1;display:flex;flex-direction:column;max-width:560px;width:100%;margin:0 auto;padding:calc(18px + env(safe-area-inset-top,0px)) 20px calc(18px + env(safe-area-inset-bottom,0px))}
@@ -83,14 +130,14 @@ details summary{cursor:pointer;font-weight:700;color:var(--pine)}
 .center{flex:1;display:flex;align-items:center;justify-content:center;gap:22px}
 .gauge{position:relative;width:6px;height:min(46vh,340px);background:rgba(255,255,255,.18);border-radius:6px}
 .gauge .fill{position:absolute;left:0;top:0;width:100%;border-radius:6px;background:rgba(255,255,255,.55)}
-.gauge .diver{position:absolute;left:50%;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:var(--sun);box-shadow:0 0 18px rgba(242,193,78,.8)}
+.gauge .diver{position:absolute;left:50%;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:#FFF6E3;box-shadow:0 0 18px rgba(255,246,227,.9)}
 .gauge .lbl{position:absolute;left:16px;font-size:12px;opacity:.7;white-space:nowrap;transform:translateY(-50%)}
 .timebox{text-align:center}
 .time{font-family:Unbounded,sans-serif;font-weight:400;font-size:clamp(56px,18vw,96px);line-height:1;font-variant-numeric:tabular-nums}
 .phase{margin-top:10px;font-size:15px;opacity:.85}
 .dbtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
 .glass{background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.3);color:#F2FBF8;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-.glass[aria-pressed="true"]{background:rgba(242,193,78,.9);color:#1D2621;border-color:transparent}
+.glass[aria-pressed="true"]{background:rgba(255,255,255,.9);color:#0B3A4C;border-color:transparent}
 .park{display:flex;gap:8px;margin-top:12px}
 .park input{flex:1;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.28);color:#fff}
 .park input::placeholder{color:rgba(255,255,255,.7)}
@@ -107,39 +154,77 @@ details summary{cursor:pointer;font-weight:700;color:var(--pine)}
 .card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
 .cardwrap.flipped .card{transform:rotateY(180deg)}
 .face{position:absolute;inset:0;border-radius:24px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:26px}
-.back{background:radial-gradient(circle at 30% 25%,#6FC3B2 0 12%,transparent 13%),radial-gradient(circle at 70% 60%,#F2C14E 0 9%,transparent 10%),radial-gradient(circle at 40% 80%,rgba(255,255,255,.25) 0 6%,transparent 7%),linear-gradient(160deg,#1F6F6B,#0B2F3A);color:#EAF7F3}
+.back{background:radial-gradient(ellipse at 50% 120%,#F2E6CC 0 28%,transparent 29%),radial-gradient(circle at 25% 22%,rgba(255,255,255,.35) 0 5%,transparent 6%),radial-gradient(circle at 72% 35%,rgba(255,255,255,.25) 0 3%,transparent 4%),linear-gradient(170deg,#7FD3F0,#2E9FC9 55%,#1F8C9A);color:#F2FBFE}
 .back .disp{font-size:20px;font-weight:600}
-.front{transform:rotateY(180deg);background:var(--card);border:2px solid var(--sun);color:var(--ink)}
-.front.gold{border:0;background:linear-gradient(var(--card),var(--card)) padding-box,linear-gradient(135deg,#F2C14E,#E9806E,#6FC3B2) border-box;border:4px solid transparent}
+.front{transform:rotateY(180deg);background:var(--card);border:2px solid var(--aqua);color:var(--ink)}
+.front.gold{border:0;background:linear-gradient(var(--card),var(--card)) padding-box,linear-gradient(135deg,#F3C98B,#F29C9C,#3FC1C9,#4AA8E0) border-box;border:4px solid transparent}
 .front .kind{font-size:13px;color:var(--muted);margin-bottom:12px}
 .front .what{font-family:Unbounded,sans-serif;font-weight:600;font-size:19px;color:var(--pine);line-height:1.3}
 .front .pts{margin-top:14px;font-size:14px;color:var(--muted)}
 
+/* break chooser */
+.brk{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:4px}
+.brk button{background:var(--card);border:1.5px solid var(--line);color:var(--ink);padding:9px 14px;font-weight:700}
+.brk button.rec{border-color:var(--aqua);background:color-mix(in srgb,var(--aqua) 18%,var(--card))}
+.brk small{display:block;font-weight:400;font-size:11px;color:var(--muted);line-height:1.1}
+
+/* REST: shoreline */
+#rest{position:fixed;inset:0;z-index:30;background:#EAD9B4;overflow:hidden;color:#0B3A4C}
+#shore{position:absolute;inset:0;width:100%;height:100%}
+#rest .ui{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;padding:calc(18px + env(safe-area-inset-top,0px)) 20px calc(20px + env(safe-area-inset-bottom,0px));pointer-events:none}
+#rest .ui > *{pointer-events:auto}
+.rtime{font-family:Unbounded,sans-serif;font-size:30px;font-weight:400;color:#F2FBFE;font-variant-numeric:tabular-nums;text-shadow:0 1px 8px rgba(11,58,76,.35)}
+.rtask{margin-top:4px;color:#F2FBFE;font-size:15px;text-align:center;max-width:32ch;text-shadow:0 1px 6px rgba(11,58,76,.4)}
+.breath{margin-top:auto;font-family:Unbounded,sans-serif;font-weight:400;font-size:clamp(28px,8vw,40px);color:#0B3A4C;transition:opacity 1.2s;text-align:center}
+.bsub{font-size:14px;color:#5B5240;margin:6px 0 18px;text-align:center}
+.rbtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.sandbtn{background:rgba(255,255,255,.55);border:1.5px solid rgba(11,58,76,.18);color:#0B3A4C}
+.sandbtn[aria-pressed="true"]{background:#0B3A4C;color:#F2FBFE}
+.sandbtn.main{background:#0E5F7C;color:#F2FBFE;border-color:transparent}
 .hidden{display:none!important}
-.toast{position:fixed;z-index:40;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#0D2E33;color:#EAF7F3;padding:10px 18px;border-radius:999px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s;max-width:90vw;text-align:center}
+.toast{position:fixed;z-index:40;left:50%;top:calc(18px + env(safe-area-inset-top,0px));transform:translateX(-50%);background:#0B3A4C;color:#F2FBFE;padding:10px 18px;border-radius:999px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s;max-width:90vw;text-align:center}
 .toast.show{opacity:1}
 #pipVideo{position:fixed;width:2px;height:2px;opacity:.01;left:0;bottom:0;pointer-events:none}
-@media (prefers-reduced-motion:reduce){.card,#dive .water{transition:none}}
+@media (prefers-reduced-motion:reduce){.card,#dive .water{transition:none}.wv,.wv2,.wv3{animation:none}}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="scallop" viewBox="-35 -40 70 62"><path d="M0 18 L-6 22 H6 Z M0 18 C-30 14 -34 -18 -20 -30 C-10 -38 10 -38 20 -30 C34 -18 30 14 0 18Z"/><g fill="none" stroke="rgba(120,80,40,.35)" stroke-width="2.2" stroke-linecap="round"><path d="M0 16 L0 -34"/><path d="M0 16 L-10 -32"/><path d="M0 16 L10 -32"/><path d="M0 16 L-19 -25"/><path d="M0 16 L19 -25"/><path d="M0 16 L-25 -12"/><path d="M0 16 L25 -12"/></g></symbol>
+    <symbol id="spiral" viewBox="-30 -30 60 60"><path d="M-6 24 C-26 20 -28 -8 -14 -20 C0 -32 24 -22 24 -2 C24 14 10 22 -2 18 C-14 14 -14 -2 -4 -6 C4 -9 10 -2 6 4" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
 <div class="wrap" id="home">
   <div class="hero">
+    <div class="sunb" aria-hidden="true"></div>
+    <svg class="sea" viewBox="0 0 400 200" preserveAspectRatio="none" aria-hidden="true">
+      <g class="wv2"><path d="M0 40 Q50 28 100 40 T200 40 T300 40 T400 40 T500 40 T600 40 V200 H0Z" fill="rgba(255,255,255,.12)"/></g>
+      <g class="wv"><path d="M0 70 Q50 56 100 70 T200 70 T300 70 T400 70 T500 70 T600 70 V200 H0Z" fill="rgba(63,193,201,.35)"/></g>
+      <g class="wv3"><path d="M0 108 Q25 98 50 108 T100 108 T150 108 T200 108 T250 108 T300 108 T350 108 T400 108 T450 108 T500 108 T550 108 T600 108 V122 H0Z" fill="rgba(255,255,255,.75)"/></g>
+    </svg>
     <div class="top">
       <h1>Стежка<br>читання</h1>
       <div class="badge" id="score">0 балів</div>
     </div>
-    <p class="sub">Пірнайте в текст ненадовго. Кожне занурення і кожне повернення — камінь на стежці.</p>
-    <div class="today">
-      <div><b id="tS">0</b>занурень сьогодні</div>
-      <div><b id="tR">0</b>повернень</div>
-      <div><b id="tM">0</b>хв у тексті</div>
-    </div>
-    <svg class="waves" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M0 30 Q50 14 100 30 T200 30 T300 30 T400 30 V60 H0Z" fill="rgba(255,255,255,.14)"/>
-      <path d="M0 42 Q50 28 100 42 T200 42 T300 42 T400 42 V60 H0Z" fill="rgba(255,255,255,.12)"/>
-    </svg>
+    <p class="sub">Пірнайте в текст ненадовго. Кожне занурення і кожне повернення — мушля на березі.</p>
+    <div class="tlayer" id="tlayer"></div>
   </div>
+  <div class="today">
+    <div><b id="tS">0</b>занурень сьогодні</div>
+    <div><b id="tR">0</b>повернень</div>
+    <div><b id="tM">0</b>хв у тексті</div>
+  </div>
+
+  <section>
+    <div class="treas">
+      <div class="trhead"><h2 style="margin:0">Скарби берега</h2><span class="muted" id="shellTotal"></span></div>
+      <div class="tbar"><i id="tbarFill"></i></div>
+      <p class="muted" id="tnext" style="margin:8px 0 12px"></p>
+      <div class="tgrid" id="tgrid"></div>
+      <label class="eve hidden" id="eveRow"><input type="checkbox" id="eveChk"> Вечірнє море на головному екрані</label>
+    </div>
+  </section>
 
   <section>
     <h2><label for="book">Що читаємо</label></h2>
@@ -154,11 +239,11 @@ details summary{cursor:pointer;font-weight:700;color:var(--pine)}
   </section>
 
   <section>
-    <h2>Стежка</h2>
-    <svg class="pathsvg" id="pathsvg" aria-label="Стежка з камінців"></svg>
+    <h2>Мій берег</h2>
+    <svg class="pathsvg" id="pathsvg" aria-label="Берег з мушлями"></svg>
     <div class="legend">
-      <span><i class="dot" style="background:var(--sun)"></i>занурення</span>
-      <span><i class="dot" style="border:2px solid var(--coral)"></i>повернення</span>
+      <span><svg width="18" height="16" viewBox="-35 -40 70 62"><use href="#scallop" x="-35" y="-40" width="70" height="62" fill="var(--sun)"/></svg>занурення</span>
+      <span><svg width="16" height="16" viewBox="-30 -30 60 60" style="color:var(--coral)"><use href="#spiral" x="-30" y="-30" width="60" height="60" fill="none"/></svg>повернення</span>
       <span id="total"></span>
     </div>
   </section>
@@ -178,14 +263,19 @@ details summary{cursor:pointer;font-weight:700;color:var(--pine)}
     <p style="margin-top:10px">Обирайте глибину, яку Ви точно витримаєте, навіть 3 хвилини. Після занурення Ви ловите одну думку з тексту і перевертаєте карту перерви. Іноді випадає золота карта з бонусом.</p>
     <p>«Поверх вікон» відкриває маленький таймер, який лишається видимим, поки Ви читаєте в іншому вікні чи застосунку. Доки він відкритий, перехід в інше вікно не вважається випадінням.</p>
     <p>Якщо Ви випали, стежка не обривається: повернення дає бали. Після двох повних занурень поспіль стежка запропонує піти глибше, після випадіння — трохи мілкіше.</p>
-    <p class="muted">Занурення +10, повернення +5, думка +3, золота карта +5.</p>
-    <button class="soft small" id="resetAll">Почати стежку заново</button>
+    <p>Кожна мушля наближає новий скарб берега: морську зірку, краба, пляшку з посланням, замок, вітрильник, маяк, дельфіна і перлину. Скарби з'являються просто на головному пляжі.</p>
+    <p class="muted">Занурення +10, повернення +5, думка +3, золота карта +5, відпочинок +2, новий скарб +20.</p>
+    <button class="soft small" id="resetAll">Почати берег заново</button>
   </details>
 </div>
 
 <!-- DIVE -->
 <div id="dive" class="hidden" aria-live="polite">
   <div class="water" id="water"></div>
+  <svg class="surfwave" id="surfwave" viewBox="0 0 400 70" preserveAspectRatio="none" aria-hidden="true">
+    <g class="wv"><path d="M0 0 H600 V30 Q575 44 550 30 T500 30 T450 30 T400 30 T350 30 T300 30 T250 30 T200 30 T150 30 T100 30 T50 30 T0 30Z" fill="rgba(255,255,255,.22)"/></g>
+    <g class="wv2"><path d="M0 0 H600 V18 Q550 34 500 18 T400 18 T300 18 T200 18 T100 18 T0 18Z" fill="rgba(255,255,255,.18)"/></g>
+  </svg>
   <canvas id="bubbles" aria-hidden="true"></canvas>
   <div class="inner">
     <div class="bookname" id="diveBook"></div>
@@ -203,7 +293,7 @@ details summary{cursor:pointer;font-weight:700;color:var(--pine)}
     </div>
     <div class="dbtns">
       <button class="glass" id="pipBtn" aria-pressed="false">Поверх вікон</button>
-      <button class="glass" id="soundBtn" aria-pressed="false">Шум води</button>
+      <button class="glass" id="soundBtn" aria-pressed="false">Шум хвиль</button>
       <button class="glass" id="fellBtn">Я випала</button>
     </div>
     <div class="park">
@@ -236,7 +326,7 @@ details summary{cursor:pointer;font-weight:700;color:var(--pine)}
     <p class="disp" style="font-size:22px;font-weight:600;color:var(--pine)" id="rwHead">Ваша карта перерви</p>
     <div class="cardwrap" id="cardwrap" role="button" tabindex="0" aria-label="Перевернути карту">
       <div class="card">
-        <div class="face back"><span class="disp">Торкніться,<br>щоб перевернути</span></div>
+        <div class="face back"><svg width="70" height="62" viewBox="-35 -40 70 62" aria-hidden="true" style="margin-bottom:14px"><use href="#scallop" x="-35" y="-40" width="70" height="62" fill="#FFF3E0"/></svg><span class="disp">Торкніться,<br>щоб перевернути</span></div>
         <div class="face front" id="front">
           <div class="kind" id="kind">Карта перерви</div>
           <div class="what" id="what"></div>
@@ -244,10 +334,8 @@ details summary{cursor:pointer;font-weight:700;color:var(--pine)}
         </div>
       </div>
     </div>
-    <div class="row" style="justify-content:center">
-      <button class="soft small" id="breakBtn">Хвилина перерви</button>
-      <span class="muted" id="breakTime"></span>
-    </div>
+    <p class="muted" style="margin:0 0 6px">Скільки відпочиваємо на березі?</p>
+    <div class="brk" id="brk"></div>
     <div class="row" style="justify-content:center;margin-top:18px">
       <button class="primary" id="againBtn">Пірнути ще раз</button>
       <button class="ghost" id="doneBtn">На сьогодні досить</button>
@@ -270,6 +358,38 @@ details summary{cursor:pointer;font-weight:700;color:var(--pine)}
   </div>
 </div>
 
+<!-- TREASURE -->
+<div id="treasure" class="hidden" role="dialog" aria-modal="true">
+  <div class="tc">
+    <div class="kick" id="tKick">Новий скарб</div>
+    <div class="big" id="tBig"></div>
+    <div class="tt" id="tTitle"></div>
+    <div class="tx" id="tText"></div>
+    <button class="primary" id="tOk">Покласти на берег</button>
+  </div>
+</div>
+
+<!-- REST -->
+<div id="rest" class="hidden">
+  <svg id="shore" viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+  <div class="ui">
+    <div class="rtime" id="rtime">1:00</div>
+    <div class="rtask" id="rtask"></div>
+    <div class="breath" id="breath">хвиля накочується</div>
+    <div class="bsub" id="bsub">вдихайте разом із нею</div>
+    <div class="rbtns" id="rbtnsA">
+      <button class="sandbtn" id="rSound" aria-pressed="false">Шум хвиль</button>
+      <button class="sandbtn" id="rBreath" aria-pressed="true">Підказки дихання</button>
+      <button class="sandbtn" id="rEnd">Завершити</button>
+    </div>
+    <div class="rbtns hidden" id="rbtnsB">
+      <button class="sandbtn main" id="rDive">Пірнути</button>
+      <button class="sandbtn" id="rMore">Ще хвилинку</button>
+      <button class="sandbtn" id="rDone">На сьогодні досить</button>
+    </div>
+  </div>
+</div>
+
 <video id="pipVideo" muted playsinline></video>
 <div class="toast" id="toast" role="status"></div>
 
@@ -278,7 +398,27 @@ details summary{cursor:pointer;font-weight:700;color:var(--pine)}
 const LENS=[3,5,7,10,12,15,20];
 const PROMPTS=["Одна думка з прочитаного — своїми словами","Як би Ви пояснили це клієнту одним реченням?","Що тут здивувало або викликало сумнів?","Де Ви бачите це у своїй практиці?","Який термін варто запам'ятати і що він означає?","Яке питання з цього фрагмента могло б бути на іспиті?","Яку техніку звідси Ви могли б спробувати на собі?"];
 const BREAKS=["Встаньте й потягніться вгору на три вдихи","Випийте кілька ковтків води","Подивіться у вікно на найдальшу точку 20 секунд","Вдих на 4, видих на 6 — тричі","Струсніть кисті рук 10 секунд","Назвіть три речі, які бачите просто зараз","Пройдіться кімнатою туди й назад","Покрутіть плечима назад п'ять разів","Відкрийте вікно і вдихніть свіжого повітря"];
-const DEF={book:"",len:5,points:0,sprints:0,minutes:0,returns:0,streakAtLen:0,log:[],notes:[],parked:[]};
+const DEF={book:"",len:5,points:0,sprints:0,minutes:0,returns:0,streakAtLen:0,log:[],notes:[],parked:[],unlocked:[],evening:false};
+const ART={
+ starfish:'<svg viewBox="0 0 64 64"><path d="M32 4c3 0 5 13 8 16s17 2 18 6-12 9-13 13 5 18 2 20-13-9-15-9-12 11-15 9 3-16 2-20S5 30 6 26s15-3 18-6 5-16 8-16z" fill="#F29C9C"/><g fill="#FCE3E0"><circle cx="32" cy="32" r="3"/><circle cx="32" cy="18" r="2"/><circle cx="45" cy="28" r="2"/><circle cx="40" cy="44" r="2"/><circle cx="24" cy="44" r="2"/><circle cx="19" cy="28" r="2"/></g></svg>',
+ crab:'<svg viewBox="0 0 64 54"><g stroke="#D9614F" stroke-width="3" stroke-linecap="round"><path d="M14 34l-9 6M14 40l-7 8M50 34l9 6M50 40l7 8"/><path d="M20 24l-6-10M44 24l6-10"/></g><path d="M8 8c6-4 12 0 10 6s-10 4-10-2z" fill="#F07F6E"/><path d="M56 8c-6-4-12 0-10 6s10 4 10-2z" fill="#F07F6E"/><ellipse cx="32" cy="34" rx="20" ry="13" fill="#F07F6E"/><g stroke="#B94A3B" stroke-width="2"><path d="M26 18v6M38 18v6"/></g><circle cx="26" cy="16" r="3.5" fill="#fff"/><circle cx="38" cy="16" r="3.5" fill="#fff"/><circle cx="26" cy="16" r="1.6" fill="#0B3A4C"/><circle cx="38" cy="16" r="1.6" fill="#0B3A4C"/><path d="M27 37q5 4 10 0" stroke="#B94A3B" stroke-width="2" fill="none" stroke-linecap="round"/></svg>',
+ bottle:'<svg viewBox="0 0 80 60"><rect x="8" y="16" width="50" height="28" rx="12" fill="#A6E3E9" opacity=".85"/><rect x="56" y="24" width="14" height="12" rx="3" fill="#A6E3E9"/><rect x="68" y="23" width="8" height="14" rx="2" fill="#B98A5A"/><rect x="18" y="23" width="30" height="14" rx="3" fill="#FFF6E3"/><path d="M22 28h22M22 32h16" stroke="#C9A97A" stroke-width="1.6"/><path d="M14 22q6-4 14-3" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".8"/></svg>',
+ castle:'<svg viewBox="0 0 70 66"><path d="M33 4v14" stroke="#0E5F7C" stroke-width="2"/><path d="M34 5l12 4-12 4z" fill="#F29C9C"/><rect x="8" y="30" width="54" height="34" rx="3" fill="#E2C48E"/><rect x="22" y="16" width="26" height="20" fill="#E8CF9E"/><path d="M8 30v-6h6v6M20 30v-6h6v6M44 30v-6h6v6M56 30v-6h6v6M22 16v-5h6v5M32 16v-5h6v5M42 16v-5h6v5" fill="#E8CF9E"/><path d="M29 64V50a6 6 0 0112 0v14z" fill="#B99560"/><circle cx="18" cy="44" r="3" fill="#C9A66C"/><circle cx="52" cy="44" r="3" fill="#C9A66C"/></svg>',
+ boat:'<svg viewBox="0 0 64 64"><path d="M32 6v40" stroke="#0E5F7C" stroke-width="2.5"/><path d="M33 8l20 34H33z" fill="#fff"/><path d="M31 14L14 42h17z" fill="#F7D7B5"/><path d="M8 46h48l-7 10H15z" fill="#0E5F7C"/><path d="M33 4l8 3-8 3z" fill="#F29C9C"/></svg>',
+ lighthouse:'<svg viewBox="0 0 40 110"><path class="beam" d="M20 16L-60 2v28z" fill="#FFF3C4"/><path class="beam" d="M20 16L100 2v28z" fill="#FFF3C4"/><path d="M12 30h16l5 76H7z" fill="#fff"/><path d="M11 46h18l1 12H10zM9 72h22l1 12H8z" fill="#F29C9C"/><rect x="11" y="20" width="18" height="10" fill="#0E5F7C"/><circle cx="20" cy="25" r="3.5" fill="#FFE59A"/><path d="M9 20h22L20 10z" fill="#0E5F7C"/><rect x="2" y="104" width="36" height="6" rx="3" fill="#9AA7AD"/></svg>',
+ dolphin:'<svg viewBox="0 0 70 50"><path d="M4 34C14 12 40 4 60 16c4 2 6 6 5 8-6-3-10-2-12 0 4 4 2 10-4 10-3-4-8-6-14-5L24 40c-1-5-4-7-8-6z" fill="#5B8FC9"/><path d="M30 10l6-8 4 10z" fill="#5B8FC9"/><path d="M14 32c10-2 24-2 34 2" stroke="#BFE0F5" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="54" cy="18" r="1.8" fill="#0B3A4C"/></svg>',
+ pearl:'<svg viewBox="0 0 64 54"><path d="M4 30C6 10 58 10 60 30z" fill="#F4BFA8"/><g stroke="#E39F86" stroke-width="1.5"><path d="M32 30L32 12M32 30L20 14M32 30L44 14M32 30L10 22M32 30L54 22"/></g><path d="M4 32h56c-2 14-14 20-28 20S6 46 4 32z" fill="#F7D7B5"/><circle cx="32" cy="34" r="9" fill="#FDFBF7"/><circle cx="29" cy="31" r="3" fill="#fff"/><circle cx="32" cy="34" r="12" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="2"/></svg>'
+};
+const TREASURES=[
+ {n:5,id:"starfish",name:"Морська зірка",text:"Перші п'ять мушель. Берег уже знає, що Ви тут."},
+ {n:15,id:"crab",name:"Краб-сусід",text:"На берег прийшов краб. Він теж ходить туди-сюди, і нічого, справляється."},
+ {n:30,id:"bottle",name:"Пляшка з посланням",text:"Торкніться пляшки на березі, і вона покаже одну з думок, які Ви колись винесли з тексту."},
+ {n:50,id:"castle",name:"Піщаний замок",text:"П'ятдесят мушель! Замок збудовано з Ваших занурень і повернень."},
+ {n:75,id:"boat",name:"Вітрильник",text:"На горизонті з'явився вітрильник. Він пливе у Вашому темпі."},
+ {n:100,id:"lighthouse",name:"Маяк",text:"Сто мушель. Тепер на березі світить маяк, а ще відкрилося вечірнє море."},
+ {n:150,id:"dolphin",name:"Дельфін",text:"Іноді він вистрибує з води. Придивляйтеся до моря на головному екрані."},
+ {n:200,id:"pearl",name:"Перлина",text:"Двісті мушель. Найрідкісніший скарб берега — Ваш."}
+];
 let S=JSON.parse(JSON.stringify(DEF));
 const LS="stezhka-chytannia-v1";
 const $=id=>document.getElementById(id);
@@ -304,7 +444,7 @@ async function remote(){
 
 // ---------- helpers ----------
 function toast(t){const el=$("toast");el.textContent=t;el.classList.add("show");clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove("show"),2400)}
-const VIEWS=["dive","catch","reward","back"];
+const VIEWS=["dive","catch","reward","back","rest"];
 function show(v){VIEWS.forEach(x=>$(x).classList.toggle("hidden",x!==v));document.body.style.overflow=v?"hidden":""}
 function pick(a){return a[Math.floor(Math.random()*a.length)]}
 function fmt(s){s=Math.max(0,Math.ceil(s));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
@@ -314,8 +454,49 @@ function nextLen(l){const i=LENS.indexOf(l);return LENS[Math.min(LENS.length-1,i
 function prevLen(l){const i=LENS.indexOf(l);return LENS[Math.max(0,i-1)]}
 function today(t){const d=new Date().toDateString();return S.log.filter(x=>(!t||x.t===t)&&new Date(x.ts).toDateString()===d)}
 
+// ---------- treasures ----------
+function shells(){return S.log.length}
+function renderTreasures(){
+  const n=shells();$("shellTotal").textContent=n+" "+plural(n,"мушля","мушлі","мушель");
+  const next=TREASURES.find(t=>n<t.n);const prev=[...TREASURES].reverse().find(t=>n>=t.n);
+  const from=prev?prev.n:0;
+  if(next){$("tbarFill").style.width=Math.round((n-from)/(next.n-from)*100)+"%";const k=next.n-n;$("tnext").textContent="Ще "+k+" "+plural(k,"мушля","мушлі","мушель")+" до наступного скарбу";}
+  else{$("tbarFill").style.width="100%";$("tnext").textContent="Усі скарби зібрано. Кожні наступні 50 мушель — нова перлина на березі.";}
+  const g=$("tgrid");g.innerHTML="";
+  TREASURES.forEach(t=>{const on=S.unlocked.includes(t.id);const d=document.createElement(on?"button":"div");d.className="tslot"+(on?" on":"");
+    d.innerHTML=on?ART[t.id]+'<span>'+t.name+'</span>':'<span class="lock">?</span><span>'+t.n+'</span>';
+    if(on)d.onclick=()=>t.id==="bottle"?openBottle():celebrate(t,true);g.appendChild(d)});
+  const L=$("tlayer");L.innerHTML="";
+  S.unlocked.forEach(id=>{const el=document.createElement(id==="bottle"?"button":"span");el.className="tr "+id;el.innerHTML=ART[id];
+    if(id==="bottle"){el.style.background="none";el.style.padding="0";el.setAttribute("aria-label","Пляшка з посланням");el.onclick=openBottle}L.appendChild(el)});
+  const extra=n>=250?Math.floor((n-200)/50):0;for(let i=0;i<Math.min(extra,6);i++){const el=document.createElement("span");el.className="tr pearl";el.style.left=(26+i*6)+"%";el.style.width="22px";el.style.height="19px";el.innerHTML=ART.pearl;L.appendChild(el)}
+  $("eveRow").classList.toggle("hidden",!S.unlocked.includes("lighthouse"));$("eveChk").checked=!!S.evening;
+  document.querySelector(".hero").classList.toggle("evening",!!S.evening&&S.unlocked.includes("lighthouse"));
+}
+let tQueue=[],afterT=null;
+function pendingTreasures(){const n=shells();return TREASURES.filter(t=>n>=t.n&&!S.unlocked.includes(t.id))}
+function celebrate(t,replay){
+  $("tKick").textContent=replay?"Скарб берега":"Новий скарб · "+t.n+" мушель";
+  $("tBig").innerHTML=ART[t.id];$("tTitle").textContent=t.name;$("tText").textContent=t.text;$("tOk").textContent=replay?"Закрити":"Покласти на берег";
+  $("tBig").style.animation="none";void $("tBig").offsetWidth;$("tBig").style.animation="";
+  const box=$("treasure");box.querySelectorAll(".conf").forEach(c=>c.remove());
+  if(!replay&&!reduce){const cols=["#F3C98B","#F29C9C","#3FC1C9","#FFFFFF","#4AA8E0"];for(let i=0;i<34;i++){const c=document.createElement("span");c.className="conf";c.style.left=Math.random()*100+"%";c.style.animationDuration=(2.5+Math.random()*2.5)+"s";c.style.animationDelay=(Math.random()*1.2)+"s";
+    c.innerHTML=Math.random()<.5?'<svg viewBox="-35 -40 70 62" width="18" height="16"><use href="#scallop" x="-35" y="-40" width="70" height="62" fill="'+cols[i%5]+'"/></svg>':'<svg width="12" height="12"><circle cx="6" cy="6" r="5" fill="none" stroke="'+cols[i%5]+'" stroke-width="2"/></svg>';box.appendChild(c)}}
+  box.classList.remove("hidden");if(!replay){chime();if(navigator.vibrate)navigator.vibrate([60,40,60,40,120])}
+}
+function showPending(then){tQueue=pendingTreasures();afterT=then;nextT()}
+function nextT(){const t=tQueue.shift();if(!t){$("treasure").classList.add("hidden");const f=afterT;afterT=null;if(f)f();return}
+  S.unlocked.push(t.id);S.points+=20;save();renderAll();celebrate(t,false)}
+$("tOk").onclick=()=>{if(tQueue.length||afterT)nextT();else $("treasure").classList.add("hidden")};
+function openBottle(){
+  const msg=S.notes.length?"«"+pick(S.notes).text+"»":"Поки що пляшка порожня. Збережіть думку після занурення, і вона потрапить сюди.";
+  $("tKick").textContent="Послання з минулого";$("tBig").innerHTML=ART.bottle;$("tTitle").textContent="Ось що Ви колись винесли з тексту";$("tText").textContent=msg;$("tOk").textContent="Повернути в море";
+  $("treasure").querySelectorAll(".conf").forEach(c=>c.remove());$("treasure").classList.remove("hidden");
+}
+$("eveChk").onchange=()=>{S.evening=$("eveChk").checked;save();renderAll()};
+
 // ---------- render home ----------
-function renderAll(){
+function renderAll(){renderTreasures();
   $("score").textContent=S.points+" "+plural(S.points,"бал","бали","балів");
   $("book").value=S.book||"";
   $("tS").textContent=today("s").length;$("tR").textContent=today("r").length;
@@ -334,16 +515,16 @@ function renderDepths(){
 }
 function renderPath(){
   const svg=$("pathsvg");const items=S.log.slice(-27);const slots=items.length+1;
-  const per=6,W=340,rowH=58,rows=Math.max(2,Math.ceil(slots/per));const H=rows*rowH+10;
+  const per=6,W=340,rowH=60,rows=Math.max(2,Math.ceil(slots/per));const H=rows*rowH+16;
   svg.setAttribute("viewBox","0 0 "+W+" "+H);
-  const pts=[];for(let i=0;i<Math.max(slots,per*2);i++){const r=Math.floor(i/per),c=i%per;const cc=r%2?per-1-c:c;const x=30+cc*(W-60)/(per-1);const y=30+r*rowH+Math.sin(i*1.7)*6;pts.push([x,y])}
-  let d="M"+pts[0][0]+" "+pts[0][1];for(let i=1;i<pts.length;i++){const [x0,y0]=pts[i-1],[x1,y1]=pts[i];const mx=(x0+x1)/2,my=(y0+y1)/2+((i%2)?8:-8);d+=" Q"+mx+" "+my+" "+x1+" "+y1}
-  let html='<path d="'+d+'" fill="none" stroke="var(--sand)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/>';
-  items.forEach((x,i)=>{const [cx,cy]=pts[i];const rx=11+((i*7)%4),ry=9+((i*5)%3),rot=(i*37)%60-30;
-    if(x.t==="s")html+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'" transform="rotate('+rot+' '+cx+' '+cy+')" fill="var(--sun)"><title>Занурення, '+x.m+' хв</title></ellipse>';
-    else html+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(rx-2)+'" ry="'+(ry-1)+'" transform="rotate('+rot+' '+cx+' '+cy+')" fill="var(--paper)" stroke="var(--coral)" stroke-width="3.5"><title>Повернення</title></ellipse>'});
-  const [nx,ny]=pts[items.length];html+='<circle cx="'+nx+'" cy="'+ny+'" r="11" fill="none" stroke="var(--pine)" stroke-width="2" stroke-dasharray="3 4" opacity=".7"/>';
-  if(!items.length)html+='<text x="'+(nx+20)+'" y="'+(ny+5)+'" fill="var(--muted)" font-size="13" font-family="Manrope,sans-serif">тут ляже перший камінь</text>';
+  let html='';
+  for(let r=0;r<=rows;r++){const y=r*rowH+4;html+='<path d="M0 '+y+' Q42 '+(y+8)+' 85 '+y+' T170 '+y+' T255 '+y+' T340 '+y+'" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="3" stroke-linecap="round" opacity="'+(r?0.45:0.9)+'"/>'}
+  const pts=[];for(let i=0;i<Math.max(slots,per*2);i++){const r=Math.floor(i/per),c=i%per;const cc=r%2?per-1-c:c;const x=32+cc*(W-64)/(per-1)+Math.sin(i*2.3)*5;const y=36+r*rowH+Math.sin(i*1.7)*5;pts.push([x,y])}
+  items.forEach((x,i)=>{const [cx,cy]=pts[i];const rot=(i*37)%50-25,sc=.85+((i*7)%4)*.06;
+    if(x.t==="s"){const fills=["#F3C98B","#F7D7B5","#F4BFA8","#EED9A8"];html+='<g transform="translate('+cx+' '+cy+') rotate('+rot+') scale('+sc*.62+')"><use href="#scallop" x="-35" y="-40" width="70" height="62" fill="'+fills[i%4]+'"/><title>Занурення, '+x.m+' хв</title></g>'}
+    else html+='<g transform="translate('+cx+' '+cy+') rotate('+rot+') scale('+sc*.55+')" style="color:var(--coral)"><use href="#spiral" x="-30" y="-30" width="60" height="60" fill="none"/><title>Повернення</title></g>'});
+  const [nx,ny]=pts[items.length];html+='<circle cx="'+nx+'" cy="'+ny+'" r="12" fill="none" stroke="var(--pine)" stroke-width="2" stroke-dasharray="3 4" opacity=".55"/>';
+  if(!items.length)html+='<text x="'+(nx+22)+'" y="'+(ny+5)+'" fill="var(--muted)" font-size="13" font-family="Manrope,sans-serif">тут з\'явиться перша мушля</text>';
   svg.innerHTML=html;
   $("total").textContent="усього "+S.minutes+" хв у тексті";
 }
@@ -357,16 +538,16 @@ function renderParked(){const ul=$("parked");ul.innerHTML="";$("parkCount").text
 // ---------- water ----------
 function lerp(a,b,t){return a+(b-a)*t}
 function mix(c1,c2,t){const a=c1.match(/\w\w/g).map(h=>parseInt(h,16)),b=c2.match(/\w\w/g).map(h=>parseInt(h,16));return "rgb("+a.map((v,i)=>Math.round(lerp(v,b[i],t))).join(",")+")"}
-function waterColors(p){return [mix("5FB9A8","123F4A",p),mix("1F6F6B","061C24",p)]}
+function waterColors(p){return [mix("7FD3F0","1E8FA8",p),mix("2E9FC9","0B4A5E",p)]}
 function paintWater(p){const [a,b]=waterColors(p);$("water").style.background="linear-gradient(180deg,"+a+","+b+")"}
 const cv=$("bubbles"),cx=cv.getContext("2d");let parts=[],raf=null,depthP=0;
 function sizeCv(){if(!cx)return;const r=devicePixelRatio||1;cv.width=innerWidth*r;cv.height=innerHeight*r;cx.setTransform(r,0,0,r,0,0)}
 function seed(){parts=[];for(let i=0;i<34;i++)parts.push(newP(true))}
 function newP(any){return{x:Math.random()*innerWidth,y:any?Math.random()*innerHeight:innerHeight+10,r:1.5+Math.random()*5,v:.25+Math.random()*.7,w:Math.random()*6.28,mote:Math.random()<.35}}
 function frame(){cx.clearRect(0,0,innerWidth,innerHeight);
-  const rays=.10*(1-depthP);if(rays>.01){for(let i=0;i<4;i++){const x=innerWidth*(.15+i*.25)+Math.sin(Date.now()/4000+i)*30;const g=cx.createLinearGradient(0,0,0,innerHeight*.8);g.addColorStop(0,"rgba(255,255,255,"+rays+")");g.addColorStop(1,"rgba(255,255,255,0)");cx.fillStyle=g;cx.beginPath();cx.moveTo(x-20,0);cx.lineTo(x+20,0);cx.lineTo(x+90,innerHeight*.8);cx.lineTo(x-40,innerHeight*.8);cx.fill()}}
+  const rays=.13*(1-depthP);if(rays>.01){for(let i=0;i<4;i++){const x=innerWidth*(.15+i*.25)+Math.sin(Date.now()/4000+i)*30;const g=cx.createLinearGradient(0,0,0,innerHeight*.8);g.addColorStop(0,"rgba(255,255,255,"+rays+")");g.addColorStop(1,"rgba(255,255,255,0)");cx.fillStyle=g;cx.beginPath();cx.moveTo(x-20,0);cx.lineTo(x+20,0);cx.lineTo(x+90,innerHeight*.8);cx.lineTo(x-40,innerHeight*.8);cx.fill()}}
   parts.forEach((p,i)=>{p.y-=p.v*(p.mote?.3:1);p.w+=.03;const x=p.x+Math.sin(p.w)*(p.mote?4:2);
-    if(p.mote){cx.fillStyle="rgba(242,193,78,"+(.25+.35*depthP)+")";cx.beginPath();cx.arc(x,p.y,p.r*.5,0,7);cx.fill()}
+    if(p.mote){cx.fillStyle="rgba(220,250,255,"+(.35+.3*depthP)+")";cx.beginPath();cx.arc(x,p.y,p.r*.5,0,7);cx.fill()}
     else{cx.strokeStyle="rgba(255,255,255,.45)";cx.lineWidth=1.2;cx.beginPath();cx.arc(x,p.y,p.r,0,7);cx.stroke()}
     if(p.y<-10)parts[i]=newP(false)});
   raf=requestAnimationFrame(frame)}
@@ -387,7 +568,7 @@ function update(){
   const left=(endAt-Date.now())/1000;const p=Math.min(1,Math.max(0,1-left/total));depthP=p;
   $("time").textContent=fmt(left);
   $("gFill").style.height=(p*100)+"%";$("diver").style.top=(p*100)+"%";
-  paintWater(p);
+  paintWater(p);$("surfwave").style.opacity=String(1-p);
   $("phase").textContent=p<.15?"занурення":p<.85?"глибина":"скоро виринати";
   drawPip(left,p);
   if(left<=0)finishSprint();
@@ -419,7 +600,7 @@ function drawPip(left,p,label){
   if(pipCanvas){const c=pipCtx,W=480,H=270;const [a,b]=waterColors(p);const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,a);g.addColorStop(1,b);c.fillStyle=g;c.fillRect(0,0,W,H);
     c.fillStyle="#EAF7F3";c.textAlign="center";c.font="600 110px Unbounded, Manrope, sans-serif";c.fillText(fmt(left),W/2,165);
     c.font="600 24px Manrope, sans-serif";c.globalAlpha=.85;c.fillText((label||S.book||"Занурення").slice(0,34),W/2,52);c.globalAlpha=1;
-    c.fillStyle="rgba(255,255,255,.2)";c.fillRect(40,215,W-80,10);c.fillStyle="#F2C14E";c.fillRect(40,215,(W-80)*p,10)}
+    c.fillStyle="rgba(255,255,255,.2)";c.fillRect(40,215,W-80,10);c.fillStyle="#FFF6E3";c.fillRect(40,215,(W-80)*p,10)}
 }
 async function openPip(){
   if(pipOn){closePip();return}
@@ -428,7 +609,7 @@ async function openPip(){
     try{
       pipWin=await documentPictureInPicture.requestWindow({width:280,height:170});
       const d=pipWin.document;
-      d.head.innerHTML='<meta charset="utf-8"><style>body{margin:0;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;color:#EAF7F3;font-family:Manrope,system-ui,sans-serif}#t{font-size:54px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}#l{font-size:13px;opacity:.85;max-width:90%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.b{width:80%;height:6px;background:rgba(255,255,255,.2);border-radius:6px;overflow:hidden}#f{height:100%;background:#F2C14E;width:0}button{margin-top:6px;font:inherit;font-size:13px;font-weight:700;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);color:#fff;border-radius:999px;padding:5px 12px;cursor:pointer}</style>';
+      d.head.innerHTML='<meta charset="utf-8"><style>body{margin:0;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;color:#EAF7F3;font-family:Manrope,system-ui,sans-serif}#t{font-size:54px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}#l{font-size:13px;opacity:.85;max-width:90%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.b{width:80%;height:6px;background:rgba(255,255,255,.2);border-radius:6px;overflow:hidden}#f{height:100%;background:#FFF6E3;width:0}button{margin-top:6px;font:inherit;font-size:13px;font-weight:700;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);color:#fff;border-radius:999px;padding:5px 12px;cursor:pointer}</style>';
       d.body.innerHTML='<div id="l"></div><div id="t">0:00</div><div class="b"><div id="f"></div></div><button id="x">Я випала</button>';
       d.getElementById("x").onclick=()=>{fell();window.focus()};
       pipWin.addEventListener("pagehide",()=>{pipWin=null;setPip(false)});
@@ -454,44 +635,132 @@ function setPip(on){pipOn=on;$("pipBtn").setAttribute("aria-pressed",on);$("pipB
 // ---------- reward ----------
 let gold=false;
 function giveReward(){
+  if(pendingTreasures().length){showPending(giveReward);return}
   gold=Math.random()<.25;$("cardwrap").classList.remove("flipped");
   $("front").classList.toggle("gold",gold);$("kind").textContent=gold?"Золота карта":"Карта перерви";
   $("what").textContent=pick(BREAKS);$("pts").textContent=gold?"Бонус +5 балів":"Хвилина на це, і назад до тексту";
-  $("rwHead").textContent="Ваша карта перерви";$("breakTime").textContent="";
+  $("rwHead").textContent="Ваша карта перерви";renderBrk();
   $("againBtn").textContent=S.streakAtLen>=2&&S.len<20?"Пірнути на "+nextLen(S.len)+" хв":"Пірнути ще раз, "+S.len+" хв";
   show("reward");
 }
 function flip(){const w=$("cardwrap");if(w.classList.contains("flipped"))return;w.classList.add("flipped");if(gold){S.points+=5;save();renderAll();$("rwHead").textContent="Золота!";if(navigator.vibrate)navigator.vibrate(60)}}
 $("cardwrap").onclick=flip;$("cardwrap").onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();flip()}};
 let bT=null;
-$("breakBtn").onclick=()=>{flip();const end=Date.now()+60000;clearInterval(bT);bT=setInterval(()=>{const l=(end-Date.now())/1000;$("breakTime").textContent=fmt(l);if(l<=0){clearInterval(bT);$("breakTime").textContent="Час повертатися";chime()}},250)};
+const BRK=[1,2,3,5,10];
+function recBrk(){return curMin<=5?1:curMin<=10?2:curMin<=15?3:5}
+function renderBrk(){const box=$("brk");box.innerHTML="";const rec=gold?Math.min(10,BRK[BRK.indexOf(recBrk())+1]||5):recBrk();
+  BRK.forEach(m=>{const b=document.createElement("button");b.className=m===rec?"rec":"";b.innerHTML=m+" хв"+(m===rec?"<small>"+(gold?"золотий бонус":"саме час")+"</small>":"");b.onclick=()=>{flip();startRest(m)};box.appendChild(b)})}
+
+// ---------- rest: shoreline ----------
+const CYCLE=10,INH=4;let restEnd=0,restT0=0,restRaf=null,restTick=null,restOn=false,breathHints=true,restMin=1;
+function seedRand(n){let x=Math.sin(n*99.13)*10000;return x-Math.floor(x)}
+function buildShore(){
+  const sv=$("shore");
+  let shells="";const items=today().slice(-14);
+  items.forEach((x,i)=>{const px=40+seedRand(i+1)*320,py=600+seedRand(i+7)*170,rot=seedRand(i+3)*60-30;
+    shells+=x.t==="s"?'<g transform="translate('+px+' '+py+') rotate('+rot+') scale(.42)"><use href="#scallop" x="-35" y="-40" width="70" height="62" fill="'+["#F3C98B","#F7D7B5","#F4BFA8"][i%3]+'"/></g>':'<g transform="translate('+px+' '+py+') rotate('+rot+') scale(.38)" style="color:#E88A8A"><use href="#spiral" x="-30" y="-30" width="60" height="60" fill="none"/></g>'});
+  sv.innerHTML='<defs><linearGradient id="gs" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1F8FB8"/><stop offset=".55" stop-color="#2FAFC6"/><stop offset="1" stop-color="#5CCFCB"/></linearGradient>'+
+   '<linearGradient id="gsand" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E4CFA3"/><stop offset="1" stop-color="#F3E7CB"/></linearGradient>'+
+   '<linearGradient id="gsheet" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5CCFCB" stop-opacity=".9"/><stop offset="1" stop-color="#BDEFF0" stop-opacity=".55"/></linearGradient></defs>'+
+   '<rect width="400" height="800" fill="url(#gsand)"/>'+
+   '<path id="wet" fill="#CDB383" opacity=".0"/>'+shells+
+   '<rect width="400" height="330" fill="url(#gs)"/>'+
+   '<g opacity=".35" stroke="#fff" stroke-width="2" fill="none"><path d="M20 90 q30 -6 60 0"/><path d="M250 150 q40 -8 80 0"/><path d="M120 220 q25 -5 50 0"/><path d="M300 60 q20 -4 40 0"/></g>'+
+   '<path id="sheet" fill="url(#gsheet)"/><path id="foam2" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="4" stroke-linecap="round" stroke-dasharray="14 9"/><path id="foam" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>';
+}
+function edgePath(y,ph,amp){let d="";for(let x=-10;x<=410;x+=10){const yy=y+Math.sin(x/38+ph)*amp+Math.sin(x/17+ph*1.7)*amp*.35;d+=(x===-10?"M":" L")+x+" "+yy.toFixed(1)}return d}
+function ease(t){return .5-.5*Math.cos(Math.PI*t)}
+let maxReach=330,wetA=0;
+function shoreFrame(){
+  const now=Date.now(),e=((now-restT0)/1000)%CYCLE;let k,inh;
+  if(e<INH){k=Math.sin((e/INH)*Math.PI/2);inh=true}else{k=1-ease((e-INH)/(CYCLE-INH));inh=false}
+  const cyc=Math.floor((now-restT0)/1000/CYCLE);const reach=150+seedRand(cyc+11)*60;
+  const y=330+k*reach,ph=now/2400;
+  const edge=edgePath(y,ph,6);
+  $("sheet").setAttribute("d","M-10 326 "+edge.replace(/^M/," L")+" L410 326 Z");
+  $("foam").setAttribute("d",edge);$("foam2").setAttribute("d",edgePath(y-16-k*10,ph+1.3,4));
+  if(inh){maxReach=Math.max(maxReach,y);wetA=.55}else{wetA=Math.max(0,wetA-.0025)}
+  const w=$("wet");w.setAttribute("d","M-10 300 "+edgePath(maxReach+4,1.1,5).replace(/^M/," L")+" L410 300 Z");w.setAttribute("opacity",wetA.toFixed(3));
+  if(!inh&&e>CYCLE-.1)maxReach=330;
+  if(breathHints&&!breathPause){$("breath").textContent=inh?"хвиля накочується":"хвиля відходить";$("bsub").textContent=inh?"вдихайте разом із нею":"повільно видихайте"}
+  restRaf=requestAnimationFrame(shoreFrame);
+}
+function startRest(min){
+  clearInterval(bT);restMin=min;restOn=true;buildShore();maxReach=330;wetA=0;
+  $("rtask").textContent=$("what").textContent;
+  restT0=Date.now();restEnd=restT0+min*60000;
+  $("rbtnsA").classList.remove("hidden");$("rbtnsB").classList.add("hidden");
+  $("breath").style.opacity=breathHints?1:0;$("bsub").style.opacity=breathHints?1:0;
+  show("rest");if(noise)startWaves();
+  cancelAnimationFrame(restRaf);shoreFrame();
+  clearInterval(restTick);restTick=setInterval(restUpdate,250);restUpdate();
+}
+function restUpdate(){const l=(restEnd-Date.now())/1000;$("rtime").textContent=fmt(l);if(l<=0)endRest(true)}
+function endRest(done){
+  clearInterval(restTick);
+  if(done){chime();S.points+=2;save();renderAll();toast("Відпочинок теж рахується +2")}
+  $("rtime").textContent=done?"0:00":$("rtime").textContent;
+  $("breath").style.opacity=1;$("bsub").style.opacity=1;breathPause=true;
+  $("breath").textContent="Час повертатися до тексту";$("bsub").textContent="Море нікуди не дінеться";
+  $("rDive").textContent="Пірнути на "+(S.streakAtLen>=2&&S.len<20?nextLen(S.len):S.len)+" хв";
+  $("rbtnsA").classList.add("hidden");$("rbtnsB").classList.remove("hidden");
+}
+let breathPause=false;
+function leaveRest(){restOn=false;cancelAnimationFrame(restRaf);clearInterval(restTick);breathPause=false;if(noise)startWaves()}
+$("rEnd").onclick=()=>endRest(false);
+$("rMore").onclick=()=>{breathPause=false;restEnd=Date.now()+60000;$("rbtnsA").classList.remove("hidden");$("rbtnsB").classList.add("hidden");$("breath").style.opacity=breathHints?1:0;$("bsub").style.opacity=breathHints?1:0;clearInterval(restTick);restTick=setInterval(restUpdate,250)};
+$("rDive").onclick=()=>{leaveRest();$("againBtn").click()};
+$("rDone").onclick=()=>{leaveRest();$("doneBtn").click()};
+$("rSound").onclick=toggleNoise;
+$("rBreath").onclick=()=>{breathHints=!breathHints;$("rBreath").setAttribute("aria-pressed",breathHints);if(!breathPause){$("breath").style.opacity=breathHints?1:0;$("bsub").style.opacity=breathHints?1:0}};
 
 // ---------- sound ----------
 let ac=null,noise=null;
 function ctx(){if(!ac){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ac=new A()}if(ac.state==="suspended")ac.resume();return ac}
-function chime(){try{const a=ctx();if(!a)return;[660,880].forEach((f,i)=>{const o=a.createOscillator(),g=a.createGain(),t=a.currentTime+i*.18;o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.18,t+.02);g.gain.exponentialRampToValueAtTime(.001,t+.9);o.connect(g).connect(a.destination);o.start(t);o.stop(t+1)});if(navigator.vibrate)navigator.vibrate([120,80,120])}catch(e){}}
-function toggleNoise(){const a=ctx();if(!a)return;const b=$("soundBtn");
-  if(noise){noise.stop();noise=null;b.setAttribute("aria-pressed","false");return}
-  const len=a.sampleRate*4,buf=a.createBuffer(1,len,a.sampleRate),d=buf.getChannelData(0);let last=0;
-  for(let i=0;i<len;i++){last=(last+.02*(Math.random()*2-1))/1.02;d[i]=last*3.5}
-  noise=a.createBufferSource();noise.buffer=buf;noise.loop=true;const lp=a.createBiquadFilter();lp.type="lowpass";lp.frequency.value=900;const g=a.createGain();g.gain.value=.4;noise.connect(lp).connect(g).connect(a.destination);noise.start();b.setAttribute("aria-pressed","true")}
+function chime(){try{const a=ctx();if(!a)return;[523,784].forEach((f,i)=>{const o=a.createOscillator(),g=a.createGain(),t=a.currentTime+i*.18;o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.18,t+.02);g.gain.exponentialRampToValueAtTime(.001,t+.9);o.connect(g).connect(a.destination);o.start(t);o.stop(t+1)});if(navigator.vibrate)navigator.vibrate([120,80,120])}catch(e){}}
+let waveT=null,oGain=null,oFilt=null;
+function soundBtns(on){["soundBtn","rSound"].forEach(id=>$(id).setAttribute("aria-pressed",on))}
+function toggleNoise(){const a=ctx();if(!a)return;
+  if(noise){clearTimeout(waveT);oGain.gain.cancelScheduledValues(a.currentTime);oGain.gain.setTargetAtTime(0,a.currentTime,.4);const n=noise;setTimeout(()=>{try{n.stop()}catch(e){}},1500);noise=null;soundBtns(false);return}
+  const len=a.sampleRate*6,buf=a.createBuffer(2,len,a.sampleRate);
+  for(let ch=0;ch<2;ch++){const d=buf.getChannelData(ch);let b0=0,b1=0,b2=0;for(let i=0;i<len;i++){const w=Math.random()*2-1;b0=.99765*b0+w*.099;b1=.963*b1+w*.2965;b2=.57*b2+w*1.0526;d[i]=(b0+b1+b2+w*.1848)*.16}}
+  noise=a.createBufferSource();noise.buffer=buf;noise.loop=true;
+  oFilt=a.createBiquadFilter();oFilt.type="lowpass";oFilt.frequency.value=500;oFilt.Q.value=.4;
+  oGain=a.createGain();oGain.gain.value=0;
+  const bed=a.createGain();bed.gain.value=.06;const bedF=a.createBiquadFilter();bedF.type="lowpass";bedF.frequency.value=350;
+  noise.connect(oFilt).connect(oGain).connect(a.destination);noise.connect(bedF).connect(bed).connect(a.destination);
+  noise.start();soundBtns(true);startWaves();
+}
+function startWaves(){
+  const a=ctx();if(!a||!noise)return;clearTimeout(waveT);
+  oGain.gain.cancelScheduledValues(a.currentTime);oFilt.frequency.cancelScheduledValues(a.currentTime);
+  oGain.gain.setTargetAtTime(.04,a.currentTime,.3);
+  let t;
+  if(restOn){const off=((Date.now()-restT0)/1000)%CYCLE;t=a.currentTime+(CYCLE-off);}else t=a.currentTime+.4;
+  const wave=()=>{if(!noise)return;let dur,peak,rise;
+    if(restOn){dur=CYCLE;rise=INH;peak=.5}else{dur=6+Math.random()*5;peak=.38+Math.random()*.3;rise=dur*(.35+Math.random()*.15)}
+    oGain.gain.setValueAtTime(.04,t);oGain.gain.linearRampToValueAtTime(peak*.55,t+rise*.7);oGain.gain.linearRampToValueAtTime(peak,t+rise);oGain.gain.exponentialRampToValueAtTime(.14,t+rise+1.4);oGain.gain.linearRampToValueAtTime(.04,t+dur);
+    oFilt.frequency.setValueAtTime(450,t);oFilt.frequency.exponentialRampToValueAtTime(restOn?2200:1800+Math.random()*1400,t+rise);oFilt.frequency.exponentialRampToValueAtTime(600,t+dur);
+    t+=dur;waveT=setTimeout(wave,Math.max(0,(t-a.currentTime-1.5)*1000))};
+  waveT=setTimeout(wave,Math.max(0,(t-a.currentTime-1)*1000));
+}
 
 // ---------- wiring ----------
 $("startBtn").onclick=()=>{ctx();startSprint(S.len)};
 $("book").oninput=()=>{S.book=$("book").value;save()};
-$("fellBtn").onclick=fell;$("soundBtn").onclick=toggleNoise;$("pipBtn").onclick=openPip;
+$("fellBtn").onclick=fell;$("soundBtn").onclick=()=>{ctx();toggleNoise()};$("pipBtn").onclick=openPip;
 function park(){const v=$("parkIn").value.trim();if(!v)return;S.parked.push(v);$("parkIn").value="";save();renderParked();toast("Відкладено. Повертаємося до тексту")}
 $("parkBtn").onclick=park;$("parkIn").onkeydown=e=>{if(e.key==="Enter")park()};
 $("saveNote").onclick=()=>{const t=$("noteIn").value.trim();if(t){S.notes.push({q:$("prompt").textContent,text:t,book:S.book,ts:Date.now()});S.points+=3;save();renderAll();toast("Думку збережено +3")}giveReward()};
 $("otherPrompt").onclick=()=>{let p;do{p=pick(PROMPTS)}while(p===$("prompt").textContent);$("prompt").textContent=p};
 $("skipNote").onclick=giveReward;
 $("againBtn").onclick=()=>{clearInterval(bT);if(S.streakAtLen>=2&&S.len<20){S.len=nextLen(S.len);S.streakAtLen=0;save()}renderAll();startSprint(S.len)};
-$("doneBtn").onclick=()=>{clearInterval(bT);if(noise)toggleNoise();closePip();renderAll();show(null);toast("Сьогодні "+today("s").length+" "+plural(today("s").length,"занурення","занурення","занурень"))};
+$("doneBtn").onclick=()=>{clearInterval(bT);if(noise)toggleNoise();closePip();renderAll();show(null);showPending(null);toast("Сьогодні "+today("s").length+" "+plural(today("s").length,"занурення","занурення","занурень"))};
 $("miniBtn").onclick=()=>{returned();startSprint(2)};
 $("resumeBtn").onclick=()=>{returned();startSprint(curMin,pausedLeft)};
 $("copyNotes").onclick=async()=>{const t=S.notes.map(n=>"— "+n.text+(n.book?" ("+n.book+")":"")).join("\n");try{await navigator.clipboard.writeText(t);toast("Скопійовано")}catch(e){toast("Не вдалося скопіювати")}};
 $("clearPark").onclick=()=>{S.parked=[];save();renderParked()};
-$("resetAll").onclick=()=>{if(confirm("Стерти бали, стежку, думки й відкладене?")){S=JSON.parse(JSON.stringify(DEF));save();renderAll();show(null)}};
+$("resetAll").onclick=()=>{if(confirm("Стерти бали, мушлі, думки й відкладене?")){S=JSON.parse(JSON.stringify(DEF));save();renderAll();show(null)}};
 
 // ---------- start ----------
 const l=lsLoad();if(l)S=Object.assign({},DEF,l);
