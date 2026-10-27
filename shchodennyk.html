@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Щоденник думок і емоцій</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📔</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#24224A;--plum:#3C3489;--lav:#7F77DD;--lav-l:#EEEDFE;
+  --pine:#085041;--mint:#1D9E75;--mint-l:#E3F4EE;
+  --coral:#B5532F;--coral-l:#FAECE7;
+  --mist:#F2F3F8;--paper:#fff;--line:#DCDDEA;--soft:#6B6A86;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{font-family:'Onest',-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--mist);color:var(--ink);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:clamp(1.5rem,5vw,3rem) clamp(1rem,4vw,2rem) 4rem}
+button{font:inherit;cursor:pointer}
+a{color:var(--plum)}
+:focus-visible{outline:3px solid var(--lav);outline-offset:2px}
+
+.top{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:2rem;font-size:15px}
+.top a{color:var(--soft);text-decoration:none}
+.top a:hover{color:var(--ink)}
+h1{font-weight:300;font-size:clamp(2rem,6vw,3rem);line-height:1.05;letter-spacing:-.02em;color:var(--plum)}
+.lead{color:var(--soft);margin-top:.75rem;max-width:46ch}
+h2{font-weight:500;font-size:21px;margin-bottom:.5rem}
+.muted{color:var(--soft);font-size:15px}
+
+.btn{border:none;border-radius:999px;padding:12px 24px;font-weight:600;font-size:16px;background:var(--plum);color:#fff}
+.btn:hover{background:#2C2670}
+.btn.ghost{background:transparent;color:var(--plum);border:1.5px solid var(--line)}
+.btn.ghost:hover{border-color:var(--lav);background:var(--paper)}
+.btn.small{padding:7px 14px;font-size:14px;font-weight:500}
+.btn.danger{color:var(--coral);border-color:var(--coral-l)}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:clamp(1.1rem,4vw,1.75rem);margin-top:1.5rem}
+
+/* ГОЛОВНА */
+.home-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:1.75rem}
+.entry{display:block;width:100%;text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:1rem 1.15rem;margin-top:10px;color:inherit}
+.entry:hover{border-color:var(--lav)}
+.entry .date{font-size:14px;color:var(--soft)}
+.entry .sit{font-weight:500;margin:.15rem 0 .5rem;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:13px;padding:3px 10px;border-radius:999px;background:var(--lav-l);color:var(--plum)}
+.tag.after{background:var(--mint-l);color:var(--pine)}
+.empty{text-align:center;padding:2.5rem 1rem;color:var(--soft)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:1.5rem}
+.stat{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:.9rem 1rem}
+.stat b{display:block;font-size:26px;font-weight:500;color:var(--plum);line-height:1.2}
+.stat span{font-size:13px;color:var(--soft)}
+
+/* МАЙСТЕР */
+.steps{display:flex;gap:6px;margin:1.5rem 0 .5rem}
+.steps i{flex:1;height:5px;border-radius:3px;background:var(--line)}
+.steps i.on{background:var(--lav)}
+.steps i.done{background:var(--plum)}
+.stepnum{font-size:14px;color:var(--soft)}
+.q{font-size:clamp(1.4rem,4vw,1.75rem);font-weight:400;letter-spacing:-.01em;color:var(--plum);margin:.25rem 0 .35rem;line-height:1.2}
+.qhelp{color:var(--soft);font-size:15px;margin-bottom:1.25rem}
+label.f{display:block;font-weight:500;font-size:15px;margin:1.1rem 0 .4rem}
+textarea,input[type=text],input[type=datetime-local],input[type=date]{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--mist);border:1.5px solid transparent;border-radius:12px;padding:12px 14px;resize:vertical}
+textarea{min-height:96px}
+textarea:focus,input:focus{outline:none;border-color:var(--lav);background:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;font-size:15px;color:var(--ink)}
+.chip:hover{border-color:var(--lav)}
+.chip[aria-pressed=true]{background:var(--plum);border-color:var(--plum);color:#fff}
+.addrow{display:flex;gap:8px;margin-top:10px}
+.addrow input{flex:1}
+.slider{margin-top:12px;background:var(--mist);border-radius:14px;padding:12px 14px}
+.slider .hd{display:flex;justify-content:space-between;font-size:15px;font-weight:500}
+.slider .hd output{color:var(--plum);font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--plum);margin-top:6px;height:28px}
+.sl-cap{display:flex;justify-content:space-between;font-size:12px;color:var(--soft)}
+.dist{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dist .chip{border-radius:12px;text-align:left;padding:9px 12px}
+.dist .chip small{display:block;font-size:12.5px;opacity:.75;margin-top:2px;line-height:1.35}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:1.75rem;flex-wrap:wrap}
+.skipnote{background:var(--mint-l);color:var(--pine);border-radius:12px;padding:10px 14px;font-size:14.5px;margin-bottom:1rem}
+
+/* ПЕРЕГЛЯД ЗАПИСУ */
+.rec dt{font-size:14px;color:var(--soft);margin-top:1.1rem}
+.rec dd{white-space:pre-wrap;margin-top:.15rem}
+.compare{display:grid;grid-template-columns:auto 1fr auto;gap:6px 12px;align-items:center;font-size:15px;margin-top:.4rem}
+.bar{height:8px;border-radius:4px;background:var(--line);position:relative;overflow:hidden}
+.bar b{position:absolute;left:0;top:0;bottom:0;border-radius:4px}
+
+/* ЗВІТ */
+.rep-entry{border-top:1px solid var(--line);padding-top:1rem;margin-top:1rem}
+.rep-entry h3{font-size:16px;font-weight:600}
+.rep-entry p{font-size:15px;margin-top:.3rem}
+.rep-entry p b{font-weight:500;color:var(--soft)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+
+@media (max-width:560px){.dist{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr 1fr}.stat b{font-size:22px}}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .noprint,.top,.toast{display:none!important}
+  .panel{border:none;padding:0;margin:0}
+  .rep-entry{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ======== ДАНІ ======== */
+var KEY='kpt-diary-v1';
+var EMOTIONS=['Тривога','Страх','Сум','Злість','Роздратування','Сором','Провина','Образа','Безпорадність','Самотність','Розчарування','Ревнощі','Відчай','Радість','Полегшення','Спокій'];
+var BODY=['Напруга в плечах','Стиснення в грудях','Ком у горлі','Прискорене серцебиття','Важко дихати','Жар, почервоніння','Холод, озноб','Тремтіння','Пітливість','Важкість у тілі','Неприємне в животі','Головний біль','Стиснуті щелепи','Слабкість','Оніміння'];
+var DISTORTIONS=[
+ ['Катастрофізація','Очікую найгіршого розвитку подій'],
+ ['Чорно-біле мислення','Або все, або нічого, без середини'],
+ ['Читання думок','Впевненість, що знаю, що думають інші'],
+ ['Передбачення майбутнього','Ніби точно знаю, як усе буде'],
+ ['Надузагальнення','«Завжди», «ніколи», «усі» з одного випадку'],
+ ['Персоналізація','Беру на себе відповідальність за все'],
+ ['«Мушу» і «повинен»','Жорсткі правила для себе й інших'],
+ ['Навішування ярликів','«Я невдаха», «він ідіот»'],
+ ['Знецінення позитивного','Хороше «не рахується»'],
+ ['Емоційне обґрунтування','Відчуваю — отже, так і є'],
+ ['Ментальний фільтр','Помічаю лише погане'],
+ ['Збільшення і зменшення','Перебільшую погане, применшую добре']
+];
+var store={client:'',entries:[]};
+var memOnly=false;
+function load(){try{var r=localStorage.getItem(KEY);if(r){var d=JSON.parse(r);if(d&&Array.isArray(d.entries))store=d;}}catch(e){memOnly=true;}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){memOnly=true;toast('Не вдалося зберегти на пристрої — зробіть резервну копію');}}
+load();
+
+/* ======== УТИЛІТИ ======== */
+var app=document.getElementById('app');
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function toast(t){var el=document.getElementById('toast');el.textContent=t;el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(function(){el.classList.remove('show');},2200);}
+function nowLocal(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,16);}
+function fmtDate(s){if(!s)return'';var d=new Date(s);if(isNaN(d))return s;return d.toLocaleDateString('uk-UA',{day:'numeric',month:'long',year:'numeric'})+', '+d.toLocaleTimeString('uk-UA',{hour:'2-digit',minute:'2-digit'});}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+function sorted(){return store.entries.slice().sort(function(a,b){return (b.when||'').localeCompare(a.when||'');});}
+function chip(label,on,attrs){return '<button type="button" class="chip" aria-pressed="'+(on?'true':'false')+'" '+(attrs||'')+'>'+label+'</button>';}
+
+/* ======== ГОЛОВНА ======== */
+function home(){
+  var list=sorted();
+  var h='<div class="top noprint"><a href="./">← Психологічний кабінет</a><span class="muted">'+(store.client?esc(store.client):'')+'</span></div>';
+  h+='<h1>Щоденник думок<br>і емоцій</h1>';
+  h+='<p class="lead">Записуйте ситуації, коли ставало важко: що сталося, що Ви подумали, що відчули і що зробили. З часом стане видно, що повторюється.</p>';
+  h+='<div class="home-actions"><button class="btn" data-go="new">Новий запис</button>'+(list.length?'<button class="btn ghost" data-go="report">Звіт для психолога</button>':'')+'<button class="btn ghost" data-go="settings">Налаштування</button></div>';
+  if(list.length){
+    var tot=list.length,dist={},emo={},d=0,n=0;
+    list.forEach(function(e){(e.emotions||[]).forEach(function(x){emo[x.name]=(emo[x.name]||0)+1;if(e.reEmotions&&e.reEmotions[x.name]!=null){d+=x.v-e.reEmotions[x.name];n++;}});(e.distortions||[]).forEach(function(x){dist[x]=(dist[x]||0)+1;});});
+    var topE=Object.keys(emo).sort(function(a,b){return emo[b]-emo[a];})[0]||'—';
+    h+='<div class="stats"><div class="stat"><b>'+tot+'</b><span>записів</span></div><div class="stat"><b>'+esc(topE)+'</b><span>найчастіша емоція</span></div><div class="stat"><b>'+(n?(function(r){return r>0?'−'+r:r<0?'+'+(-r):'0';})(Math.round(d/n)):'—')+'</b><span>середнє зниження інтенсивності</span></div></div>';
+    h+='<div style="margin-top:2rem"><h2>Записи</h2>';
+    list.forEach(function(e){
+      h+='<button class="entry" data-view="'+e.id+'"><div class="date">'+fmtDate(e.when)+'</div><div class="sit">'+esc(e.situation||'Без опису ситуації')+'</div><div class="tags">';
+      (e.emotions||[]).forEach(function(x){h+='<span class="tag">'+esc(x.name)+' '+x.v+'</span>';});
+      if(e.alt)h+='<span class="tag after">є альтернативна думка</span>';
+      h+='</div></button>';
+    });
+    h+='</div>';
+  }else{
+    h+='<div class="panel empty">Поки що записів немає.<br>Почніть з будь-якої ситуації цього тижня, навіть невеликої.</div>';
+  }
+  h+='<p class="muted" style="margin-top:2.5rem">Усі записи зберігаються лише в цьому браузері на Вашому пристрої. Ніхто, крім Вас, їх не бачить, доки Ви самі не покажете звіт.</p>';
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+
+/* ======== МАЙСТЕР ЗАПИСУ ======== */
+var draft=null,step=0;
+var STEPS=[
+ {t:'Ситуація',q:'Що сталося?',help:'Опишіть коротко і конкретно, як у кадрі фільму: де Ви були, з ким, що відбувалося. Без оцінок — лише факти.'},
+ {t:'Емоції',q:'Що Ви відчули?',help:'Оберіть одну або кілька емоцій і позначте, наскільки сильними вони були, від 0 до 100.'},
+ {t:'Тіло',q:'Що відбувалося в тілі?',help:'Тіло часто реагує раніше, ніж ми усвідомлюємо емоцію.'},
+ {t:'Думки',q:'Що промайнуло в голові?',help:'Запишіть думки так, як вони звучали всередині, навіть якщо зараз вони здаються перебільшеними. Яка з них зачепила найбільше?'},
+ {t:'Поведінка',q:'Що Ви зробили?',help:'Що Ви зробили або дуже хотіли зробити. І що сталося після цього.'},
+ {t:'Перевірка думки',q:'Подивімося на думку збоку',help:'Як слідчий: які факти підтверджують головну думку, а які — ні?',opt:true},
+ {t:'Новий погляд',q:'Як ще можна на це подивитися?',help:'Сформулюйте більш збалансовану думку, яка враховує всі факти. Потім знову оцініть емоції.',opt:true}
+];
+function newDraft(){return{id:uid(),when:nowLocal(),situation:'',emotions:[],body:[],bodyNote:'',thoughts:'',hot:'',belief:70,behavior:'',consequence:'',evFor:'',evAgainst:'',distortions:[],alt:'',altBelief:50,reEmotions:{},reBelief:null,next:''};}
+function startEdit(e){draft=e?JSON.parse(JSON.stringify(e)):newDraft();step=0;wizard();}
+function collect(){
+  app.querySelectorAll('[data-f]').forEach(function(el){var k=el.getAttribute('data-f');draft[k]=el.type==='range'?+el.value:el.value;});
+  app.querySelectorAll('[data-re]').forEach(function(el){draft.reEmotions[el.getAttribute('data-re')]=+el.value;});
+}
+function wizard(){
+  var s=STEPS[step],h='';
+  h+='<div class="top noprint"><button class="btn small ghost" data-act="cancel">Скасувати</button><span class="muted">'+fmtDate(draft.when)+'</span></div>';
+  h+='<div class="steps" aria-hidden="true">';STEPS.forEach(function(_,i){h+='<i class="'+(i<step?'done':i===step?'on':'')+'"></i>';});h+='</div>';
+  h+='<div class="stepnum">Крок '+(step+1)+' з '+STEPS.length+' · '+s.t+'</div>';
+  h+='<h2 class="q">'+s.q+'</h2><p class="qhelp">'+s.help+'</p>';
+  if(s.opt&&step===5)h+='<div class="skipnote">Ці два кроки можна пропустити, якщо Ви ще не працювали з ними на сесії. Запис збережеться і без них.</div>';
+  h+='<div class="panel" style="margin-top:0">';
+  if(step===0){
+    h+='<label class="f" for="w">Коли це було</label><input type="datetime-local" id="w" data-f="when" value="'+esc(draft.when)+'">';
+    h+='<label class="f" for="sit">Ситуація</label><textarea id="sit" data-f="situation" placeholder="Наприклад: увечері вдома, чоловік не відповів на повідомлення протягом трьох годин">'+esc(draft.situation)+'</textarea>';
+  }
+  if(step===1){
+    var names=draft.emotions.map(function(x){return x.name;});
+    var all=EMOTIONS.concat(names.filter(function(n){return EMOTIONS.indexOf(n)<0;}));
+    h+='<div class="chips">';all.forEach(function(n){h+=chip(esc(n),names.indexOf(n)>=0,'data-emo="'+esc(n)+'"');});h+='</div>';
+    h+='<div class="addrow"><input type="text" id="emoAdd" placeholder="Інша емоція"><button class="btn small ghost" data-act="addEmo">Додати</button></div>';
+    draft.emotions.forEach(function(x,i){h+=sliderHtml('Наскільки сильно: '+esc(x.name),'emo-'+i,x.v,'data-emov="'+i+'"');});
+  }
+  if(step===2){
+    var allB=BODY.concat(draft.body.filter(function(n){return BODY.indexOf(n)<0;}));
+    h+='<div class="chips">';allB.forEach(function(n){h+=chip(esc(n),draft.body.indexOf(n)>=0,'data-body="'+esc(n)+'"');});h+='</div>';
+    h+='<label class="f" for="bn">Своїми словами (необовʼязково)</label><textarea id="bn" data-f="bodyNote" placeholder="Де саме, як це відчувалося">'+esc(draft.bodyNote)+'</textarea>';
+  }
+  if(step===3){
+    h+='<label class="f" for="th">Автоматичні думки</label><textarea id="th" data-f="thoughts" placeholder="«Він мене ігнорує», «Я йому байдужа», «Щось сталося»">'+esc(draft.thoughts)+'</textarea>';
+    h+='<label class="f" for="hot">Головна думка, яка зачепила найбільше</label><input type="text" id="hot" data-f="hot" value="'+esc(draft.hot)+'" placeholder="Одним реченням">';
+    h+=sliderHtml('Наскільки Ви в неї вірили','bel',draft.belief,'data-f="belief"');
+  }
+  if(step===4){
+    h+='<label class="f" for="bh">Що я зробив(ла) або хотів(ла) зробити</label><textarea id="bh" data-f="behavior" placeholder="Наприклад: написала ще п’ять повідомлень, не могла заснути">'+esc(draft.behavior)+'</textarea>';
+    h+='<label class="f" for="cq">Що сталося після цього</label><textarea id="cq" data-f="consequence" placeholder="Як змінився стан одразу і згодом, як відреагували інші">'+esc(draft.consequence)+'</textarea>';
+  }
+  if(step===5){
+    if(draft.hot)h+='<p style="margin-bottom:.5rem"><span class="muted">Головна думка:</span><br><b style="font-weight:500">«'+esc(draft.hot)+'»</b></p>';
+    h+='<label class="f" for="ef">Факти, які її підтверджують</label><textarea id="ef" data-f="evFor">'+esc(draft.evFor)+'</textarea>';
+    h+='<label class="f" for="ea">Факти, які їй суперечать</label><textarea id="ea" data-f="evAgainst" placeholder="Що б сказала подруга, якби почула цю думку? Чи бувало раніше інакше?">'+esc(draft.evAgainst)+'</textarea>';
+    h+='<label class="f">Чи впізнаєте Ви тут пастки мислення? (необовʼязково)</label><div class="dist">';
+    DISTORTIONS.forEach(function(d){h+=chip(esc(d[0])+'<small>'+esc(d[1])+'</small>',draft.distortions.indexOf(d[0])>=0,'data-dist="'+esc(d[0])+'"');});
+    h+='</div>';
+  }
+  if(step===6){
+    h+='<label class="f" for="alt">Збалансована думка</label><textarea id="alt" data-f="alt" placeholder="Наприклад: «Він може бути зайнятий, так уже бувало. Я поговорю з ним увечері»">'+esc(draft.alt)+'</textarea>';
+    h+=sliderHtml('Наскільки я вірю в нову думку','ab',draft.altBelief,'data-f="altBelief"');
+    if(draft.hot)h+=sliderHtml('А тепер у стару думку «'+esc(draft.hot)+'»','rb',draft.reBelief==null?draft.belief:draft.reBelief,'data-f="reBelief"');
+    if(draft.emotions.length){
+      h+='<label class="f">Як змінилися емоції зараз</label>';
+      draft.emotions.forEach(function(x,i){var v=draft.reEmotions[x.name];h+=sliderHtml(esc(x.name)+' <span class="muted">(було '+x.v+')</span>','re-'+i,v==null?x.v:v,'data-re="'+esc(x.name)+'"');});
+    }
+    h+='<label class="f" for="nx">Що я можу зробити наступного разу</label><textarea id="nx" data-f="next">'+esc(draft.next)+'</textarea>';
+  }
+  h+='</div><div class="nav noprint">';
+  h+=step>0?'<button class="btn ghost" data-act="back">Назад</button>':'<span></span>';
+  h+='<div class="btns">';
+  if(step>=4&&step<6)h+='<button class="btn ghost" data-act="save">Зберегти зараз</button>';
+  h+=step<STEPS.length-1?'<button class="btn" data-act="next">Далі</button>':'<button class="btn" data-act="save">Зберегти запис</button>';
+  h+='</div></div>';
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function sliderHtml(label,id,v,attr){
+  return '<div class="slider"><div class="hd"><label for="'+id+'">'+label+'</label><output id="o-'+id+'">'+v+'</output></div><input type="range" min="0" max="100" step="5" id="'+id+'" value="'+v+'" '+attr+'><div class="sl-cap"><span>0, зовсім ні</span><span>100, максимально</span></div></div>';
+}
+function finish(){
+  collect();
+  if(!draft.situation.trim()&&!draft.thoughts.trim()&&!draft.emotions.length){toast('Опишіть хоча б ситуацію, думку або емоцію');return;}
+  var i=store.entries.findIndex(function(e){return e.id===draft.id;});
+  if(i>=0)store.entries[i]=draft;else store.entries.push(draft);
+  save();toast('Запис збережено');var id=draft.id;draft=null;view(id);
+}
+
+/* ======== ПЕРЕГЛЯД ======== */
+function view(id){
+  var e=store.entries.find(function(x){return x.id===id;});if(!e)return home();
+  var h='<div class="top noprint"><button class="btn small ghost" data-go="home">← Усі записи</button><div class="btns"><button class="btn small ghost" data-edit="'+e.id+'">Редагувати</button><button class="btn small ghost danger" data-del="'+e.id+'">Видалити</button></div></div>';
+  h+='<div class="muted">'+fmtDate(e.when)+'</div><h2 class="q" style="margin-bottom:0">'+esc(e.situation||'Без опису ситуації')+'</h2>';
+  h+='<div class="panel"><dl class="rec">';
+  if(e.emotions.length){
+    h+='<dt>Емоції'+(Object.keys(e.reEmotions||{}).length?' — до і після':'')+'</dt><dd><div class="compare">';
+    e.emotions.forEach(function(x){var r=e.reEmotions?e.reEmotions[x.name]:null;
+      h+='<span>'+esc(x.name)+'</span><div><div class="bar"><b style="width:'+x.v+'%;background:var(--lav)"></b></div>'+(r!=null?'<div class="bar" style="margin-top:4px"><b style="width:'+r+'%;background:var(--mint)"></b></div>':'')+'</div><span style="font-variant-numeric:tabular-nums">'+x.v+(r!=null?' → '+r:'')+'</span>';});
+    h+='</div></dd>';
+  }
+  if(e.body.length||e.bodyNote)h+='<dt>Тіло</dt><dd>'+esc(e.body.join(', '))+(e.bodyNote?(e.body.length?'\n':'')+esc(e.bodyNote):'')+'</dd>';
+  if(e.thoughts)h+='<dt>Автоматичні думки</dt><dd>'+esc(e.thoughts)+'</dd>';
+  if(e.hot)h+='<dt>Головна думка</dt><dd>«'+esc(e.hot)+'», віра '+e.belief+'%'+(e.reBelief!=null&&e.alt?' → '+e.reBelief+'%':'')+'</dd>';
+  if(e.behavior)h+='<dt>Що я зробив(ла)</dt><dd>'+esc(e.behavior)+'</dd>';
+  if(e.consequence)h+='<dt>Наслідки</dt><dd>'+esc(e.consequence)+'</dd>';
+  if(e.evFor)h+='<dt>Факти «за»</dt><dd>'+esc(e.evFor)+'</dd>';
+  if(e.evAgainst)h+='<dt>Факти «проти»</dt><dd>'+esc(e.evAgainst)+'</dd>';
+  if(e.distortions.length)h+='<dt>Пастки мислення</dt><dd>'+esc(e.distortions.join(', '))+'</dd>';
+  if(e.alt)h+='<dt>Збалансована думка</dt><dd>«'+esc(e.alt)+'», віра '+e.altBelief+'%</dd>';
+  if(e.next)h+='<dt>Наступного разу</dt><dd>'+esc(e.next)+'</dd>';
+  h+='</dl></div>';
+  if(!e.alt)h+='<p class="muted" style="margin-top:1rem">Перевірку думки і новий погляд можна додати пізніше, наприклад після сесії: натисніть «Редагувати».</p>';
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+
+/* ======== ЗВІТ ======== */
+var repFrom='',repTo='';
+function report(){
+  var list=sorted().filter(function(e){var d=(e.when||'').slice(0,10);return(!repFrom||d>=repFrom)&&(!repTo||d<=repTo);}).reverse();
+  var h='<div class="top noprint"><button class="btn small ghost" data-go="home">← Усі записи</button></div>';
+  h+='<div class="noprint"><h2 class="q">Звіт для психолога</h2><p class="qhelp">Оберіть період, а потім роздрукуйте звіт, збережіть його як PDF або скопіюйте текст, щоб надіслати.</p>';
+  h+='<div class="panel" style="margin-top:0"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div><label class="f" for="rf" style="margin-top:0">З</label><input type="date" id="rf" value="'+repFrom+'"></div><div><label class="f" for="rt" style="margin-top:0">По</label><input type="date" id="rt" value="'+repTo+'"></div></div>';
+  h+='<div class="btns" style="margin-top:1rem"><button class="btn" data-act="print">Друк або PDF</button><button class="btn ghost" data-act="copy">Скопіювати текст</button></div></div></div>';
+  h+='<div class="panel" id="rep"><h2>Щоденник думок і емоцій'+(store.client?': '+esc(store.client):'')+'</h2>';
+  h+='<p class="muted">'+(repFrom||repTo?'Період: '+(repFrom||'…')+' — '+(repTo||'…')+'. ':'')+'Записів: '+list.length+'</p>';
+  var emo={},dist={};list.forEach(function(e){e.emotions.forEach(function(x){emo[x.name]=(emo[x.name]||0)+1;});e.distortions.forEach(function(x){dist[x]=(dist[x]||0)+1;});});
+  var ek=Object.keys(emo).sort(function(a,b){return emo[b]-emo[a];}),dk=Object.keys(dist).sort(function(a,b){return dist[b]-dist[a];});
+  if(ek.length)h+='<p style="margin-top:.75rem;font-size:15px"><b style="font-weight:500">Емоції, що повторювалися:</b> '+ek.map(function(k){return esc(k)+' ('+emo[k]+')';}).join(', ')+'</p>';
+  if(dk.length)h+='<p style="font-size:15px"><b style="font-weight:500">Пастки мислення:</b> '+dk.map(function(k){return esc(k)+' ('+dist[k]+')';}).join(', ')+'</p>';
+  if(!list.length)h+='<p class="empty">За цей період записів немає.</p>';
+  list.forEach(function(e){h+='<div class="rep-entry">'+repEntryHtml(e)+'</div>';});
+  h+='</div>';
+  app.innerHTML=h;
+}
+function repEntryHtml(e){
+  var p=function(l,v){return v?'<p><b>'+l+':</b> '+esc(v)+'</p>':'';};
+  var em=e.emotions.map(function(x){var r=e.reEmotions?e.reEmotions[x.name]:null;return x.name+' '+x.v+(r!=null&&e.alt?'→'+r:'');}).join(', ');
+  return '<h3>'+fmtDate(e.when)+'</h3>'+p('Ситуація',e.situation)+p('Емоції',em)+p('Тіло',[e.body.join(', '),e.bodyNote].filter(Boolean).join('. '))+p('Думки',e.thoughts)+(e.hot?p('Головна думка','«'+e.hot+'», віра '+e.belief+'%'+(e.alt&&e.reBelief!=null?' → '+e.reBelief+'%':'')):'')+p('Поведінка',e.behavior)+p('Наслідки',e.consequence)+p('Факти «за»',e.evFor)+p('Факти «проти»',e.evAgainst)+p('Пастки мислення',e.distortions.join(', '))+(e.alt?p('Збалансована думка','«'+e.alt+'», віра '+e.altBelief+'%'):'')+p('Наступного разу',e.next);
+}
+function copyText(t){
+  if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t).then(function(){toast('Текст скопійовано');},fb);}else fb();
+  function fb(){var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast('Текст скопійовано');}catch(e){toast('Не вдалося скопіювати');}document.body.removeChild(ta);}
+}
+
+/* ======== НАЛАШТУВАННЯ ======== */
+function settings(){
+  var h='<div class="top noprint"><button class="btn small ghost" data-go="home">← Усі записи</button></div><h2 class="q">Налаштування</h2>';
+  h+='<div class="panel" style="margin-top:1rem"><label class="f" for="cn" style="margin-top:0">Ваше імʼя для звіту (необовʼязково)</label><input type="text" id="cn" value="'+esc(store.client)+'"><div class="btns" style="margin-top:.75rem"><button class="btn small" data-act="saveName">Зберегти</button></div></div>';
+  h+='<div class="panel"><h2>Резервна копія</h2><p class="muted">Записи живуть лише в цьому браузері. Якщо почистити історію браузера або перейти на інший пристрій, вони зникнуть. Зберігайте копію файлом час від часу.</p><div class="btns" style="margin-top:1rem"><button class="btn small" data-act="export">Завантажити копію</button><button class="btn small ghost" data-act="import">Відновити з файлу</button><input type="file" id="imp" accept=".json,application/json" hidden></div></div>';
+  h+='<div class="panel"><h2>Видалити всі записи</h2><p class="muted">Це не можна скасувати.</p><div class="btns" style="margin-top:1rem"><button class="btn small ghost danger" data-act="wipe">Видалити все</button></div></div>';
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+
+/* ======== ПОДІЇ ======== */
+app.addEventListener('input',function(ev){
+  var t=ev.target;if(t.type!=='range')return;
+  var o=document.getElementById('o-'+t.id);if(o)o.textContent=t.value;
+  if(t.hasAttribute('data-emov'))draft.emotions[+t.getAttribute('data-emov')].v=+t.value;
+  if(t.hasAttribute('data-re'))draft.reEmotions[t.getAttribute('data-re')]=+t.value;
+});
+app.addEventListener('change',function(ev){
+  var t=ev.target;
+  if(t.id==='rf'){repFrom=t.value;report();}
+  if(t.id==='rt'){repTo=t.value;report();}
+  if(t.id==='imp'&&t.files[0]){var r=new FileReader();r.onload=function(){try{var d=JSON.parse(r.result);if(!d||!Array.isArray(d.entries))throw 0;var ids={};store.entries.forEach(function(e){ids[e.id]=1;});var added=0;d.entries.forEach(function(e){if(!ids[e.id]){store.entries.push(e);added++;}});if(d.client&&!store.client)store.client=d.client;save();toast('Відновлено записів: '+added);settings();}catch(e){toast('Цей файл не схожий на копію щоденника');}};r.readAsText(t.files[0]);}
+});
+app.addEventListener('keydown',function(ev){if(ev.key==='Enter'&&ev.target.id==='emoAdd'){ev.preventDefault();addEmo();}});
+function addEmo(){var i=document.getElementById('emoAdd');var v=(i.value||'').trim();if(!v)return;collect();if(!draft.emotions.some(function(x){return x.name.toLowerCase()===v.toLowerCase();}))draft.emotions.push({name:v,v:50});wizard();}
+app.addEventListener('click',function(ev){
+  var b=ev.target.closest('button');if(!b)return;
+  var go=b.getAttribute('data-go');
+  if(go==='new')return startEdit(null);
+  if(go==='home')return home();
+  if(go==='report')return report();
+  if(go==='settings')return settings();
+  if(b.hasAttribute('data-view'))return view(b.getAttribute('data-view'));
+  if(b.hasAttribute('data-edit'))return startEdit(store.entries.find(function(e){return e.id===b.getAttribute('data-edit');}));
+  if(b.hasAttribute('data-del')){if(confirm('Видалити цей запис?')){store.entries=store.entries.filter(function(e){return e.id!==b.getAttribute('data-del');});save();toast('Запис видалено');home();}return;}
+  if(b.hasAttribute('data-emo')){collect();var n=b.getAttribute('data-emo'),i=draft.emotions.findIndex(function(x){return x.name===n;});if(i>=0){draft.emotions.splice(i,1);delete draft.reEmotions[n];}else draft.emotions.push({name:n,v:50});return wizard();}
+  if(b.hasAttribute('data-body')){var n2=b.getAttribute('data-body'),j=draft.body.indexOf(n2);if(j>=0)draft.body.splice(j,1);else draft.body.push(n2);b.setAttribute('aria-pressed',j<0);return;}
+  if(b.hasAttribute('data-dist')){var n3=b.getAttribute('data-dist'),k=draft.distortions.indexOf(n3);if(k>=0)draft.distortions.splice(k,1);else draft.distortions.push(n3);b.setAttribute('aria-pressed',k<0);return;}
+  var a=b.getAttribute('data-act');
+  if(a==='addEmo')return addEmo();
+  if(a==='next'){collect();if(step===6)return;step++;return wizard();}
+  if(a==='back'){collect();step--;return wizard();}
+  if(a==='save')return finish();
+  if(a==='cancel'){if(confirm('Вийти без збереження?')){draft=null;home();}return;}
+  if(a==='print')return window.print();
+  if(a==='copy')return copyText(document.getElementById('rep').innerText);
+  if(a==='saveName'){store.client=document.getElementById('cn').value.trim();save();toast('Збережено');return;}
+  if(a==='export'){var blob=new Blob([JSON.stringify(store,null,2)],{type:'application/json'});var u=URL.createObjectURL(blob);var l=document.createElement('a');l.href=u;l.download='shchodennyk-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(l);l.click();l.remove();setTimeout(function(){URL.revokeObjectURL(u);},1000);return;}
+  if(a==='import')return document.getElementById('imp').click();
+  if(a==='wipe'){if(confirm('Видалити всі записи щоденника на цьому пристрої?')){store.entries=[];save();toast('Усі записи видалено');home();}return;}
+});
+home();
+if(memOnly)toast('Браузер не дозволяє зберігати записи — вони зникнуть після закриття сторінки');
+</script>
+</body>
+</html>
