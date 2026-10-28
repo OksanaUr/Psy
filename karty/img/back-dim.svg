@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0f3a32"/><stop offset=".55" stop-color="#1b5246"/><stop offset="1" stop-color="#0c302a"/></linearGradient>
+<linearGradient id="au" gradientUnits="userSpaceOnUse" x1="40" y1="60" x2="160" y2="240"><stop offset="0" stop-color="#f8e6a6"/><stop offset=".4" stop-color="#d3a347"/><stop offset=".62" stop-color="#f2d388"/><stop offset="1" stop-color="#b6872f"/></linearGradient>
+<radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#f3d27a" stop-opacity=".28"/><stop offset="1" stop-color="#f3d27a" stop-opacity="0"/></radialGradient>
+<clipPath id="c1"><circle cx="96" cy="118" r="9"/></clipPath>
+<clipPath id="c2"><circle cx="118" cy="165" r="10"/></clipPath>
+<mask id="mU" maskUnits="userSpaceOnUse" x="0" y="0" width="200" height="300"><rect width="200" height="300" fill="#fff"/><circle cx="88" cy="150" r="33" fill="none" stroke="#000" stroke-width="11" clip-path="url(#c1)"/></mask>
+<mask id="mO" maskUnits="userSpaceOnUse" x="0" y="0" width="200" height="300"><rect width="200" height="300" fill="#fff"/><path d="M96 112 V154 A20 20 0 0 0 136 154 V112" fill="none" stroke="#000" stroke-width="11" clip-path="url(#c2)"/></mask>
+</defs>
+<rect width="200" height="300" fill="url(#bg)"/>
+
+<rect x="9" y="9" width="182" height="282" rx="9" fill="none" stroke="url(#au)" stroke-width="1.6"/>
+<rect x="15" y="15" width="170" height="270" rx="6" fill="none" stroke="url(#au)" stroke-width=".6" opacity=".7"/>
+<g fill="url(#au)"><circle cx="15" cy="15" r="2.2"/><circle cx="185" cy="15" r="2.2"/><circle cx="15" cy="285" r="2.2"/><circle cx="185" cy="285" r="2.2"/></g>
+<circle cx="112" cy="152" r="66" fill="url(#glow)"/><g fill="none" stroke="url(#au)" stroke-linejoin="round" stroke-linecap="round" opacity=".85">
+<path d="M30 116 L100 60 L170 116" stroke-width="1.6"/>
+<path d="M38 110 V212 H162 V110" stroke-width="1"/>
+<path d="M134 87 V68 H146 V97" stroke-width="1"/>
+</g>
+<g fill="url(#au)" opacity=".75"><circle cx="100" cy="232" r="1.8"/><circle cx="90" cy="232" r="1.2"/><circle cx="110" cy="232" r="1.2"/></g>
+
+<g fill="none" stroke="url(#au)" stroke-linecap="round">
+<g mask="url(#mO)"><circle cx="88" cy="150" r="33" stroke-width="5"/><circle cx="88" cy="150" r="26.5" stroke-width=".8" opacity=".8"/></g>
+<g mask="url(#mU)"><path d="M96 116 V154 A20 20 0 0 0 136 154 V116" stroke-width="5"/></g>
+<path d="M89.5 115 H102.5 M129.5 115 H142.5" stroke-width="2.6"/>
+</g>
+</svg>
