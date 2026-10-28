@@ -133,6 +133,9 @@ var DISTORTIONS=[
  ['Збільшення і зменшення','Перебільшую погане, применшую добре']
 ];
 var store={client:'',entries:[]};
+var IN_APP=!!(window.TelegramWebviewProxy||window.TelegramWebview||/Telegram|FBAN|FBAV|Instagram|Viber/i.test(navigator.userAgent));
+function mergeData(d){if(!d||!Array.isArray(d.entries))throw 0;var ids={};store.entries.forEach(function(e){ids[e.id]=1;});var added=0;d.entries.forEach(function(e){if(e&&e.id&&!ids[e.id]){store.entries.push(e);added++;}});if(d.client&&!store.client)store.client=d.client;save();return added;}
+function inAppBanner(){if(!IN_APP)return'';return '<div class="panel noprint" style="background:var(--coral-l);border-color:var(--coral-l)"><h2 style="font-size:18px">Щоденник відкрито всередині застосунку</h2><p class="muted" style="color:var(--ink)">Записи тут зберігаються окремо від звичайного браузера, а друк і збереження файлів можуть не працювати. Краще відкрити щоденник у браузері: натисніть меню ⋮ або ··· угорі й оберіть «Відкрити в браузері». Якщо Ви вже маєте записи тут, перенесіть їх через «Налаштування → Перенести записи».</p><div class="btns" style="margin-top:.75rem"><button class="btn small" data-act="copyLink">Скопіювати посилання</button><button class="btn small ghost" data-go="settings">Перенести записи</button></div></div>';}
 var memOnly=false;
 function load(){try{var r=localStorage.getItem(KEY);if(r){var d=JSON.parse(r);if(d&&Array.isArray(d.entries))store=d;}}catch(e){memOnly=true;}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){memOnly=true;toast('Не вдалося зберегти на пристрої — зробіть резервну копію');}}
@@ -154,6 +157,7 @@ function home(){
   var h='<div class="top noprint"><a href="./">← Психологічний кабінет</a><span class="muted">'+(store.client?esc(store.client):'')+'</span></div>';
   h+='<h1>Щоденник думок<br>і емоцій</h1>';
   h+='<p class="lead">Записуйте ситуації, коли ставало важко: що сталося, що Ви подумали, що відчули і що зробили. З часом стане видно, що повторюється.</p>';
+  h+=inAppBanner();
   h+='<div class="home-actions"><button class="btn" data-go="new">Новий запис</button>'+(list.length?'<button class="btn ghost" data-go="report">Звіт для психолога</button>':'')+'<button class="btn ghost" data-go="settings">Налаштування</button></div>';
   if(list.length){
     var tot=list.length,dist={},emo={},d=0,n=0;
@@ -294,9 +298,9 @@ var repFrom='',repTo='';
 function report(){
   var list=sorted().filter(function(e){var d=(e.when||'').slice(0,10);return(!repFrom||d>=repFrom)&&(!repTo||d<=repTo);}).reverse();
   var h='<div class="top noprint"><button class="btn small ghost" data-go="home">← Усі записи</button></div>';
-  h+='<div class="noprint"><h2 class="q">Звіт для психолога</h2><p class="qhelp">Оберіть період, а потім роздрукуйте звіт, збережіть його як PDF або скопіюйте текст, щоб надіслати.</p>';
+  h+='<div class="noprint"><h2 class="q">Звіт для психолога</h2><p class="qhelp">Оберіть період. '+(navigator.share?'«Надіслати» відкриває список застосунків (Telegram, Viber, пошта), куди можна одразу переслати звіт. ':'')+'«Скопіювати текст» — щоб вставити його в повідомлення. «Завантажити файл» зберігає звіт окремим файлом, який можна відкрити, роздрукувати або переслати.</p>';
   h+='<div class="panel" style="margin-top:0"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div><label class="f" for="rf" style="margin-top:0">З</label><input type="date" id="rf" value="'+repFrom+'"></div><div><label class="f" for="rt" style="margin-top:0">По</label><input type="date" id="rt" value="'+repTo+'"></div></div>';
-  h+='<div class="btns" style="margin-top:1rem"><button class="btn" data-act="print">Друк або PDF</button><button class="btn ghost" data-act="copy">Скопіювати текст</button></div></div></div>';
+  h+='<div class="btns" style="margin-top:1rem">'+(navigator.share?'<button class="btn" data-act="share">Надіслати</button>':'')+'<button class="btn'+(navigator.share?' ghost':'')+'" data-act="copy">Скопіювати текст</button><button class="btn ghost" data-act="dlrep">Завантажити файл</button>'+(IN_APP?'':'<button class="btn ghost" data-act="print">Друк або PDF</button>')+'</div></div></div>';
   h+='<div class="panel" id="rep"><h2>Щоденник думок і емоцій'+(store.client?': '+esc(store.client):'')+'</h2>';
   h+='<p class="muted">'+(repFrom||repTo?'Період: '+(repFrom||'…')+' — '+(repTo||'…')+'. ':'')+'Записів: '+list.length+'</p>';
   var emo={},dist={};list.forEach(function(e){e.emotions.forEach(function(x){emo[x.name]=(emo[x.name]||0)+1;});e.distortions.forEach(function(x){dist[x]=(dist[x]||0)+1;});});
@@ -313,6 +317,12 @@ function repEntryHtml(e){
   var em=e.emotions.map(function(x){var r=e.reEmotions?e.reEmotions[x.name]:null;return x.name+' '+x.v+(r!=null&&e.alt?'→'+r:'');}).join(', ');
   return '<h3>'+fmtDate(e.when)+'</h3>'+p('Ситуація',e.situation)+p('Емоції',em)+p('Тіло',[e.body.join(', '),e.bodyNote].filter(Boolean).join('. '))+p('Думки',e.thoughts)+(e.hot?p('Головна думка','«'+e.hot+'», віра '+e.belief+'%'+(e.alt&&e.reBelief!=null?' → '+e.reBelief+'%':'')):'')+p('Поведінка',e.behavior)+p('Наслідки',e.consequence)+p('Факти «за»',e.evFor)+p('Факти «проти»',e.evAgainst)+p('Пастки мислення',e.distortions.join(', '))+(e.alt?p('Збалансована думка','«'+e.alt+'», віра '+e.altBelief+'%'):'')+p('Наступного разу',e.next);
 }
+function downloadFile(content,name,type){
+  var blob=new Blob([content],{type:type+';charset=utf-8'});
+  try{var f=new File([blob],name,{type:type});if(navigator.canShare&&navigator.canShare({files:[f]})&&IN_APP){navigator.share({files:[f],title:name}).catch(function(){});return;}}catch(e){}
+  var u=URL.createObjectURL(blob);var l=document.createElement('a');l.href=u;l.download=name;document.body.appendChild(l);l.click();l.remove();setTimeout(function(){URL.revokeObjectURL(u);},4000);
+  toast('Файл збережено в «Завантаження»');
+}
 function copyText(t){
   if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t).then(function(){toast('Текст скопійовано');},fb);}else fb();
   function fb(){var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast('Текст скопійовано');}catch(e){toast('Не вдалося скопіювати');}document.body.removeChild(ta);}
@@ -322,6 +332,7 @@ function copyText(t){
 function settings(){
   var h='<div class="top noprint"><button class="btn small ghost" data-go="home">← Усі записи</button></div><h2 class="q">Налаштування</h2>';
   h+='<div class="panel" style="margin-top:1rem"><label class="f" for="cn" style="margin-top:0">Ваше імʼя для звіту (необовʼязково)</label><input type="text" id="cn" value="'+esc(store.client)+'"><div class="btns" style="margin-top:.75rem"><button class="btn small" data-act="saveName">Зберегти</button></div></div>';
+  h+='<div class="panel"><h2>Перенести записи</h2><p class="muted">Щоб перенести записи з Telegram у браузер або з телефона на планшет: тут натисніть «Скопіювати записи», потім відкрийте щоденник там, куди переносите, зайдіть у «Налаштування», вставте скопійоване в поле нижче і натисніть «Додати записи». Наявні записи там не зітруться.</p><div class="btns" style="margin-top:1rem"><button class="btn small" data-act="copyData"'+(store.entries.length?'':' disabled')+'>Скопіювати записи ('+store.entries.length+')</button></div><label class="f" for="pasteData">Вставте сюди скопійовані записи</label><textarea id="pasteData" placeholder="Довгий текст, що починається з {&quot;client&quot;"></textarea><div class="btns" style="margin-top:.75rem"><button class="btn small ghost" data-act="pasteData">Додати записи</button></div></div>';
   h+='<div class="panel"><h2>Резервна копія</h2><p class="muted">Записи живуть лише в цьому браузері. Якщо почистити історію браузера або перейти на інший пристрій, вони зникнуть. Зберігайте копію файлом час від часу.</p><div class="btns" style="margin-top:1rem"><button class="btn small" data-act="export">Завантажити копію</button><button class="btn small ghost" data-act="import">Відновити з файлу</button><input type="file" id="imp" accept=".json,application/json" hidden></div></div>';
   h+='<div class="panel"><h2>Видалити всі записи</h2><p class="muted">Це не можна скасувати.</p><div class="btns" style="margin-top:1rem"><button class="btn small ghost danger" data-act="wipe">Видалити все</button></div></div>';
   app.innerHTML=h;window.scrollTo(0,0);
@@ -338,7 +349,7 @@ app.addEventListener('change',function(ev){
   var t=ev.target;
   if(t.id==='rf'){repFrom=t.value;report();}
   if(t.id==='rt'){repTo=t.value;report();}
-  if(t.id==='imp'&&t.files[0]){var r=new FileReader();r.onload=function(){try{var d=JSON.parse(r.result);if(!d||!Array.isArray(d.entries))throw 0;var ids={};store.entries.forEach(function(e){ids[e.id]=1;});var added=0;d.entries.forEach(function(e){if(!ids[e.id]){store.entries.push(e);added++;}});if(d.client&&!store.client)store.client=d.client;save();toast('Відновлено записів: '+added);settings();}catch(e){toast('Цей файл не схожий на копію щоденника');}};r.readAsText(t.files[0]);}
+  if(t.id==='imp'&&t.files[0]){var r=new FileReader();r.onload=function(){try{var n=mergeData(JSON.parse(r.result));toast('Додано записів: '+n);settings();}catch(e){toast('Цей файл не схожий на копію щоденника');}};r.readAsText(t.files[0]);}
 });
 app.addEventListener('keydown',function(ev){if(ev.key==='Enter'&&ev.target.id==='emoAdd'){ev.preventDefault();addEmo();}});
 function addEmo(){var i=document.getElementById('emoAdd');var v=(i.value||'').trim();if(!v)return;collect();if(!draft.emotions.some(function(x){return x.name.toLowerCase()===v.toLowerCase();}))draft.emotions.push({name:v,v:50});wizard();}
@@ -361,10 +372,15 @@ app.addEventListener('click',function(ev){
   if(a==='back'){collect();step--;return wizard();}
   if(a==='save')return finish();
   if(a==='cancel'){if(confirm('Вийти без збереження?')){draft=null;home();}return;}
-  if(a==='print')return window.print();
+  if(a==='print'){try{window.print();}catch(e){toast('Друк тут недоступний — скористайтеся «Завантажити файл»');}return;}
+  if(a==='share'){var txt=document.getElementById('rep').innerText;navigator.share({title:'Щоденник думок і емоцій',text:txt}).catch(function(err){if(err&&err.name!=='AbortError')copyText(txt);});return;}
+  if(a==='dlrep'){var html='<!DOCTYPE html><html lang="uk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Щоденник думок і емоцій</title><style>body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:720px;margin:2rem auto;padding:0 1rem;color:#24224A;line-height:1.5}h2{color:#3C3489;font-weight:500}.muted{color:#6B6A86}.rep-entry{border-top:1px solid #ddd;padding-top:1rem;margin-top:1rem;break-inside:avoid}.rep-entry p{margin:.3rem 0}.rep-entry b{font-weight:500;color:#6B6A86}.empty{color:#6B6A86}</style></head><body>'+document.getElementById('rep').innerHTML+'</body></html>';downloadFile(html,'zvit-shchodennyk-'+new Date().toISOString().slice(0,10)+'.html','text/html');return;}
+  if(a==='copyLink')return copyText(location.href.split('#')[0]);
+  if(a==='copyData')return copyText(JSON.stringify(store));
+  if(a==='pasteData'){var v=document.getElementById('pasteData').value.trim();if(!v){toast('Спочатку вставте скопійовані записи');return;}try{var n=mergeData(JSON.parse(v));toast(n?'Додано записів: '+n:'Ці записи вже є тут');settings();}catch(e){toast('Не вдалося прочитати. Скопіюйте записи ще раз повністю');}return;}
   if(a==='copy')return copyText(document.getElementById('rep').innerText);
   if(a==='saveName'){store.client=document.getElementById('cn').value.trim();save();toast('Збережено');return;}
-  if(a==='export'){var blob=new Blob([JSON.stringify(store,null,2)],{type:'application/json'});var u=URL.createObjectURL(blob);var l=document.createElement('a');l.href=u;l.download='shchodennyk-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(l);l.click();l.remove();setTimeout(function(){URL.revokeObjectURL(u);},1000);return;}
+  if(a==='export')return downloadFile(JSON.stringify(store,null,2),'shchodennyk-'+new Date().toISOString().slice(0,10)+'.json','application/json');
   if(a==='import')return document.getElementById('imp').click();
   if(a==='wipe'){if(confirm('Видалити всі записи щоденника на цьому пристрої?')){store.entries=[];save();toast('Усі записи видалено');home();}return;}
 });
