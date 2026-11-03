@@ -1,1 +1,503 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Щоденник спостережень</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,600&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EDF1F2;
+    --surface: #FBFCFC;
+    --ink: #1E2A31;
+    --muted: #5B6A73;
+    --line: #D3DCE0;
+    --accent: #2B6A6E;
+    --accent-ink: #FFFFFF;
+    --soft: #DCEBEB;
+    --bar-before: #8AA6AC;
+    --bar-after: #2B6A6E;
+    --note-bg: #F6EBD9;
+    --note-ink: #6B4515;
+    color-scheme: light;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12191D;
+      --surface: #1A2329;
+      --ink: #E4ECEE;
+      --muted: #93A4AC;
+      --line: #2B3841;
+      --accent: #6FB8BC;
+      --accent-ink: #0E1A1C;
+      --soft: #1F3336;
+      --bar-before: #55707A;
+      --bar-after: #6FB8BC;
+      --note-bg: #2E2617;
+      --note-ink: #E2B877;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12191D;
+    --surface: #1A2329;
+    --ink: #E4ECEE;
+    --muted: #93A4AC;
+    --line: #2B3841;
+    --accent: #6FB8BC;
+    --accent-ink: #0E1A1C;
+    --soft: #1F3336;
+    --bar-before: #55707A;
+    --bar-after: #6FB8BC;
+    --note-bg: #2E2617;
+    --note-ink: #E2B877;
+    color-scheme: dark;
+  }
 
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Onest', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 28px 18px 64px; }
+
+  h1, h2 {
+    font-family: 'Literata', Georgia, 'Times New Roman', serif;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  h1 { font-size: 1.85rem; line-height: 1.2; }
+  h2 { font-size: 1.2rem; margin-bottom: 14px; }
+  .lead { color: var(--muted); margin: 8px 0 0; max-width: 52ch; }
+  .note {
+    margin-top: 16px;
+    padding: 10px 14px;
+    background: var(--note-bg);
+    color: var(--note-ink);
+    border-radius: 8px;
+    font-size: 0.9rem;
+  }
+
+  section { margin-top: 36px; }
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px 18px;
+  }
+
+  label, .lbl { display: block; font-weight: 500; margin: 18px 0 6px; }
+  .panel > :first-child { margin-top: 0; }
+  .hint { color: var(--muted); font-size: 0.88rem; font-weight: 400; display: block; }
+
+  textarea, input[type="text"], input[type="datetime-local"] {
+    width: 100%;
+    font: inherit;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  textarea { min-height: 76px; resize: vertical; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+  .scale { display: grid; grid-template-columns: repeat(11, 1fr); gap: 3px; }
+  .scale button {
+    font: inherit;
+    font-weight: 500;
+    padding: 10px 0;
+    min-height: 44px;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .scale button[aria-pressed="true"] {
+    background: var(--accent);
+    color: var(--accent-ink);
+    border-color: var(--accent);
+  }
+  .scale-ends { display: flex; justify-content: space-between; color: var(--muted); font-size: 0.82rem; margin-top: 4px; }
+
+  .btn {
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 11px 18px;
+    min-height: 44px;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+  .btn.ghost { background: transparent; color: var(--accent); }
+  .btn.small { padding: 6px 12px; min-height: 36px; font-size: 0.9rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 22px; }
+  .msg { color: var(--note-ink); background: var(--note-bg); padding: 6px 10px; border-radius: 6px; font-size: 0.9rem; }
+  .msg[hidden] { display: none; }
+
+  .empty { color: var(--muted); padding: 22px 4px; }
+
+  .entry { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; margin-bottom: 14px; }
+  .entry-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .when { font-family: 'Literata', Georgia, serif; font-weight: 600; }
+  .field { margin-top: 10px; }
+  .field .k { color: var(--muted); font-size: 0.85rem; display: block; }
+  .field .v { white-space: pre-wrap; overflow-wrap: anywhere; }
+
+  .compare { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+  .row { display: grid; grid-template-columns: 108px 1fr 28px; align-items: center; gap: 10px; margin: 6px 0; font-size: 0.9rem; }
+  .track { height: 10px; background: var(--soft); border-radius: 5px; overflow: hidden; }
+  .fill { height: 100%; border-radius: 5px; }
+  .fill.before { background: var(--bar-before); }
+  .fill.after { background: var(--bar-after); }
+  .num { text-align: right; font-weight: 500; }
+
+  .followup { margin-top: 14px; padding: 12px 14px; background: var(--soft); border-radius: 8px; }
+  .followup p { margin: 0 0 10px; font-size: 0.92rem; }
+  .followup.due { outline: 2px solid var(--accent); }
+
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+  .stat b { display: block; font-family: 'Literata', Georgia, serif; font-size: 1.6rem; line-height: 1.1; }
+  .stat span { color: var(--muted); font-size: 0.85rem; }
+  .summary-text { margin-top: 12px; color: var(--muted); }
+
+  #exportBox { margin-top: 12px; min-height: 180px; font-size: 0.9rem; }
+
+  @media (max-width: 480px) {
+    .stats { grid-template-columns: 1fr; }
+    .row { grid-template-columns: 96px 1fr 26px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Щоденник спостережень</h1>
+    <p class="lead">Короткі записи про те, що відбувається протягом дня. Вони допоможуть Вам і фахівцю побачити закономірності, які важко помітити по пам’яті.</p>
+    <p class="note">Записи зберігаються лише в цьому браузері на цьому пристрої. Інші люди їх не бачать.</p>
+  </header>
+
+  <section aria-labelledby="newTitle">
+    <h2 id="newTitle">Новий запис</h2>
+    <div class="panel">
+      <label for="dt">Коли це було</label>
+      <input type="datetime-local" id="dt">
+
+      <label for="what">Що відбувалося <span class="hint">Де Ви були, чим займалися</span></label>
+      <textarea id="what"></textarea>
+
+      <label for="bodyText">Що Ви відчули в тілі <span class="hint">Своїми словами: «гуде», «тисне», «важко», «ніби вата»</span></label>
+      <input type="text" id="bodyText" autocomplete="off">
+      <div class="lbl" style="margin-top:14px">Наскільки це було сильно</div>
+      <div id="bodyScale"></div>
+      <div class="scale-ends"><span>0 — майже непомітно</span><span>10 — дуже сильно</span></div>
+
+      <label for="head">Що з’явилося в голові <span class="hint">Думка, питання, прогноз, образ. Якщо нічого не було, так і напишіть</span></label>
+      <textarea id="head"></textarea>
+
+      <label for="did">Що Ви зробили далі</label>
+      <textarea id="did"></textarea>
+
+      <div class="actions">
+        <button class="btn" id="saveBtn" type="button">Зберегти запис</button>
+        <span class="msg" id="formMsg" hidden role="status"></span>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="listTitle">
+    <h2 id="listTitle">Записи</h2>
+    <div id="list"></div>
+  </section>
+
+  <section aria-labelledby="sumTitle">
+    <h2 id="sumTitle">Підсумок за 7 днів</h2>
+    <div class="stats" id="stats"></div>
+    <p class="summary-text" id="sumText"></p>
+  </section>
+
+  <section aria-labelledby="exTitle">
+    <h2 id="exTitle">Для зустрічі</h2>
+    <p class="lead" style="margin-top:0">Зберіть записи одним текстом, щоб скопіювати й надіслати фахівцю або показати на зустрічі.</p>
+    <div class="actions">
+      <button class="btn ghost" id="buildBtn" type="button">Зібрати текст</button>
+      <button class="btn" id="copyBtn" type="button">Скопіювати</button>
+      <span class="msg" id="exMsg" hidden role="status"></span>
+    </div>
+    <textarea id="exportBox" readonly aria-label="Текст записів"></textarea>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  var KEY = 'sposterezhennya:v1';
+  var entries = [];
+  var pendingDelete = null;
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) { return []; }
+  }
+  var storageOk = true;
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(entries)); }
+    catch (e) { storageOk = false; flash(document.getElementById('formMsg'), 'Не вдалося зберегти записи в браузері. Скопіюйте текст у розділі «Для зустрічі».'); }
+  }
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text !== undefined && text !== null) n.textContent = text;
+    return n;
+  }
+  function flash(node, text) {
+    node.textContent = text;
+    node.hidden = false;
+    clearTimeout(node._t);
+    node._t = setTimeout(function () { node.hidden = true; }, 4500);
+  }
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function toLocalInput(d) {
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+  function fmt(ts) {
+    try {
+      return new Date(ts).toLocaleString('uk-UA', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+    } catch (e) { return new Date(ts).toString(); }
+  }
+
+  function makeScale(onChange) {
+    var wrap = el('div', 'scale');
+    wrap.setAttribute('role', 'group');
+    var value = null;
+    var btns = [];
+    for (var i = 0; i <= 10; i++) {
+      (function (i) {
+        var b = el('button', null, String(i));
+        b.type = 'button';
+        b.setAttribute('aria-pressed', 'false');
+        b.setAttribute('aria-label', 'Оцінка ' + i);
+        b.addEventListener('click', function () {
+          value = i;
+          btns.forEach(function (x, idx) { x.setAttribute('aria-pressed', idx === i ? 'true' : 'false'); });
+          if (onChange) onChange(i);
+        });
+        btns.push(b);
+        wrap.appendChild(b);
+      })(i);
+    }
+    return {
+      node: wrap,
+      get: function () { return value; },
+      reset: function () { value = null; btns.forEach(function (x) { x.setAttribute('aria-pressed', 'false'); }); }
+    };
+  }
+
+  var bodyScale = makeScale();
+  document.getElementById('bodyScale').appendChild(bodyScale.node);
+  var dtInput = document.getElementById('dt');
+  dtInput.value = toLocalInput(new Date());
+
+  document.getElementById('saveBtn').addEventListener('click', function () {
+    var msg = document.getElementById('formMsg');
+    var score = bodyScale.get();
+    if (score === null) { flash(msg, 'Оберіть оцінку від 0 до 10.'); return; }
+    var ts = dtInput.value ? new Date(dtInput.value).getTime() : Date.now();
+    if (isNaN(ts)) ts = Date.now();
+    entries.push({
+      id: String(Date.now()) + Math.random().toString(36).slice(2, 6),
+      ts: ts,
+      what: document.getElementById('what').value.trim(),
+      bodyText: document.getElementById('bodyText').value.trim(),
+      body: score,
+      head: document.getElementById('head').value.trim(),
+      did: document.getElementById('did').value.trim(),
+      after: null,
+      afterTs: null
+    });
+    save();
+    ['what', 'bodyText', 'head', 'did'].forEach(function (id) { document.getElementById(id).value = ''; });
+    bodyScale.reset();
+    dtInput.value = toLocalInput(new Date());
+    flash(msg, 'Запис збережено. Через годину оцініть, як Ви почуваєтеся.');
+    render();
+  });
+
+  function field(k, v) {
+    if (!v) return null;
+    var d = el('div', 'field');
+    d.appendChild(el('span', 'k', k));
+    d.appendChild(el('span', 'v', v));
+    return d;
+  }
+  function barRow(label, score, cls) {
+    var r = el('div', 'row');
+    r.appendChild(el('span', null, label));
+    var tr = el('div', 'track');
+    var f = el('div', 'fill ' + cls);
+    f.style.width = (score * 10) + '%';
+    tr.appendChild(f);
+    r.appendChild(tr);
+    r.appendChild(el('span', 'num', String(score)));
+    return r;
+  }
+
+  function renderEntry(e) {
+    var card = el('article', 'entry');
+    var top = el('div', 'entry-top');
+    top.appendChild(el('span', 'when', fmt(e.ts)));
+    var del = el('button', 'btn ghost small', pendingDelete === e.id ? 'Точно видалити?' : 'Видалити');
+    del.type = 'button';
+    del.addEventListener('click', function () {
+      if (pendingDelete === e.id) {
+        entries = entries.filter(function (x) { return x.id !== e.id; });
+        pendingDelete = null;
+        save();
+      } else { pendingDelete = e.id; }
+      render();
+    });
+    top.appendChild(del);
+    card.appendChild(top);
+
+    [field('Що відбувалося', e.what),
+     field('У тілі', e.bodyText),
+     field('У голові', e.head),
+     field('Що зробив(ла) далі', e.did)].forEach(function (f) { if (f) card.appendChild(f); });
+
+    if (e.after !== null) {
+      var cmp = el('div', 'compare');
+      cmp.appendChild(barRow('Тоді', e.body, 'before'));
+      cmp.appendChild(barRow('Через годину', e.after, 'after'));
+      card.appendChild(cmp);
+    } else {
+      var mins = Math.floor((Date.now() - e.ts) / 60000);
+      var due = mins >= 60;
+      var fu = el('div', 'followup' + (due ? ' due' : ''));
+      fu.appendChild(el('p', null, due
+        ? 'Минула година. Як Ви почуваєтеся зараз?'
+        : 'Оцінити можна буде приблизно через ' + (60 - Math.max(mins, 0)) + ' хв. Якщо вже минуло більше часу, оцініть зараз.'));
+      var sc = makeScale(function (v) {
+        e.after = v;
+        e.afterTs = Date.now();
+        save();
+        render();
+      });
+      fu.appendChild(sc.node);
+      card.appendChild(fu);
+    }
+    return card;
+  }
+
+  function avg(a) {
+    if (!a.length) return null;
+    return a.reduce(function (s, x) { return s + x; }, 0) / a.length;
+  }
+  function one(n) { return (Math.round(n * 10) / 10).toString().replace('.', ','); }
+
+  function renderStats() {
+    var since = Date.now() - 7 * 24 * 3600 * 1000;
+    var week = entries.filter(function (e) { return e.ts >= since; });
+    var withAfter = week.filter(function (e) { return e.after !== null; });
+    var aBody = avg(week.map(function (e) { return e.body; }));
+    var aAfter = avg(withAfter.map(function (e) { return e.after; }));
+    var box = document.getElementById('stats');
+    box.textContent = '';
+    [[String(week.length), 'записів'],
+     [aBody === null ? '—' : one(aBody), 'середня оцінка в момент запису'],
+     [aAfter === null ? '—' : one(aAfter), 'середня оцінка через годину']].forEach(function (s) {
+      var d = el('div', 'stat');
+      d.appendChild(el('b', null, s[0]));
+      d.appendChild(el('span', null, s[1]));
+      box.appendChild(d);
+    });
+    var t = document.getElementById('sumText');
+    if (!week.length) { t.textContent = 'Тут з’явиться підсумок, коли Ви зробите перші записи.'; return; }
+    if (withAfter.length) {
+      var diff = avg(withAfter.map(function (e) { return e.after - e.body; }));
+      var dir = diff < -0.05 ? 'нижча на ' + one(Math.abs(diff)) : (diff > 0.05 ? 'вища на ' + one(diff) : 'приблизно та сама');
+      t.textContent = 'За записами, де є оцінка через годину (' + withAfter.length + '), оцінка в середньому ' + dir + ', ніж у момент запису. Робити висновки не потрібно, достатньо принести ці дані на зустріч.';
+    } else {
+      t.textContent = 'Щоб побачити, що змінюється за годину, додавайте оцінку «через годину» до записів.';
+    }
+  }
+
+  function render() {
+    var list = document.getElementById('list');
+    list.textContent = '';
+    if (!entries.length) {
+      list.appendChild(el('p', 'empty', 'Поки що записів немає. Коли стане «погано» або Ви помітите зміну стану, додайте перший запис вище.'));
+    } else {
+      entries.slice().sort(function (a, b) { return b.ts - a.ts; }).forEach(function (e) { list.appendChild(renderEntry(e)); });
+    }
+    renderStats();
+  }
+
+  function buildText() {
+    if (!entries.length) return 'Записів поки немає.';
+    var sorted = entries.slice().sort(function (a, b) { return a.ts - b.ts; });
+    var out = ['Щоденник спостережень', ''];
+    sorted.forEach(function (e) {
+      out.push(fmt(e.ts));
+      if (e.what) out.push('Що відбувалося: ' + e.what);
+      out.push('У тілі (0–10): ' + e.body + (e.bodyText ? ' — ' + e.bodyText : ''));
+      if (e.head) out.push('У голові: ' + e.head);
+      if (e.did) out.push('Що зробив(ла) далі: ' + e.did);
+      out.push('Через годину (0–10): ' + (e.after === null ? 'не оцінено' : e.after));
+      out.push('');
+    });
+    return out.join('\n');
+  }
+
+  var box = document.getElementById('exportBox');
+  document.getElementById('buildBtn').addEventListener('click', function () {
+    box.value = buildText();
+    flash(document.getElementById('exMsg'), 'Текст зібрано.');
+  });
+  document.getElementById('copyBtn').addEventListener('click', function () {
+    var m = document.getElementById('exMsg');
+    box.value = buildText();
+    function fallback() {
+      box.removeAttribute('readonly');
+      box.focus();
+      box.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) {}
+      box.setAttribute('readonly', '');
+      flash(m, ok ? 'Скопійовано.' : 'Виділіть текст у полі й скопіюйте вручну.');
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(box.value).then(function () { flash(m, 'Скопійовано.'); }, fallback);
+    } else { fallback(); }
+  });
+
+  entries = load();
+  render();
+  setInterval(function () {
+    var active = document.activeElement;
+    if (active && (active.tagName === 'TEXTAREA' || active.tagName === 'INPUT')) return;
+    render();
+  }, 60000);
+})();
+</script>
+</body>
+</html>
