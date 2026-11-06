@@ -47,7 +47,7 @@ button,select{font:inherit;color:inherit}
 .home-head .mono{width:46px;height:46px;margin:0 auto 14px;display:block}
 .home-head h1{font-size:clamp(26px,4vw,36px);font-weight:600;margin:0 0 6px;letter-spacing:.01em}
 .home-head p{margin:0;color:var(--muted);font-size:17px}
-.deck-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:clamp(16px,3vw,28px);width:100%;max-width:1120px}
+.deck-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:clamp(16px,3vw,28px);width:100%;max-width:860px}
 .deck-tile{border:1px solid var(--line);background:var(--surface);border-radius:18px;padding:26px 22px 22px;cursor:pointer;text-align:left;
   display:flex;flex-direction:column;gap:20px;transition:transform .2s,box-shadow .2s}
 .deck-tile:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.14)}
@@ -64,6 +64,7 @@ button,select{font:inherit;color:inherit}
 .deck-tile:hover .fan .c2{transform:translateX(-50%) rotate(16deg) translateX(36%)}
 .fan .fback{background:#1b2140 url("img/back-svitlo.svg") center/100% 100% no-repeat}
 .fan .fback.dim{background:#0f3a32 url("img/back-dim.svg") center/100% 100% no-repeat}
+.fan .fback.zh{background:#2e1a33 url("img/back-zh.svg") center/100% 100% no-repeat}
 .fan.land .fback{display:none}
 .deck-tile h2{margin:0 0 4px;font-size:21px;font-weight:600}
 .deck-tile p{margin:0;color:var(--muted);font-size:15px}
@@ -134,6 +135,8 @@ main{padding:clamp(12px,2.5vw,26px) clamp(12px,3vw,28px) 130px}
 .grid[data-deck="svitlo"] .back::after{display:none}
 .grid[data-deck="dim"] .back{background:#0f3a32 url("img/back-dim.svg") center/100% 100% no-repeat}
 .grid[data-deck="dim"] .back::after{display:none}
+.grid[data-deck="zh"] .back{background:#2e1a33 url("img/back-zh.svg") center/100% 100% no-repeat}
+.grid[data-deck="zh"] .back::after{display:none}
 .card:not(.flipped):hover .inner{transform:translateY(-3px)}
 .card.picked .face{box-shadow:0 0 0 4px var(--pick)}
 .card .num{position:absolute;top:8px;right:8px;z-index:3;min-width:26px;height:26px;padding:0 7px;border-radius:13px;
@@ -325,10 +328,12 @@ const DIM_CARDS=DIM_NAMES.map((n,i)=>{
   else { sec='S'; num=i-51; code='s'; }
   return {n, sec, g, img:'img/dim/'+code+String(num).padStart(2,'0')+'.jpg'};
 });
+const ZH_IMGS = ["img/zh/zh01.jpg","img/zh/zh02.jpg","img/zh/zh03.jpg","img/zh/zh04.jpg","img/zh/zh05.jpg","img/zh/zh06.jpg","img/zh/zh07.jpg","img/zh/zh08.jpg","img/zh/zh09.jpg","img/zh/zh10.jpg","img/zh/zh11.jpg","img/zh/zh12.jpg","img/zh/zh13.jpg","img/zh/zh14.jpg","img/zh/zh15.jpg","img/zh/zh16.jpg","img/zh/zh17.jpg","img/zh/zh18.jpg","img/zh/zh19.jpg","img/zh/zh20.jpg","img/zh/zh21.jpg","img/zh/zh22.jpg","img/zh/zh23.jpg","img/zh/zh24.jpg","img/zh/zh25.jpg","img/zh/zh26.jpg","img/zh/zh27.jpg","img/zh/zh28.jpg","img/zh/zh29.jpg","img/zh/zh30.jpg","img/zh/zh31.jpg","img/zh/zh32.jpg","img/zh/zh33.jpg","img/zh/zh34.jpg","img/zh/zh35.jpg","img/zh/zh36.jpg","img/zh/zh37.jpg","img/zh/zh38.jpg","img/zh/zh39.jpg","img/zh/zh40.jpg"];
 const DECKS = {
   vona:  {name:'Креатив-1', hash:'kreatyv-1', desc:VONA_IMGS.length+' карт · горизонтальні', imgs:VONA_IMGS, ar:'7/5', arNum:5/7, cw:170, fan:'land'},
   svitlo:{name:'Світло крізь тріщини', hash:'svitlo', desc:SVITLO_CARDS.length+' карти · Грані, Шви, Двері, Містки', imgs:SVITLO_CARDS.map(c=>c.img||placeholder(c)), ar:'2/3', arNum:1.5, cw:130, fan:'port'},
   dim:{name:'Мій внутрішній дім', hash:'dim', desc:DIM_CARDS.length+' карт · Мешканці, Кімнати, Зв’язки, Світло дому', imgs:DIM_CARDS.map(c=>c.img), cards:DIM_CARDS, ar:'2/3', arNum:1.5, cw:130, fan:'port', back:'dim'},
+  zh:{name:'Жаринка', hash:'zharynka', desc:ZH_IMGS.length+' карт · ресурсна колода', imgs:ZH_IMGS, ar:'2/3', arNum:1.5, cw:130, fan:'port', back:'zh'},
 };
 
 /* Схеми розкладу: координати в «клітинках» (ширина/висота карти + проміжок), у порядку вибору карт */
