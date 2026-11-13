@@ -64,6 +64,7 @@ button,select{font:inherit;color:inherit}
 .deck-tile:hover .fan .c2{transform:translateX(-50%) rotate(16deg) translateX(36%)}
 .fan .fback{background:#1b2140 url("img/back-svitlo.svg") center/100% 100% no-repeat}
 .fan .fback.dim{background:#0f3a32 url("img/back-dim.svg") center/100% 100% no-repeat}
+.fan .fback.vt{background:#e6dcc9 url("img/back-vt.svg") center/100% 100% no-repeat}
 .fan .fback.zh{background:#2e1a33 url("img/back-zh.svg") center/100% 100% no-repeat}
 .fan.land .fback{display:none}
 .deck-tile h2{margin:0 0 4px;font-size:21px;font-weight:600}
@@ -137,6 +138,8 @@ main{padding:clamp(12px,2.5vw,26px) clamp(12px,3vw,28px) 130px}
 .grid[data-deck="dim"] .back::after{display:none}
 .grid[data-deck="zh"] .back{background:#2e1a33 url("img/back-zh.svg") center/100% 100% no-repeat}
 .grid[data-deck="zh"] .back::after{display:none}
+.grid[data-deck="vt"] .back{background:#e6dcc9 url("img/back-vt.svg") center/100% 100% no-repeat}
+.grid[data-deck="vt"] .back::after{display:none}
 .card:not(.flipped):hover .inner{transform:translateY(-3px)}
 .card.picked .face{box-shadow:0 0 0 4px var(--pick)}
 .card .num{position:absolute;top:8px;right:8px;z-index:3;min-width:26px;height:26px;padding:0 7px;border-radius:13px;
@@ -328,12 +331,14 @@ const DIM_CARDS=DIM_NAMES.map((n,i)=>{
   else { sec='S'; num=i-51; code='s'; }
   return {n, sec, g, img:'img/dim/'+code+String(num).padStart(2,'0')+'.jpg'};
 });
+const VT_CARDS = [{"n": "Камінь", "sec": "T", "img": "img/vt/t01.jpg"}, {"n": "Пір’їна", "sec": "T", "img": "img/vt/t02.jpg"}, {"n": "Вузол", "sec": "T", "img": "img/vt/t03.jpg"}, {"n": "Порожня чаша", "sec": "T", "img": "img/vt/t04.jpg"}, {"n": "Натягнута струна", "sec": "T", "img": "img/vt/t05.jpg"}, {"n": "Клубок у горлі", "sec": "T", "img": "img/vt/t06.jpg"}, {"n": "Теплий камінь", "sec": "T", "img": "img/vt/t07.jpg"}, {"n": "Іній на листку", "sec": "T", "img": "img/vt/t08.jpg"}, {"n": "Тремтливий листок", "sec": "T", "img": "img/vt/t09.jpg"}, {"n": "Квітка в пресі", "sec": "T", "img": "img/vt/t10.jpg"}, {"n": "Тепло у воді", "sec": "T", "img": "img/vt/t11.jpg"}, {"n": "Коріння", "sec": "T", "img": "img/vt/t12.jpg"}, {"n": "Насіння кульбаби", "sec": "T", "img": "img/vt/t13.jpg"}, {"n": "Кола на воді", "sec": "T", "img": "img/vt/t14.jpg"}, {"n": "Загорнуте у вату", "sec": "T", "img": "img/vt/t15.jpg"}, {"n": "Чайник, що закипає", "sec": "T", "img": "img/vt/t16.jpg"}, {"n": "Губка з водою", "sec": "T", "img": "img/vt/t17.jpg"}, {"n": "Викручений рушник", "sec": "T", "img": "img/vt/t18.jpg"}, {"n": "Кулька, що здувається", "sec": "T", "img": "img/vt/t19.jpg"}, {"n": "Стиснута пружина", "sec": "T", "img": "img/vt/t20.jpg"}, {"n": "Догоріла свічка", "sec": "T", "img": "img/vt/t21.jpg"}, {"n": "Бульбашки", "sec": "T", "img": "img/vt/t22.jpg"}, {"n": "Скло з тріщиною", "sec": "T", "img": "img/vt/t23.jpg"}, {"n": "Тепла ковдра", "sec": "T", "img": "img/vt/t24.jpg"}, {"n": "Мокре пальто", "sec": "T", "img": "img/vt/t25.jpg"}, {"n": "Закритий бутон", "sec": "T", "img": "img/vt/t26.jpg"}, {"n": "Відчинене вікно", "sec": "T", "img": "img/vt/t27.jpg"}, {"n": "Колібрі", "sec": "T", "img": "img/vt/t28.jpg"}, {"n": "Складені камінці", "sec": "T", "img": "img/vt/t29.jpg"}, {"n": "Туман над водою", "sec": "P", "img": "img/vt/p01.jpg"}, {"n": "Штиль", "sec": "P", "img": "img/vt/p02.jpg"}, {"n": "Гроза вдалині", "sec": "P", "img": "img/vt/p03.jpg"}, {"n": "Тихий дощ", "sec": "P", "img": "img/vt/p04.jpg"}, {"n": "Сірий ранок", "sec": "P", "img": "img/vt/p05.jpg"}, {"n": "Промінь крізь хмари", "sec": "P", "img": "img/vt/p06.jpg"}, {"n": "Вітер у траві", "sec": "P", "img": "img/vt/p07.jpg"}, {"n": "Веселка після дощу", "sec": "P", "img": "img/vt/p08.jpg"}, {"n": "Марево спеки", "sec": "P", "img": "img/vt/p09.jpg"}, {"n": "Сутінки", "sec": "P", "img": "img/vt/p10.jpg"}, {"n": "Ясна ніч", "sec": "P", "img": "img/vt/p11.jpg"}, {"n": "Хмари, що розходяться", "sec": "P", "img": "img/vt/p12.jpg"}, {"n": "Ранкова роса", "sec": "P", "img": "img/vt/p13.jpg"}, {"n": "Низькі хмари", "sec": "P", "img": "img/vt/p14.jpg"}, {"n": "Пориви вітру", "sec": "P", "img": "img/vt/p15.jpg"}, {"n": "Захід сонця", "sec": "P", "img": "img/vt/p16.jpg"}, {"n": "Світанок", "sec": "P", "img": "img/vt/p17.jpg"}, {"n": "Злива", "sec": "P", "img": "img/vt/p18.jpg"}, {"n": "Спалах удалині", "sec": "P", "img": "img/vt/p19.jpg"}, {"n": "Хмари, що біжать", "sec": "P", "img": "img/vt/p20.jpg"}, {"n": "Задуха", "sec": "P", "img": "img/vt/p21.jpg"}, {"n": "Свіжість після дощу", "sec": "P", "img": "img/vt/p22.jpg"}, {"n": "Ясний полудень", "sec": "P", "img": "img/vt/p23.jpg"}, {"n": "приємність", "sec": "W", "img": "img/vt/w01.jpg"}, {"n": "задоволення", "sec": "W", "img": "img/vt/w02.jpg"}, {"n": "радість", "sec": "W", "img": "img/vt/w03.jpg"}, {"n": "полегшення", "sec": "W", "img": "img/vt/w04.jpg"}, {"n": "спокій", "sec": "W", "img": "img/vt/w05.jpg"}, {"n": "умиротворення", "sec": "W", "img": "img/vt/w06.jpg"}, {"n": "симпатія", "sec": "W", "img": "img/vt/w07.jpg"}, {"n": "ніжність", "sec": "W", "img": "img/vt/w08.jpg"}, {"n": "любов", "sec": "W", "img": "img/vt/w09.jpg"}, {"n": "цікавість", "sec": "W", "img": "img/vt/w10.jpg"}, {"n": "зацікавленість", "sec": "W", "img": "img/vt/w11.jpg"}, {"n": "натхнення", "sec": "W", "img": "img/vt/w12.jpg"}, {"n": "журба", "sec": "W", "img": "img/vt/w13.jpg"}, {"n": "смуток", "sec": "W", "img": "img/vt/w14.jpg"}, {"n": "горе", "sec": "W", "img": "img/vt/w15.jpg"}, {"n": "занепокоєння", "sec": "W", "img": "img/vt/w16.jpg"}, {"n": "страх", "sec": "W", "img": "img/vt/w17.jpg"}, {"n": "жах", "sec": "W", "img": "img/vt/w18.jpg"}, {"n": "роздратування", "sec": "W", "img": "img/vt/w19.jpg"}, {"n": "злість", "sec": "W", "img": "img/vt/w20.jpg"}, {"n": "лють", "sec": "W", "img": "img/vt/w21.jpg"}, {"n": "ніяковість", "sec": "W", "img": "img/vt/w22.jpg"}, {"n": "сором", "sec": "W", "img": "img/vt/w23.jpg"}, {"n": "приниження", "sec": "W", "img": "img/vt/w24.jpg"}, {"n": "неприязнь", "sec": "W", "img": "img/vt/w25.jpg"}, {"n": "огида", "sec": "W", "img": "img/vt/w26.jpg"}, {"n": "відраза", "sec": "W", "img": "img/vt/w27.jpg"}, {"n": "онімілість", "sec": "W", "img": "img/vt/w28.jpg"}, {"n": "не знаю, що відчуваю", "sec": "W", "img": "img/vt/w29.jpg"}, {"n": "змішані почуття", "sec": "W", "img": "img/vt/w30.jpg"}, {"n": "ледь помітно", "sec": "S", "img": "img/vt/s01.jpg"}, {"n": "трохи", "sec": "S", "img": "img/vt/s02.jpg"}, {"n": "помітно", "sec": "S", "img": "img/vt/s03.jpg"}, {"n": "сильно", "sec": "S", "img": "img/vt/s04.jpg"}, {"n": "переповнює", "sec": "S", "img": "img/vt/s05.jpg"}];
 const ZH_IMGS = ["img/zh/zh01.jpg","img/zh/zh02.jpg","img/zh/zh03.jpg","img/zh/zh04.jpg","img/zh/zh05.jpg","img/zh/zh06.jpg","img/zh/zh07.jpg","img/zh/zh08.jpg","img/zh/zh09.jpg","img/zh/zh10.jpg","img/zh/zh11.jpg","img/zh/zh12.jpg","img/zh/zh13.jpg","img/zh/zh14.jpg","img/zh/zh15.jpg","img/zh/zh16.jpg","img/zh/zh17.jpg","img/zh/zh18.jpg","img/zh/zh19.jpg","img/zh/zh20.jpg","img/zh/zh21.jpg","img/zh/zh22.jpg","img/zh/zh23.jpg","img/zh/zh24.jpg","img/zh/zh25.jpg","img/zh/zh26.jpg","img/zh/zh27.jpg","img/zh/zh28.jpg","img/zh/zh29.jpg","img/zh/zh30.jpg","img/zh/zh31.jpg","img/zh/zh32.jpg","img/zh/zh33.jpg","img/zh/zh34.jpg","img/zh/zh35.jpg","img/zh/zh36.jpg","img/zh/zh37.jpg","img/zh/zh38.jpg","img/zh/zh39.jpg","img/zh/zh40.jpg"];
 const DECKS = {
   vona:  {name:'Креатив-1', hash:'kreatyv-1', desc:VONA_IMGS.length+' карт · горизонтальні', imgs:VONA_IMGS, ar:'7/5', arNum:5/7, cw:170, fan:'land'},
   svitlo:{name:'Світло крізь тріщини', hash:'svitlo', desc:SVITLO_CARDS.length+' карти · Грані, Шви, Двері, Містки', imgs:SVITLO_CARDS.map(c=>c.img||placeholder(c)), ar:'2/3', arNum:1.5, cw:130, fan:'port'},
-  dim:{name:'Мій внутрішній дім', hash:'dim', desc:DIM_CARDS.length+' карт · Мешканці, Кімнати, Зв’язки, Світло дому', imgs:DIM_CARDS.map(c=>c.img), cards:DIM_CARDS, ar:'2/3', arNum:1.5, cw:130, fan:'port', back:'dim'},
+  dim:{name:'Мій внутрішній дім', hash:'dim', desc:DIM_CARDS.length+' карт · Мешканці, Кімнати, Зв’язки, Світло дому', imgs:DIM_CARDS.map(c=>c.img), cards:DIM_CARDS, sections:[['all','Усі'],['M','Мешканці'],['K','Кімнати'],['Z','Зв’язки'],['S','Світло дому']], sets:true, ar:'2/3', arNum:1.5, cw:130, fan:'port', back:'dim'},
   zh:{name:'Жаринка', hash:'zharynka', desc:ZH_IMGS.length+' карт · ресурсна колода', imgs:ZH_IMGS, ar:'2/3', arNum:1.5, cw:130, fan:'port', back:'zh'},
+  vt:{name:'Відтінки', hash:'vidtinky', desc:VT_CARDS.length+' карт · Тіло, Погода всередині, Слова, Сила', imgs:VT_CARDS.map(c=>c.img), cards:VT_CARDS, sections:[['all','Усі'],['T','Тіло'],['P','Погода всередині'],['W','Слова'],['S','Сила']], ordered:['W','S'], ar:'2/3', arNum:1.5, cw:130, fan:'port', back:'vt'},
 };
 
 /* Схеми розкладу: координати в «клітинках» (ширина/висота карти + проміжок), у порядку вибору карт */
@@ -387,7 +392,9 @@ function visible(id){
 }
 function renderGrid(){
   const g=$('#grid'); g.className='grid instant'; g.innerHTML=''; g.dataset.deck=state.deck;
-  state.order.filter(visible).forEach(id=>{
+  let ids=state.order.filter(visible);
+  if(D().ordered && D().ordered.includes(state.sec) && state.view==='open') ids=ids.slice().sort((x,y)=>x-y);
+  ids.forEach(id=>{
     const b=document.createElement('button');
     b.className='card '+state.view+(state.view==='open'?' flipped':'');
     b.dataset.id=id; b.type='button';
@@ -612,7 +619,8 @@ function setDeck(d,order){
   document.documentElement.style.setProperty('--ar',D().ar);
   document.documentElement.style.setProperty('--cw',D().cw+'px');
   $('#zoom').value=D().cw;
-  const hasSec=!!D().cards; $('#grpSec').hidden=!hasSec; $('#grpSet').hidden=!hasSec;
+  const hasSec=!!D().sections; $('#grpSec').hidden=!hasSec; $('#grpSet').hidden=!D().sets;
+  if(hasSec){ $('#segSec').innerHTML=D().sections.map(([v,l])=>`<button data-s="${v}" aria-pressed="${v===(role==='client'?state.sec:'all')}">${l}</button>`).join(''); }
   if(role!=='client'){ state.sec='all'; state.set='all';
     ['#segSec','#segSet'].forEach(s=>$(s).querySelectorAll('button').forEach((b,i)=>b.setAttribute('aria-pressed',i===0))); }
   document.body.classList.add('in-deck');
