@@ -1210,6 +1210,13 @@ function buildTracker(w, m, weekOffset){
   sendBtn.innerHTML = '📤 Надіслати тижневий звіт настрою';
   sendBtn.onclick = () => generateWeeklyMoodReport(weekDates);
   w.appendChild(sendBtn);
+
+  // Full period report button
+  const allBtn = document.createElement('button');
+  allBtn.style.cssText = 'width:100%;margin-top:10px;padding:14px;border-radius:50px;border:2px solid '+m.color+';background:white;color:'+m.color+';font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px';
+  allBtn.innerHTML = '📋 Звіт за весь період ведення щоденника';
+  allBtn.onclick = () => generateFullPeriodReport();
+  w.appendChild(allBtn);
 }
 
 
@@ -1357,6 +1364,118 @@ function copyAnswers(){
 }
 
 // ===== FULL REPORT FOR SPECIALIST =====
+function generateFullPeriodReport(){
+  const session = getSession();
+  const clientName = session.clientName || 'Клієнт';
+  const tracker = getTrackerData();
+  const accent = '#9E4A6E';
+  const today = new Date().toLocaleDateString('uk-UA',{day:'numeric',month:'long',year:'numeric'});
+
+  const levels = [
+    {label:'Сильно підвищений (манія)',color:'#D32F2F'},
+    {label:'Помірно підвищений (гіпоманія)',color:'#E64A19'},
+    {label:'Злегка підвищений',color:'#F57C00'},
+    {label:'Норма (стабільний)',color:'#388E3C'},
+    {label:'Злегка знижений',color:'#0288D1'},
+    {label:'Помірно знижений (легка депресія)',color:'#1565C0'},
+    {label:'Сильно знижений (депресія)',color:'#4A148C'},
+    {label:'Змішаний стан',color:'#6D4C41'},
+  ];
+  const days = ['Пн','Вт','Ср','Чт','Пт','Сб','Нд'];
+
+  // Gather all weeks from tracker data
+  const allKeys = Object.keys(tracker).filter(k => k.match(/^\d{4}-W\d+$/));
+  if(allKeys.length === 0){
+    alert('Ще немає збережених даних щоденника.');
+    return;
+  }
+  allKeys.sort();
+
+  // Build week tables for all weeks
+  let weeksHtml = '';
+  allKeys.forEach(wk => {
+    const data = tracker[wk] || {};
+    // Parse year/week to get Monday date
+    const [yr, wNum] = wk.split('-W').map(Number);
+    const jan4 = new Date(yr, 0, 4);
+    const startOfWeek = new Date(jan4);
+    startOfWeek.setDate(jan4.getDate() - (jan4.getDay() || 7) + 1 + (wNum - 1) * 7);
+    const wDates = [];
+    for(let i=0;i<7;i++){const d=new Date(startOfWeek);d.setDate(startOfWeek.getDate()+i);wDates.push(d);}
+    const dateLabel = wDates[0].toLocaleDateString('uk-UA',{day:'numeric',month:'short'}) + ' — ' + wDates[6].toLocaleDateString('uk-UA',{day:'numeric',month:'short',year:'numeric'});
+
+    let tableRows = '';
+    levels.forEach((lv, li) => {
+      let cells = '';
+      for(let d=0;d<7;d++){
+        const key = wk+'_d'+d+'_l'+li;
+        const marked = data[key];
+        cells += '<td style="text-align:center;padding:6px;background:'+(marked?lv.color+'22':'#fafafa')+';border:1px solid #e0e0e0">'+(marked?'<span style="color:'+lv.color+';font-size:16px">●</span>':'')+'</td>';
+      }
+      tableRows += '<tr><td style="padding:6px 10px;font-size:12px;border:1px solid #e0e0e0;white-space:nowrap;background:#fafafa">'+lv.label+'</td>'+cells+'</tr>';
+    });
+
+    // Sleep + meds + notes row
+    let extraRows = '<tr><td style="padding:6px 10px;font-size:12px;border:1px solid #e0e0e0;background:#f0f4ff">💊 Ліки</td>';
+    for(let d=0;d<7;d++){
+      const med = data[wk+'_med_d'+d];
+      extraRows += '<td style="text-align:center;padding:6px;border:1px solid #e0e0e0;background:#f0f4ff">'+(med?'✓':'')+'</td>';
+    }
+    extraRows += '</tr><tr><td style="padding:6px 10px;font-size:12px;border:1px solid #e0e0e0;background:#f0f8ff">😴 Сон (год)</td>';
+    for(let d=0;d<7;d++){
+      const sl = data[wk+'_sleep_d'+d]||'';
+      extraRows += '<td style="text-align:center;padding:6px;border:1px solid #e0e0e0;background:#f0f8ff">'+sl+'</td>';
+    }
+    extraRows += '</tr>';
+
+    // Notes per day
+    let notesRows = '';
+    for(let d=0;d<7;d++){
+      const note = data[wk+'_note_d'+d]||'';
+      if(note) notesRows += '<tr><td style="padding:4px 10px;font-size:12px;border:1px solid #e0e0e0;color:#555"><strong>'+days[d]+' '+wDates[d].toLocaleDateString('uk-UA',{day:'numeric',month:'numeric'})+':</strong> '+note+'</td></tr>';
+    }
+
+    // Summary fields
+    const sum1 = data[wk+'_sum1']||'';
+    const sum2 = data[wk+'_sum2']||'';
+
+    weeksHtml += '<div style="margin-bottom:32px">'+
+      '<h3 style="color:'+accent+';margin:0 0 8px;font-size:15px">📅 '+dateLabel+'</h3>'+
+      '<div style="overflow-x:auto"><table style="border-collapse:collapse;width:100%;min-width:500px">'+
+      '<thead><tr><th style="padding:6px 10px;text-align:left;border:1px solid #e0e0e0;background:#f5f5f5;font-size:12px">Рівень настрою</th>'+
+      days.map((d,i)=>'<th style="padding:6px;text-align:center;border:1px solid #e0e0e0;background:#f5f5f5;font-size:12px">'+d+'<br><span style="font-weight:400;color:#888">'+wDates[i].toLocaleDateString('uk-UA',{day:'numeric',month:'numeric'})+'</span></th>').join('')+
+      '</tr></thead><tbody>'+tableRows+extraRows+'</tbody></table></div>'+
+      (notesRows?'<table style="border-collapse:collapse;width:100%;margin-top:6px"><tbody>'+notesRows+'</tbody></table>':'')+
+      (sum1?'<p style="margin:8px 0 2px;font-size:13px"><strong>Патерни:</strong> '+sum1+'</p>':'')+
+      (sum2?'<p style="margin:2px 0;font-size:13px"><strong>Що допомагало:</strong> '+sum2+'</p>':'')+
+      '</div>';
+  });
+
+  const firstDate = (() => {
+    const [yr, wNum] = allKeys[0].split('-W').map(Number);
+    const jan4 = new Date(yr, 0, 4);
+    const mon = new Date(jan4);
+    mon.setDate(jan4.getDate() - (jan4.getDay()||7) + 1 + (wNum-1)*7);
+    return mon.toLocaleDateString('uk-UA',{day:'numeric',month:'long',year:'numeric'});
+  })();
+
+  const html = '<!DOCTYPE html><html lang="uk"><head><meta charset="UTF-8"><title>Щоденник настрою — '+clientName+'</title>'+
+    '<style>body{font-family:Georgia,serif;max-width:900px;margin:0 auto;padding:20px;color:#333}'+
+    'h1{color:'+accent+'}'+
+    '.meta{background:#f9f0f5;padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:24px}'+
+    '@media print{button{display:none!important}}'+
+    '</style></head><body>'+
+    '<h1>📋 Щоденник настрою — Мій біполярний</h1>'+
+    '<div class="meta">Клієнт: <strong>'+clientName+'</strong> · Період: з '+firstDate+' · Тижнів: '+allKeys.length+' · Звіт сформовано: '+today+'</div>'+
+    '<button onclick="window.print()" style="margin-bottom:24px;padding:10px 24px;border-radius:50px;border:none;background:'+accent+';color:white;font-size:14px;font-weight:700;cursor:pointer">🖨️ Роздрукувати / зберегти PDF</button>'+
+    weeksHtml+
+    '</body></html>';
+
+  const w = window.open('','_blank');
+  w.document.write(html);
+  w.document.close();
+}
+
 function generateReport(){
   const session = getSession();
   const clientName = session.clientName || 'Клієнт';
